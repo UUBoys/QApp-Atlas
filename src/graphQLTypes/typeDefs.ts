@@ -1,23 +1,16 @@
 const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
+  type AuthResult {
+    success: Boolean
+    token: String
   }
 
   type Query {
-    hello: String
+    _empty: String # Just a placeholder. You can replace or remove this once you have real query operations.
   }
-
-  type Repsonse {
-    success: Boolean
-    message: String
-  }
-
+  
   type Mutation {
     #Auth   
-    login(email: String, password: String ): Repsonse
-    register(username: String, email: String, password: String ): Repsonse
-    
+    login(email: String, password: String): AuthResult    
     #
   }
 `;

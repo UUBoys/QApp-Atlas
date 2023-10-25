@@ -1,24 +1,36 @@
 import services from "../services";
+import { credentials } from "@grpc/grpc-js";
+
+import {
+  AuthServiceClient,
+  LoginRequest,
+} from "../grpc/src/grpc/proto/services/auth/v1/auth_service";
 
 const authResolver = {
   Mutation: {
-    login: (_: any, args: any) => {
+    login: async (_: any, args: any) => {
       const service = services.find((service) => service.name === "auth");
+      const client = new AuthServiceClient(
+        service?.url || "",
+        credentials.createInsecure()
+      );
 
-      if (!service)
-        return { success: false, message: "Failed to find services" };
+      const request = new LoginRequest();
+      request.email = args.email;
+      request.password = args.password;
 
-      return { success: true, message: "Login Success" };
-    },
-  },
-  Query: {
-    getTest: (_: any, args: any) => {
-      const service = services.find((service) => service.name === "credits");
+      let resultObj = {};
 
-      if (!service)
-        return { success: false, message: "Failed to find services" };
+      await client.Login(request, (err, response) => {
+        if (err || !response) {
+          resultObj = { success: false, token: "" };
+          return;
+        }
 
-      return { success: true, message: "Credit Success" };
+        resultObj = { success: true, token: response.token };
+      });
+
+      return resultObj;
     },
   },
 };
