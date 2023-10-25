@@ -2,7 +2,8 @@ import services from "../services";
 import { credentials } from "@grpc/grpc-js";
 
 import { com } from "../grpc/src/grpc/proto/services/auth/v1/auth_service";
-import { register } from "ts-node";
+import { grpcToPromise } from "../grpc/utils/index";
+
 const service = services.find((service) => service.name === "auth");
 
 const authResolver = {
@@ -10,25 +11,21 @@ const authResolver = {
     login: async (_: any, args: any) => {
       const client = new com.qapp.auth.AuthServiceClient(
         service?.url || "",
-        credentials.createInsecure()
+        credentials.createSsl()
       );
 
-      const request = new com.qapp.auth.LoginRequest();
-      request.email = args.email;
-      request.password = args.password;
+      const request = new com.qapp.auth.LoginRequest({
+        email: args.email,
+        password: args.password,
+      });
 
       console.log(request.email, request.password);
 
-      return await new Promise((resolve, reject) => {
-        client.Login(request, (err, response) => {
-          if (err || !response) {
-            console.log(err);
-            resolve({ success: false, token: "" });
-            return;
-          }
-          resolve({ success: true, token: response.token });
-        });
-      });
+      const response = await grpcToPromise<com.qapp.auth.LoginResponse>(
+        (callback) => client.Login(request, callback)
+      );
+
+      return { success: true, token: response.token };
     },
     register: async (_: any, args: any) => {
       const client = new com.qapp.auth.AuthServiceClient(
@@ -42,16 +39,13 @@ const authResolver = {
         username: args.username,
       });
 
-      return await new Promise((resolve, reject) => {
-        client.Register(request, (err, response) => {
-          if (err || !response) {
-            console.log(err);
-            resolve({ success: false, token: "" });
-            return;
-          }
-          resolve({ success: true, token: response.token });
-        });
-      });
+      console.log(request.email, request.password, request.username);
+
+      const response = await grpcToPromise<com.qapp.auth.RegisterResponse>(
+        (callback) => client.Register(request, callback)
+      );
+
+      return { success: true, token: response.token };
     },
   },
 };
