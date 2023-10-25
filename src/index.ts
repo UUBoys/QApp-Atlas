@@ -20,5 +20,5 @@ const server = new ApolloServer({
 server.start().then(() => {
   const app = express();
   app.use(cors(), bodyParser.json(), expressMiddleware(server));
-  app.listen({ port: 4000 });
+  app.listen({ port: 8080 });
 });
