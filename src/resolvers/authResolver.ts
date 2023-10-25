@@ -30,7 +30,7 @@ const authResolver = {
     register: async (_: any, args: any) => {
       const client = new com.qapp.auth.AuthServiceClient(
         service?.url || "",
-        credentials.createInsecure()
+        credentials.createSsl()
       );
 
       const request = new com.qapp.auth.RegisterRequest({
