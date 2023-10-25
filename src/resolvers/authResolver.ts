@@ -5,15 +5,14 @@ import { com } from "../grpc/src/grpc/proto/services/auth/v1/auth_service";
 import { grpcToPromise } from "../grpc/utils/index";
 
 const service = services.find((service) => service.name === "auth");
+const client = new com.qapp.auth.AuthServiceClient(
+  service?.url || "",
+  credentials.createSsl()
+);
 
 const authResolver = {
   Mutation: {
     login: async (_: any, args: any) => {
-      const client = new com.qapp.auth.AuthServiceClient(
-        service?.url || "",
-        credentials.createSsl()
-      );
-
       const request = new com.qapp.auth.LoginRequest({
         email: args.email,
         password: args.password,
@@ -28,11 +27,6 @@ const authResolver = {
       return { success: true, token: response.token };
     },
     register: async (_: any, args: any) => {
-      const client = new com.qapp.auth.AuthServiceClient(
-        service?.url || "",
-        credentials.createSsl()
-      );
-
       const request = new com.qapp.auth.RegisterRequest({
         email: args.email,
         password: args.password,
