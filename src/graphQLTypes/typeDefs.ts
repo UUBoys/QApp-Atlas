@@ -10,7 +10,8 @@ const typeDefs = `#graphql
   
   type Mutation {
     #Auth   
-    login(email: String, password: String): AuthResult    
+    login(email: String, password: String): AuthResult
+    register(email: String, password: String, username: String): AuthResult    
     #
   }
 `;

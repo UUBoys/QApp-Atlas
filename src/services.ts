@@ -1,5 +1,5 @@
 const services = [
-  { name: "auth", url: "http://localhost:4001" },
+  { name: "auth", url: "qappauth.azurewebsites.net:5243" },
   { name: "credits", url: "http://localhost:4002" },
 ];
 
