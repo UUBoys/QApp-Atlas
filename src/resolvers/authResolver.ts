@@ -9,10 +9,9 @@ const client = new com.qapp.cerberus.AuthServiceClient(
   service?.url || "",
   credentials.createSsl()
 );
-
 const authResolver = {
   Mutation: {
-    login: async (_: any, args: any) => {
+    login: async (_: any, args: any, context: any) => {
       const request = new com.qapp.cerberus.LoginRequest({
         email: args.email,
         password: args.password,
@@ -26,7 +25,7 @@ const authResolver = {
 
       return { success: true, token: response.token };
     },
-    register: async (_: any, args: any) => {
+    register: async (_: any, args: any, context: any) => {
       const request = new com.qapp.cerberus.RegisterRequest({
         email: args.email,
         password: args.password,

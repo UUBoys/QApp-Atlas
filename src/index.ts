@@ -9,13 +9,19 @@ import creditResolver from "./resolvers/creditResolver";
 import { decryptToken } from "./utils/auth";
 
 const resolvers = {
-  ...authResolver,
-  ...creditResolver,
+  Mutation: {
+    ...authResolver.Mutation,
+    ...creditResolver.Mutation,
+  },
+  Query: {
+    ...creditResolver.Query,
+  },
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  includeStacktraceInErrorResponses: false,
 });
 
 server.start().then(() => {
@@ -27,7 +33,7 @@ server.start().then(() => {
       context: async ({ req, res }) => {
         const token = req.headers.authorization;
 
-        if (token === undefined) return;
+        if (token === undefined) return { user: null };
 
         const jwtData = decryptToken(token);
 

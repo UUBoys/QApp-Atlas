@@ -4,22 +4,20 @@ const typeDefs = `#graphql
     token: String
   }
 
-  type creditsTopUp {
+  type CreditsTopUp {
     success: Boolean
     newBalance: Int
     oldBalance: Int
   }
 
-  type creditsBalance {
+  type CreditsBalance {
     success: Boolean
     balance: Int
   }
 
   type Query {
-    _empty: String # Just a placeholder. You can replace or remove this once you have real query operations.
-
     #Credits
-    getCredit: creditsBalance
+    getCredit: CreditsBalance
   }
   
   type Mutation {
@@ -28,7 +26,7 @@ const typeDefs = `#graphql
     register(email: String, password: String, username: String): AuthResult    
     
     #Credits
-    TopupCredits(amount: Int, user_id: Int): creditsTopUp
+    topupCredits(amount: Int, user_id: Int): CreditsTopUp
   }
 `;
 
