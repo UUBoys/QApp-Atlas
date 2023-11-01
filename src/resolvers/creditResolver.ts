@@ -14,17 +14,17 @@ const client = new com.qapp.hermes.CreditServiceClient(
 const creditResolver = {
   Mutation: {
     topupCredits: async (_: any, args: any, context: any) => {
-      if (context === undefined || context.user.id !== args.user_id)
+      if (!context.user || !context.user.id)
         throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.hermes.TopupCreditsRequest({
         amount: args.amount,
-        user_id: args.user_id,
+        user_id: context.user.id,
       });
 
       const response =
         await grpcToPromise<com.qapp.hermes.CreditsOperationResponse>(
-          (callback) => client.Login(request, callback)
+          (callback) => client.TopupCredits(request, callback)
         );
 
       return {
@@ -45,9 +45,9 @@ const creditResolver = {
 
       const response =
         await grpcToPromise<com.qapp.hermes.CreditStatusResponse>((callback) =>
-          client.GetCredit(request, callback)
+          client.GetCredits(request, callback)
         );
-
+      console.log(response.user_id);
       return { success: true, balance: response.balance };
     },
   },

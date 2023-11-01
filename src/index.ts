@@ -6,15 +6,18 @@ import bodyParser from "body-parser";
 import typeDefs from "./graphQLTypes/typeDefs";
 import authResolver from "./resolvers/authResolver";
 import creditResolver from "./resolvers/creditResolver";
+import establishmentResolver from "./resolvers/establishmentResolver";
 import { decryptToken } from "./utils/auth";
 
 const resolvers = {
   Mutation: {
     ...authResolver.Mutation,
     ...creditResolver.Mutation,
+    ...establishmentResolver.Mutation,
   },
   Query: {
     ...creditResolver.Query,
+    ...establishmentResolver.Query,
   },
 };
 
