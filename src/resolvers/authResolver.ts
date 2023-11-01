@@ -5,7 +5,7 @@ import { com } from "../grpc/src/grpc/proto/services/auth/v1/auth_service";
 import { grpcToPromise } from "../grpc/utils/index";
 
 const service = services.find((service) => service.name === "auth");
-const client = new com.qapp.auth.AuthServiceClient(
+const client = new com.qapp.cerberus.AuthServiceClient(
   service?.url || "",
   credentials.createSsl()
 );
@@ -13,21 +13,21 @@ const client = new com.qapp.auth.AuthServiceClient(
 const authResolver = {
   Mutation: {
     login: async (_: any, args: any) => {
-      const request = new com.qapp.auth.LoginRequest({
+      const request = new com.qapp.cerberus.LoginRequest({
         email: args.email,
         password: args.password,
       });
 
       console.log(request.email, request.password);
 
-      const response = await grpcToPromise<com.qapp.auth.LoginResponse>(
+      const response = await grpcToPromise<com.qapp.cerberus.LoginResponse>(
         (callback) => client.Login(request, callback)
       );
 
       return { success: true, token: response.token };
     },
     register: async (_: any, args: any) => {
-      const request = new com.qapp.auth.RegisterRequest({
+      const request = new com.qapp.cerberus.RegisterRequest({
         email: args.email,
         password: args.password,
         username: args.username,
@@ -35,7 +35,7 @@ const authResolver = {
 
       console.log(request.email, request.password, request.username);
 
-      const response = await grpcToPromise<com.qapp.auth.RegisterResponse>(
+      const response = await grpcToPromise<com.qapp.cerberus.RegisterResponse>(
         (callback) => client.Register(request, callback)
       );
 

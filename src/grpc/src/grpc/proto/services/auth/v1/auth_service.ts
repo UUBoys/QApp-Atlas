@@ -5,7 +5,7 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
-export namespace com.qapp.auth {
+export namespace com.qapp.cerberus {
     export class RegisterRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -437,7 +437,7 @@ export namespace com.qapp.auth {
     export abstract class UnimplementedAuthServiceService {
         static definition = {
             Register: {
-                path: "/com.qapp.auth.AuthService/Register",
+                path: "/com.qapp.cerberus.AuthService/Register",
                 requestStream: false,
                 responseStream: false,
                 requestSerialize: (message: RegisterRequest) => Buffer.from(message.serialize()),
@@ -446,7 +446,7 @@ export namespace com.qapp.auth {
                 responseDeserialize: (bytes: Buffer) => RegisterResponse.deserialize(new Uint8Array(bytes))
             },
             Login: {
-                path: "/com.qapp.auth.AuthService/Login",
+                path: "/com.qapp.cerberus.AuthService/Login",
                 requestStream: false,
                 responseStream: false,
                 requestSerialize: (message: LoginRequest) => Buffer.from(message.serialize()),
@@ -455,7 +455,7 @@ export namespace com.qapp.auth {
                 responseDeserialize: (bytes: Buffer) => LoginResponse.deserialize(new Uint8Array(bytes))
             },
             GoogleOAuthLogin: {
-                path: "/com.qapp.auth.AuthService/GoogleOAuthLogin",
+                path: "/com.qapp.cerberus.AuthService/GoogleOAuthLogin",
                 requestStream: false,
                 responseStream: false,
                 requestSerialize: (message: GoogleLoginRequest) => Buffer.from(message.serialize()),

@@ -1,1 +1,34 @@
 syntax = "proto3";
+
+package com.qapp.hermes;
+
+service CreditService {
+    rpc TopupCredits(TopupCreditsRequest) returns (CreditsOperationResponse) {}
+    rpc GetCredits(GetCreditsRequest) returns (CreditStatusResponse) {}
+    rpc Purchase(PurchaseRequest) returns (CreditsOperationResponse) {}
+}
+
+message TopupCreditsRequest {
+    int32 user_id = 1;
+    int32 amount = 2;
+}
+
+message CreditsOperationResponse {
+    int32 user_id = 1;
+    int32 old_balance = 2;
+    int32 new_balance = 3;
+}
+
+message GetCreditsRequest {
+    int32 user_id = 1;
+}
+
+message CreditStatusResponse {
+    int32 user_id = 1;
+    int32 balance = 2;
+}
+
+message PurchaseRequest {
+    int32 user_id = 1;
+    int32 amount = 2;
+}
