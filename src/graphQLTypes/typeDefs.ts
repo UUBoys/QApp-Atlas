@@ -79,7 +79,8 @@ const typeDefs = `#graphql
   type Mutation {
     #Auth   
     login(email: String, password: String): AuthResult
-    register(email: String, password: String, username: String): AuthResult    
+    register(email: String, password: String, username: String): AuthResult
+    googleOAuth(idToken: String): AuthResult
     
     #Credits
     topupCredits(amount: Int): CreditsTopUp

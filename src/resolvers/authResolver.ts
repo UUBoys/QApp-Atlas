@@ -40,6 +40,19 @@ const authResolver = {
 
       return { success: true, token: response.token };
     },
+    googleOAuth: async (_: any, args: any, context: any) => {
+      const request = new com.qapp.cerberus.GoogleLoginRequest({
+        idToken: args.idToken,
+      });
+
+      console.log(request.idToken);
+
+      const response = await grpcToPromise<
+        com.qapp.cerberus.LoginResponse
+      >((callback) => client.GoogleOAuthLogin(request, callback));
+
+      return { success: true, token: response.token };
+    }
   },
 };
 
