@@ -1,7 +1,7 @@
 import services from "../services";
 import { credentials } from "@grpc/grpc-js";
 
-import { com } from "../grpc/src/grpc/proto/services/auth/v1/auth_service";
+import { com } from "../grpc/proto/com/qapp/cerberus/cerberus";
 import { grpcToPromise } from "../grpc/utils/index";
 
 const service = services.find((service) => service.name === "auth");

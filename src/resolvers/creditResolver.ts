@@ -1,7 +1,7 @@
 import services from "../services";
 import { credentials } from "@grpc/grpc-js";
 
-import { com } from "../grpc/src/grpc/proto/services/credits/v1/credits_service";
+import { com } from "../grpc/proto/com/qapp/hermes/hermes";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
 

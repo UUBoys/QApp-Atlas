@@ -8,6 +8,7 @@ import authResolver from "./resolvers/authResolver";
 import creditResolver from "./resolvers/creditResolver";
 import establishmentResolver from "./resolvers/establishmentResolver";
 import { decryptToken } from "./utils/auth";
+import logger from "./logger/log";
 
 const resolvers = {
   Mutation: {
@@ -44,5 +45,7 @@ server.start().then(() => {
       },
     })
   );
-  app.listen({ port: 8080 });
+  app.listen({ port: 8080 }, () => {
+    logger.info(`🚀 Server ready at http://localhost:8080/graphql` );
+  });
 });

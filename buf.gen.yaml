@@ -1,0 +1,7 @@
+# /proto/buf.gen.yaml
+version: v1
+plugins:
+   - plugin: ts
+     opt: 
+      - ts_out=dist
+     out: src/grpc/

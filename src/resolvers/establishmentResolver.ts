@@ -1,7 +1,7 @@
 import services from "../services";
 import { credentials } from "@grpc/grpc-js";
 
-import { com } from "../grpc/src/grpc/proto/services/zeus/v1/zeus_service";
+import { com } from "../grpc/proto/com/qapp/zeus/zeus";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
 
@@ -65,9 +65,9 @@ const establishmentResolver = {
           name: response.name,
           description: response.description,
           start_date: response.start_date,
-          end_date: response.end_data,
+          end_date: response.end_date,
           price: response.price,
-          establishment_id: response.establishmentId,
+          establishment_id: response.establishment_id,
         },
       };
     },
@@ -96,17 +96,23 @@ const establishmentResolver = {
   },
 
   Query: {
-    getEstablishments: async (_: any, args: any, context: any) => {
-      if (!context.user) throw new GraphQLError("Unauthorized");
-
-      const request = new com.qapp.zeus.GetEstablishmentsRequest({});
-
-      const response =
-        await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
-          (callback) => client.GetEstablishments(request, callback)
+    getEstablishment: async (_: any, args: any, context: any) => {
+      if(args.id !== undefined) {
+        const request = new com.qapp.zeus.GetEstablishmentRequest({ id: args.id });
+        const response = await grpcToPromise<com.qapp.zeus.Establishment>(
+          (callback) => client.GetEstablishment(request, callback)
         );
 
-      return { success: true, establishments: response.establishments };
+        return { success: true, establishments: [response] };
+      }
+      
+      const request = new com.qapp.zeus.GetEstablishmentsRequest()
+
+      const response = await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
+          (callback) => client.GetEstablishments(request, callback)
+      );
+
+      return { success: true, establishments: [response] };
     },
     getEvents: async (_: any, args: any, context: any) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
