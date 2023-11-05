@@ -72,6 +72,7 @@ const typeDefs = `#graphql
 
     #Establishment
     getEstablishment(id: Int): GetEstablishmentsResponse
+    getEstablishmentsForUser: GetEstablishmentsResponse
 
     getEvents: GetEventsResponse
   }

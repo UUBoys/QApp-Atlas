@@ -114,6 +114,19 @@ const establishmentResolver = {
 
       return { success: true, establishments: response.establishments };
     },
+    getEstablishmentsForUser: async (_: any, args: any, context: any) => {
+      if (!context.user) throw new GraphQLError("Unauthorized");
+
+      const request = new com.qapp.zeus.GetEstablishmentsForUserRequest({
+        userId: context.user.id,
+      });
+
+      const response = await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>((callback) =>
+        client.GetEstablishmentForUser(request, callback)
+      );
+
+      return { success: true, establishments: response.establishments}
+    },
     getEvents: async (_: any, args: any, context: any) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
 

@@ -726,6 +726,73 @@ export namespace com.qapp.zeus {
             return GetEstablishmentsRequest.deserialize(bytes);
         }
     }
+    export class GetEstablishmentsForUserRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            userId?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("userId" in data && data.userId != undefined) {
+                    this.userId = data.userId;
+                }
+            }
+        }
+        get userId() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set userId(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            userId?: number;
+        }): GetEstablishmentsForUserRequest {
+            const message = new GetEstablishmentsForUserRequest({});
+            if (data.userId != null) {
+                message.userId = data.userId;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                userId?: number;
+            } = {};
+            if (this.userId != null) {
+                data.userId = this.userId;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.userId != 0)
+                writer.writeInt32(1, this.userId);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetEstablishmentsForUserRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetEstablishmentsForUserRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.userId = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetEstablishmentsForUserRequest {
+            return GetEstablishmentsForUserRequest.deserialize(bytes);
+        }
+    }
     export class GetEventsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {}) {
@@ -2852,6 +2919,15 @@ export namespace com.qapp.zeus {
                 requestDeserialize: (bytes: Buffer) => GetEstablishmentRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: Establishment) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => Establishment.deserialize(new Uint8Array(bytes))
+            },
+            GetEstablishmentForUser: {
+                path: "/com.qapp.zeus.Zeus/GetEstablishmentForUser",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetEstablishmentsForUserRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetEstablishmentsForUserRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetEstablishmentsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetEstablishmentsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -2865,6 +2941,7 @@ export namespace com.qapp.zeus {
         abstract UpdateEstablishment(call: grpc_1.ServerUnaryCall<UpdateEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
         abstract UpdateEvent(call: grpc_1.ServerUnaryCall<UpdateEventRequest, Event>, callback: grpc_1.sendUnaryData<Event>): void;
         abstract GetEstablishment(call: grpc_1.ServerUnaryCall<GetEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
+        abstract GetEstablishmentForUser(call: grpc_1.ServerUnaryCall<GetEstablishmentsForUserRequest, GetEstablishmentsResponse>, callback: grpc_1.sendUnaryData<GetEstablishmentsResponse>): void;
     }
     export class ZeusClient extends grpc_1.makeGenericClientConstructor(UnimplementedZeusService.definition, "Zeus", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -2899,6 +2976,9 @@ export namespace com.qapp.zeus {
         };
         GetEstablishment: GrpcUnaryServiceInterface<GetEstablishmentRequest, Establishment> = (message: GetEstablishmentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Establishment>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Establishment>, callback?: grpc_1.requestCallback<Establishment>): grpc_1.ClientUnaryCall => {
             return super.GetEstablishment(message, metadata, options, callback);
+        };
+        GetEstablishmentForUser: GrpcUnaryServiceInterface<GetEstablishmentsForUserRequest, GetEstablishmentsResponse> = (message: GetEstablishmentsForUserRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, callback?: grpc_1.requestCallback<GetEstablishmentsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetEstablishmentForUser(message, metadata, options, callback);
         };
     }
 }
