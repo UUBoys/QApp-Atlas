@@ -112,7 +112,7 @@ const establishmentResolver = {
           (callback) => client.GetEstablishments(request, callback)
       );
 
-      return { success: true, establishments: [response] };
+      return { success: true, establishments: response.establishments };
     },
     getEvents: async (_: any, args: any, context: any) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
