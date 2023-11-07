@@ -51,6 +51,11 @@ const typeDefs = `#graphql
     establishment: Establishment
   }
 
+  type UpdateEstablishmentResult {
+    success: Boolean
+    establishment: Establishment
+  }
+
   type CreateEventResult {
     success: Boolean
     event: Event
@@ -87,7 +92,8 @@ const typeDefs = `#graphql
     topupCredits(amount: Int!): CreditsTopUp
 
     #Establishment
-    createEstablishment(name: String!, description: String!, street: String!, city: String!, country: String!): CreateEstablishmentResult
+    createEstablishment(name: String!, description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
+    updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!): CreateEventResult
     purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
   }
