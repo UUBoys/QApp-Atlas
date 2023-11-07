@@ -23,6 +23,8 @@ const establishmentResolver = {
         city: args.city,
         country: args.country,
         ownerId: context.user.id,
+        coverImage: args.coverImage ?? undefined,
+        profileImage: args.profileImage ?? undefined,
       });
 
       const response = await grpcToPromise<com.qapp.zeus.Establishment>(
@@ -38,6 +40,8 @@ const establishmentResolver = {
           street: response.street,
           city: response.city,
           country: response.country,
+          coverImage: response.coverImage,
+          profileImage: response.profileImage,
         },
       };
     },

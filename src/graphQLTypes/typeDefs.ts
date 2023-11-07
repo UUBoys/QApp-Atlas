@@ -33,6 +33,8 @@ const typeDefs = `#graphql
     street: String
     city: String
     country: String
+    coverImage: String
+    profileImage: String
   }
   
   type Ticket {
