@@ -24,7 +24,7 @@ const authResolver: Resolvers = {
         (callback) => client.Login(request, callback)
       );
 
-      return { success: true, token: response.token };
+      return { token: response.token };
     },
     register: async (_, args, context) => {
       const request = new com.qapp.cerberus.RegisterRequest({
@@ -39,7 +39,7 @@ const authResolver: Resolvers = {
         (callback) => client.Register(request, callback)
       );
 
-      return { success: true, token: response.token };
+      return { token: response.token };
     },
     googleOAuth: async (_, args, context) => {
       const request = new com.qapp.cerberus.GoogleLoginRequest({
@@ -52,7 +52,7 @@ const authResolver: Resolvers = {
         com.qapp.cerberus.LoginResponse
       >((callback) => client.GoogleOAuthLogin(request, callback));
 
-      return { success: true, token: response.token };
+      return { token: response.token };
     }
   },
 };

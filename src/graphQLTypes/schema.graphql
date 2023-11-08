@@ -1,75 +1,66 @@
 type AuthResult {
-    success: Boolean
-    token: String
+    token: String!
 }
 
 type CreditsTopUp {
-    success: Boolean
-    newBalance: Int
-    oldBalance: Int
+    newBalance: Int!
+    oldBalance: Int!
 }
 
 type CreditsBalance {
-    success: Boolean
-    balance: Int
+    balance: Int!
 }
 
 type Event {
-    id: String
-    name: String
+    id: String!
+    name: String!
     description: String
-    start_date: String
-    end_date: String
-    price: Float
-    establishment_id: Int
-    maximumCapacity: Int
+    start_date: String!
+    end_date: String!
+    price: Float!
+    establishment_id: Int!
+    maximumCapacity: Int!
 }
 
 type Establishment {
-    id: Int
-    name: String
-    description: String
-    street: String
-    city: String
-    country: String
+    id: Int!
+    name: String!
+    description: String!
+    street: String!
+    city: String!
+    country: String!
     coverImage: String
     profileImage: String
     events: [Event]
 }
 
 type Ticket {
-    id: String
-    event_id: String
-    user_id: Int
+    id: String!
+    event_id: String!
+    user_id: Int!
 }
 
 type PurchaseTicketResult {
-    success: Boolean
-    ticket: Ticket
+    ticket: Ticket!
 }
 
 type CreateEstablishmentResult {
-    success: Boolean
-    establishment: Establishment
+    establishment: Establishment!
 }
 
 type UpdateEstablishmentResult {
-    success: Boolean
-    establishment: Establishment
+    establishment: Establishment!
 }
 
 type CreateEventResult {
-    success: Boolean
-    event: Event
+    event: Event!
 }
 
 type GetEstablishmentsResponse {
-    success: Boolean
     establishments: [Establishment]
 }
 
 type GetEventsResponse {
-    success: Boolean
     events: [Event]
 }
 

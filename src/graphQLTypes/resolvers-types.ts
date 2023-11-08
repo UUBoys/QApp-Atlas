@@ -19,70 +19,63 @@ export type Scalars = {
 
 export type AuthResult = {
   __typename?: 'AuthResult';
-  success?: Maybe<Scalars['Boolean']['output']>;
-  token?: Maybe<Scalars['String']['output']>;
+  token: Scalars['String']['output'];
 };
 
 export type CreateEstablishmentResult = {
   __typename?: 'CreateEstablishmentResult';
-  establishment?: Maybe<Establishment>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  establishment: Establishment;
 };
 
 export type CreateEventResult = {
   __typename?: 'CreateEventResult';
-  event?: Maybe<Event>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  event: Event;
 };
 
 export type CreditsBalance = {
   __typename?: 'CreditsBalance';
-  balance?: Maybe<Scalars['Int']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  balance: Scalars['Int']['output'];
 };
 
 export type CreditsTopUp = {
   __typename?: 'CreditsTopUp';
-  newBalance?: Maybe<Scalars['Int']['output']>;
-  oldBalance?: Maybe<Scalars['Int']['output']>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  newBalance: Scalars['Int']['output'];
+  oldBalance: Scalars['Int']['output'];
 };
 
 export type Establishment = {
   __typename?: 'Establishment';
-  city?: Maybe<Scalars['String']['output']>;
-  country?: Maybe<Scalars['String']['output']>;
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
   coverImage?: Maybe<Scalars['String']['output']>;
-  description?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
   events?: Maybe<Array<Maybe<Event>>>;
-  id?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
   profileImage?: Maybe<Scalars['String']['output']>;
-  street?: Maybe<Scalars['String']['output']>;
+  street: Scalars['String']['output'];
 };
 
 export type Event = {
   __typename?: 'Event';
   description?: Maybe<Scalars['String']['output']>;
-  end_date?: Maybe<Scalars['String']['output']>;
-  establishment_id?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  maximumCapacity?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  price?: Maybe<Scalars['Float']['output']>;
-  start_date?: Maybe<Scalars['String']['output']>;
+  end_date: Scalars['String']['output'];
+  establishment_id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  maximumCapacity: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  start_date: Scalars['String']['output'];
 };
 
 export type GetEstablishmentsResponse = {
   __typename?: 'GetEstablishmentsResponse';
   establishments?: Maybe<Array<Maybe<Establishment>>>;
-  success?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type GetEventsResponse = {
   __typename?: 'GetEventsResponse';
   events?: Maybe<Array<Maybe<Event>>>;
-  success?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type Mutation = {
@@ -169,8 +162,7 @@ export type MutationUpdateEstablishmentArgs = {
 
 export type PurchaseTicketResult = {
   __typename?: 'PurchaseTicketResult';
-  success?: Maybe<Scalars['Boolean']['output']>;
-  ticket?: Maybe<Ticket>;
+  ticket: Ticket;
 };
 
 export type Query = {
@@ -213,15 +205,14 @@ export enum SearchType {
 
 export type Ticket = {
   __typename?: 'Ticket';
-  event_id?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  user_id?: Maybe<Scalars['Int']['output']>;
+  event_id: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  user_id: Scalars['Int']['output'];
 };
 
 export type UpdateEstablishmentResult = {
   __typename?: 'UpdateEstablishmentResult';
-  establishment?: Maybe<Establishment>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  establishment: Establishment;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -351,70 +342,63 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CreateEstablishmentResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateEstablishmentResult'] = ResolversParentTypes['CreateEstablishmentResult']> = ResolversObject<{
-  establishment?: Resolver<Maybe<ResolversTypes['Establishment']>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  establishment?: Resolver<ResolversTypes['Establishment'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CreateEventResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateEventResult'] = ResolversParentTypes['CreateEventResult']> = ResolversObject<{
-  event?: Resolver<Maybe<ResolversTypes['Event']>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  event?: Resolver<ResolversTypes['Event'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CreditsBalanceResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreditsBalance'] = ResolversParentTypes['CreditsBalance']> = ResolversObject<{
-  balance?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CreditsTopUpResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreditsTopUp'] = ResolversParentTypes['CreditsTopUp']> = ResolversObject<{
-  newBalance?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  oldBalance?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  newBalance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  oldBalance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type EstablishmentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Establishment'] = ResolversParentTypes['Establishment']> = ResolversObject<{
-  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  country?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   coverImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   events?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   profileImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  street?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  street?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type EventResolvers<ContextType = any, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = ResolversObject<{
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  end_date?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  establishment_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  maximumCapacity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  start_date?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  end_date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  establishment_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  maximumCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  start_date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type GetEstablishmentsResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetEstablishmentsResponse'] = ResolversParentTypes['GetEstablishmentsResponse']> = ResolversObject<{
   establishments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Establishment']>>>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type GetEventsResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetEventsResponse'] = ResolversParentTypes['GetEventsResponse']> = ResolversObject<{
   events?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -431,8 +415,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type PurchaseTicketResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['PurchaseTicketResult'] = ResolversParentTypes['PurchaseTicketResult']> = ResolversObject<{
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  ticket?: Resolver<Maybe<ResolversTypes['Ticket']>, ParentType, ContextType>;
+  ticket?: Resolver<ResolversTypes['Ticket'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -460,15 +443,14 @@ export type SearchResultUnionResolvers<ContextType = any, ParentType extends Res
 }>;
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = ResolversObject<{
-  event_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type UpdateEstablishmentResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateEstablishmentResult'] = ResolversParentTypes['UpdateEstablishmentResult']> = ResolversObject<{
-  establishment?: Resolver<Maybe<ResolversTypes['Establishment']>, ParentType, ContextType>;
-  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  establishment?: Resolver<ResolversTypes['Establishment'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

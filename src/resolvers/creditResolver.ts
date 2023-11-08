@@ -29,7 +29,6 @@ const creditResolver: Resolvers = {
         );
 
       return {
-        success: true,
         oldBalance: response.old_balance,
         newBalance: response.new_balance,
       };
@@ -49,7 +48,7 @@ const creditResolver: Resolvers = {
           client.GetCredits(request, callback)
         );
       console.log(response.user_id);
-      return { success: true, balance: response.balance };
+      return { balance: response.balance };
     },
   },
 };

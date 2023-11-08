@@ -34,7 +34,6 @@ const establishmentResolver: Resolvers = {
       );
 
       return {
-        success: true,
         establishment: {
           id: response.id,
           name: response.name,
@@ -70,7 +69,6 @@ const establishmentResolver: Resolvers = {
       );
 
       return {
-        success: true,
         establishment: {
           id: response.id,
           name: response.name,
@@ -101,7 +99,6 @@ const establishmentResolver: Resolvers = {
       );
 
       return {
-        success: true,
         event: {
           id: response.id,
           name: response.name,
@@ -110,6 +107,7 @@ const establishmentResolver: Resolvers = {
           end_date: response.end_date,
           price: response.price,
           establishment_id: response.establishment_id,
+          maximumCapacity: response.maximumCapacity,
         },
       };
     },
@@ -257,7 +255,7 @@ const establishmentResolver: Resolvers = {
         (callback) => client.GetEstablishment(request, callback)
       );
 
-      return { success: true, establishments: [response] };
+      return { establishments: [response] };
     },
     getEstablishments: async (_, args, context) => {
       const request = new com.qapp.zeus.GetEstablishmentsRequest();
@@ -267,7 +265,7 @@ const establishmentResolver: Resolvers = {
           (callback) => client.GetEstablishments(request, callback)
         );
 
-      return { success: true, establishments: response.establishments };
+      return { establishments: response.establishments };
     },
     getEstablishmentsForUser: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
@@ -281,7 +279,7 @@ const establishmentResolver: Resolvers = {
           (callback) => client.GetEstablishmentForUser(request, callback)
         );
 
-      return { success: true, establishments: response.establishments };
+      return { establishments: response.establishments };
     },
     getEvents: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
@@ -292,7 +290,7 @@ const establishmentResolver: Resolvers = {
         (callback) => client.GetEvents(request, callback)
       );
 
-      return { success: true, events: response.events };
+      return { events: response.events };
     },
   },
   Establishment: {
