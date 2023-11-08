@@ -257,7 +257,7 @@ const establishmentResolver: Resolvers = {
         (callback) => client.GetEstablishment(request, callback)
       );
 
-      return { success: true, establishment: [response] };
+      return { success: true, establishments: [response] };
     },
     getEstablishments: async (_, args, context) => {
       const request = new com.qapp.zeus.GetEstablishmentsRequest();
