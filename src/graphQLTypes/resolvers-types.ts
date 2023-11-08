@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -92,6 +93,7 @@ export type Mutation = {
   login?: Maybe<AuthResult>;
   purchaseTicket?: Maybe<PurchaseTicketResult>;
   register?: Maybe<AuthResult>;
+  search?: Maybe<SearchResultResponse>;
   topupCredits?: Maybe<CreditsTopUp>;
   updateEstablishment?: Maybe<UpdateEstablishmentResult>;
 };
@@ -143,6 +145,12 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationSearchArgs = {
+  query: Scalars['String']['input'];
+  type: SearchType;
+};
+
+
 export type MutationTopupCreditsArgs = {
   amount: Scalars['Int']['input'];
 };
@@ -178,6 +186,30 @@ export type Query = {
 export type QueryGetEstablishmentByIdArgs = {
   id: Scalars['Int']['input'];
 };
+
+export type SearchResult = {
+  __typename?: 'SearchResult';
+  result?: Maybe<SearchResultUnion>;
+  searchType?: Maybe<SearchResultType>;
+};
+
+export type SearchResultResponse = {
+  __typename?: 'SearchResultResponse';
+  results?: Maybe<Array<Maybe<SearchResult>>>;
+};
+
+export enum SearchResultType {
+  Establishment = 'ESTABLISHMENT',
+  Event = 'EVENT'
+}
+
+export type SearchResultUnion = Establishment | Event;
+
+export enum SearchType {
+  All = 'ALL',
+  Establishment = 'ESTABLISHMENT',
+  Event = 'EVENT'
+}
 
 export type Ticket = {
   __typename?: 'Ticket';
@@ -260,6 +292,10 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of union types */
+export type ResolversUnionTypes<RefType extends Record<string, unknown>> = ResolversObject<{
+  SearchResultUnion: ( Establishment ) | ( Event );
+}>;
 
 
 /** Mapping between all available schema types and the resolvers types */
@@ -279,6 +315,11 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   PurchaseTicketResult: ResolverTypeWrapper<PurchaseTicketResult>;
   Query: ResolverTypeWrapper<{}>;
+  SearchResult: ResolverTypeWrapper<Omit<SearchResult, 'result'> & { result?: Maybe<ResolversTypes['SearchResultUnion']> }>;
+  SearchResultResponse: ResolverTypeWrapper<SearchResultResponse>;
+  SearchResultType: SearchResultType;
+  SearchResultUnion: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SearchResultUnion']>;
+  SearchType: SearchType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Ticket: ResolverTypeWrapper<Ticket>;
   UpdateEstablishmentResult: ResolverTypeWrapper<UpdateEstablishmentResult>;
@@ -301,6 +342,9 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   PurchaseTicketResult: PurchaseTicketResult;
   Query: {};
+  SearchResult: Omit<SearchResult, 'result'> & { result?: Maybe<ResolversParentTypes['SearchResultUnion']> };
+  SearchResultResponse: SearchResultResponse;
+  SearchResultUnion: ResolversUnionTypes<ResolversParentTypes>['SearchResultUnion'];
   String: Scalars['String']['output'];
   Ticket: Ticket;
   UpdateEstablishmentResult: UpdateEstablishmentResult;
@@ -381,6 +425,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id' | 'user_id'>>;
   register?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
+  search?: Resolver<Maybe<ResolversTypes['SearchResultResponse']>, ParentType, ContextType, RequireFields<MutationSearchArgs, 'query' | 'type'>>;
   topupCredits?: Resolver<Maybe<ResolversTypes['CreditsTopUp']>, ParentType, ContextType, RequireFields<MutationTopupCreditsArgs, 'amount'>>;
   updateEstablishment?: Resolver<Maybe<ResolversTypes['UpdateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationUpdateEstablishmentArgs, 'establishment_id'>>;
 }>;
@@ -397,6 +442,21 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getEstablishments?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEstablishmentsForUser?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEvents?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType>;
+}>;
+
+export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = ResolversObject<{
+  result?: Resolver<Maybe<ResolversTypes['SearchResultUnion']>, ParentType, ContextType>;
+  searchType?: Resolver<Maybe<ResolversTypes['SearchResultType']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SearchResultResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultResponse'] = ResolversParentTypes['SearchResultResponse']> = ResolversObject<{
+  results?: Resolver<Maybe<Array<Maybe<ResolversTypes['SearchResult']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SearchResultUnionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultUnion'] = ResolversParentTypes['SearchResultUnion']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'Establishment' | 'Event', ParentType, ContextType>;
 }>;
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = ResolversObject<{
@@ -425,6 +485,9 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   PurchaseTicketResult?: PurchaseTicketResultResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  SearchResult?: SearchResultResolvers<ContextType>;
+  SearchResultResponse?: SearchResultResponseResolvers<ContextType>;
+  SearchResultUnion?: SearchResultUnionResolvers<ContextType>;
   Ticket?: TicketResolvers<ContextType>;
   UpdateEstablishmentResult?: UpdateEstablishmentResultResolvers<ContextType>;
 }>;

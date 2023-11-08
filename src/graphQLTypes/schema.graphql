@@ -99,4 +99,27 @@ type Mutation {
     updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!): CreateEventResult
     purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
+    search(query: String!, type: SearchType!): SearchResultResponse
+}
+
+type SearchResultResponse {
+    results: [SearchResult]
+}
+
+type SearchResult {
+    searchType: SearchResultType
+    result: SearchResultUnion
+}
+
+union SearchResultUnion = Event | Establishment
+
+enum SearchResultType {
+    EVENT
+    ESTABLISHMENT
+}
+
+enum SearchType {
+    ALL
+    ESTABLISHMENT
+    EVENT
 }

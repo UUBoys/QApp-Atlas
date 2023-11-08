@@ -4,7 +4,7 @@ import { credentials } from "@grpc/grpc-js";
 import { com } from "../grpc/proto/com/qapp/zeus/zeus";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
-import { Resolvers } from "../graphQLTypes/resolvers-types";
+import { Resolvers, SearchResultType } from "../graphQLTypes/resolvers-types";
 import logger from "../logger/log";
 
 const service = services.find((service) => service.name === "establishment");
@@ -135,6 +135,114 @@ const establishmentResolver: Resolvers = {
         },
       };
     },
+    // @ts-expect-error
+    search: async (_, args, context) => {
+      //if (!context || !context.user) throw new GraphQLError("Unauthorized");
+
+      const EstablishmentRequest = new com.qapp.zeus.GetEstablishmentsRequest();
+      const EventRequest = new com.qapp.zeus.GetEventsRequest();
+
+      if (args.type === "ESTABLISHMENT") {
+        const response =
+          await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
+            (callback) =>
+              client.GetEstablishments(EstablishmentRequest, callback)
+          );
+
+        const establishments = response.establishments.filter((establishment) =>
+          establishment.name.includes(args.query)
+        );
+        return {
+          results: establishments.map((establishment) => ({
+            result: {
+              __typename: "Establishment",
+              id: establishment.id,
+              name: establishment.name,
+              description: establishment.description,
+              street: establishment.street,
+              city: establishment.city,
+              country: establishment.country,
+              coverImage: establishment.coverImage,
+              profileImage: establishment.profileImage,
+            },
+            searchType: SearchResultType.Establishment,
+          })),
+        };
+      } else if (args.type === "EVENT") {
+        const response = await grpcToPromise<com.qapp.zeus.GetEventsResponse>(
+          (callback) => client.GetEvents(EventRequest, callback)
+        );
+
+        const events = response.events.filter((event) =>
+          event.name.includes(args.query)
+        );
+        return {
+          results: events.map((event) => ({
+            result: {
+              __typename: "Event",
+              id: event.id,
+              name: event.name,
+              description: event.description,
+              start_date: event.start_date,
+              end_date: event.end_date,
+              price: event.price,
+              establishment_id: event.establishment_id,
+              maximumCapacity: event.maximumCapacity,
+            },
+            searchType: SearchResultType.Event,
+          })),
+        };
+      } else {
+        const EstablishmentsResponse =
+          await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
+            (callback) =>
+              client.GetEstablishments(EstablishmentRequest, callback)
+          );
+
+        const EventsResponse =
+          await grpcToPromise<com.qapp.zeus.GetEventsResponse>((callback) =>
+            client.GetEvents(EventRequest, callback)
+          );
+
+        const establishments = EstablishmentsResponse.establishments.filter(
+          (establishment) => establishment.name.includes(args.query)
+        );
+        const events = EventsResponse.events.filter((event) =>
+          event.name.includes(args.query)
+        );
+        return { results: [...establishments.map((establishment) => {
+          return {
+            result: {
+              __typename: "Establishment",
+              id: establishment.id,
+              name: establishment.name,
+              description: establishment.description,
+              street: establishment.street,
+              city: establishment.city,
+              country: establishment.country,
+              coverImage: establishment.coverImage,
+              profileImage: establishment.profileImage,
+            },
+            searchType: SearchResultType.Establishment,
+          };
+        }), ...events.map((event) => {
+          return {
+            result: {
+              __typename: "Event",
+              id: event.id,
+              name: event.name,
+              description: event.description,
+              start_date: event.start_date,
+              end_date: event.end_date,
+              price: event.price,
+              establishment_id: event.establishment_id,
+              maximumCapacity: event.maximumCapacity,
+            },
+            searchType: SearchResultType.Event,
+          };
+        })] };
+      }
+    },
   },
 
   Query: {
@@ -149,7 +257,7 @@ const establishmentResolver: Resolvers = {
         (callback) => client.GetEstablishment(request, callback)
       );
 
-      return { success: true, establishments: [response] };
+      return { success: true, establishment: [response] };
     },
     getEstablishments: async (_, args, context) => {
       const request = new com.qapp.zeus.GetEstablishmentsRequest();
@@ -198,14 +306,14 @@ const establishmentResolver: Resolvers = {
       );
 
       return response.events.map((event) => ({
-          id: event.id,
-          name: event.name,
-          description: event.description,
-          start_date: event.start_date,
-          end_date: event.end_date,
-          price: event.price,
-          establishment_id: event.establishment_id,
-          maximumCapacity: event.maximumCapacity,
+        id: event.id,
+        name: event.name,
+        description: event.description,
+        start_date: event.start_date,
+        end_date: event.end_date,
+        price: event.price,
+        establishment_id: event.establishment_id,
+        maximumCapacity: event.maximumCapacity,
       }));
     },
   },
