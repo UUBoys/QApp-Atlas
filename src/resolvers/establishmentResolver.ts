@@ -4,6 +4,8 @@ import { credentials } from "@grpc/grpc-js";
 import { com } from "../grpc/proto/com/qapp/zeus/zeus";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
+import { Resolvers } from "../graphQLTypes/resolvers-types";
+import logger from "../logger/log";
 
 const service = services.find((service) => service.name === "establishment");
 const client = new com.qapp.zeus.ZeusClient(
@@ -11,9 +13,9 @@ const client = new com.qapp.zeus.ZeusClient(
   credentials.createSsl()
 );
 
-const establishmentResolver = {
+const establishmentResolver: Resolvers = {
   Mutation: {
-    createEstablishment: async (_: any, args: any, context: any) => {
+    createEstablishment: async (_, args, context) => {
       if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.CreateEstablishmentRequest({
@@ -45,7 +47,7 @@ const establishmentResolver = {
         },
       };
     },
-    updateEstablishment: async (_: any, args: any, context: any) => {
+    updateEstablishment: async (_, args, context) => {
       if(!context || !context.user) throw new GraphQLError("Unauthorized");
 
       if(args.establishment_id === undefined) throw new GraphQLError("No establishment id provided");
@@ -80,7 +82,7 @@ const establishmentResolver = {
         },
       };
     },
-    createEvent: async (_: any, args: any, context: any) => {
+    createEvent: async (_, args, context) => {
       if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.CreateEventRequest({
@@ -110,7 +112,7 @@ const establishmentResolver = {
         },
       };
     },
-    purchaseTicket: async (_: any, args: any, context: any) => {
+    purchaseTicket: async (_, args, context) => {
       if (context === undefined || context.user.id !== args.user_id)
         throw new GraphQLError("Unauthorized");
 
@@ -135,9 +137,9 @@ const establishmentResolver = {
   },
 
   Query: {
-    getEstablishment: async (_: any, args: any, context: any) => {
+    getEstablishment: async (_, args, context) => {
       if(args.id !== undefined) {
-        const request = new com.qapp.zeus.GetEstablishmentRequest({ id: args.id });
+        const request = new com.qapp.zeus.GetEstablishmentRequest({ id: args.id as number });
         const response = await grpcToPromise<com.qapp.zeus.Establishment>(
           (callback) => client.GetEstablishment(request, callback)
         );
@@ -153,7 +155,7 @@ const establishmentResolver = {
 
       return { success: true, establishments: response.establishments };
     },
-    getEstablishmentsForUser: async (_: any, args: any, context: any) => {
+    getEstablishmentsForUser: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.GetEstablishmentsForUserRequest({
@@ -166,7 +168,7 @@ const establishmentResolver = {
 
       return { success: true, establishments: response.establishments}
     },
-    getEvents: async (_: any, args: any, context: any) => {
+    getEvents: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.GetEventsRequest({});
@@ -176,6 +178,28 @@ const establishmentResolver = {
       );
 
       return { success: true, events: response.events };
+    },
+  },
+  Establishment: {
+    events: async ({ id }) => {
+      const request = new com.qapp.zeus.GetEventsForEstablishmentRequest({
+        establishmentId: id as number,
+      });
+
+      const response = await grpcToPromise<com.qapp.zeus.GetEventsResponse>(
+        (callback) => client.GetEventsForEstablishment(request, callback)
+      );
+
+      return response.events.map((event) => ({
+          id: event.id,
+          name: event.name,
+          description: event.description,
+          start_date: event.start_date,
+          end_date: event.end_date,
+          price: event.price,
+          establishment_id: event.establishment_id,
+          maximumCapacity: event.maximumCapacity,
+      }));
     },
   },
 };

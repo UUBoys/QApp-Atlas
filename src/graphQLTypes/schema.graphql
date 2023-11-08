@@ -1,21 +1,20 @@
-const typeDefs = `#graphql
-  type AuthResult {
+type AuthResult {
     success: Boolean
     token: String
-  }
+}
 
-  type CreditsTopUp {
+type CreditsTopUp {
     success: Boolean
     newBalance: Int
     oldBalance: Int
-  }
+}
 
-  type CreditsBalance {
+type CreditsBalance {
     success: Boolean
     balance: Int
-  }
+}
 
-  type Event {
+type Event {
     id: String
     name: String
     description: String
@@ -24,9 +23,9 @@ const typeDefs = `#graphql
     price: Float
     establishment_id: Int
     maximumCapacity: Int
-  }
+}
 
-  type Establishment {
+type Establishment {
     id: Int
     name: String
     description: String
@@ -35,45 +34,46 @@ const typeDefs = `#graphql
     country: String
     coverImage: String
     profileImage: String
-  }
-  
-  type Ticket {
-    id: String
-    event_id: Int
-    user_id: Int
-  }
+    events: [Event]
+}
 
-  type PurchaseTicketResult {
+type Ticket {
+    id: String
+    event_id: String
+    user_id: Int
+}
+
+type PurchaseTicketResult {
     success: Boolean
     ticket: Ticket
-  }
-  
-  type CreateEstablishmentResult {
+}
+
+type CreateEstablishmentResult {
     success: Boolean
     establishment: Establishment
-  }
+}
 
-  type UpdateEstablishmentResult {
+type UpdateEstablishmentResult {
     success: Boolean
     establishment: Establishment
-  }
+}
 
-  type CreateEventResult {
+type CreateEventResult {
     success: Boolean
     event: Event
-  }
+}
 
-  type GetEstablishmentsResponse {
+type GetEstablishmentsResponse {
     success: Boolean
     establishments: [Establishment]
-  }
+}
 
-  type GetEventsResponse {
+type GetEventsResponse {
     success: Boolean
     events: [Event]
-  }
+}
 
-  type Query {
+type Query {
     #Credits
     getCredit: CreditsBalance
 
@@ -82,14 +82,14 @@ const typeDefs = `#graphql
     getEstablishmentsForUser: GetEstablishmentsResponse
 
     getEvents: GetEventsResponse
-  }
+}
 
-  type Mutation {
+type Mutation {
     #Auth   
     login(email: String!, password: String!): AuthResult
     register(email: String!, password: String!, username: String!): AuthResult
     googleOAuth(idToken: String!): AuthResult
-    
+
     #Credits
     topupCredits(amount: Int!): CreditsTopUp
 
@@ -98,7 +98,4 @@ const typeDefs = `#graphql
     updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!): CreateEventResult
     purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
-  }
-`;
-
-export default typeDefs;
+}

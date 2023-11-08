@@ -4,6 +4,7 @@ import { credentials } from "@grpc/grpc-js";
 import { com } from "../grpc/proto/com/qapp/hermes/hermes";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
+import { Resolvers } from "../graphQLTypes/resolvers-types";
 
 const service = services.find((service) => service.name === "credits");
 const client = new com.qapp.hermes.CreditServiceClient(
@@ -11,9 +12,9 @@ const client = new com.qapp.hermes.CreditServiceClient(
   credentials.createSsl()
 );
 
-const creditResolver = {
+const creditResolver: Resolvers = {
   Mutation: {
-    topupCredits: async (_: any, args: any, context: any) => {
+    topupCredits: async (_, args, context) => {
       if (!context.user || !context.user.id)
         throw new GraphQLError("Unauthorized");
 
@@ -36,7 +37,7 @@ const creditResolver = {
   },
 
   Query: {
-    getCredit: async (_: any, args: any, context: any) => {
+    getCredit: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.hermes.GetCreditsRequest({

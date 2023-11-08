@@ -833,6 +833,73 @@ export namespace com.qapp.zeus {
             return GetEventsRequest.deserialize(bytes);
         }
     }
+    export class GetEventsForEstablishmentRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            establishmentId?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("establishmentId" in data && data.establishmentId != undefined) {
+                    this.establishmentId = data.establishmentId;
+                }
+            }
+        }
+        get establishmentId() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set establishmentId(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            establishmentId?: number;
+        }): GetEventsForEstablishmentRequest {
+            const message = new GetEventsForEstablishmentRequest({});
+            if (data.establishmentId != null) {
+                message.establishmentId = data.establishmentId;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                establishmentId?: number;
+            } = {};
+            if (this.establishmentId != null) {
+                data.establishmentId = this.establishmentId;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.establishmentId != 0)
+                writer.writeInt32(1, this.establishmentId);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetEventsForEstablishmentRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetEventsForEstablishmentRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.establishmentId = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetEventsForEstablishmentRequest {
+            return GetEventsForEstablishmentRequest.deserialize(bytes);
+        }
+    }
     export class GetEstablishmentRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -2848,6 +2915,15 @@ export namespace com.qapp.zeus {
                 responseSerialize: (message: GetEventsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetEventsResponse.deserialize(new Uint8Array(bytes))
             },
+            GetEventsForEstablishment: {
+                path: "/com.qapp.zeus.Zeus/GetEventsForEstablishment",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetEventsForEstablishmentRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetEventsForEstablishmentRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetEventsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetEventsResponse.deserialize(new Uint8Array(bytes))
+            },
             CreateEstablishment: {
                 path: "/com.qapp.zeus.Zeus/CreateEstablishment",
                 requestStream: false,
@@ -2933,6 +3009,7 @@ export namespace com.qapp.zeus {
         [method: string]: grpc_1.UntypedHandleCall;
         abstract GetEstablishments(call: grpc_1.ServerUnaryCall<GetEstablishmentsRequest, GetEstablishmentsResponse>, callback: grpc_1.sendUnaryData<GetEstablishmentsResponse>): void;
         abstract GetEvents(call: grpc_1.ServerUnaryCall<GetEventsRequest, GetEventsResponse>, callback: grpc_1.sendUnaryData<GetEventsResponse>): void;
+        abstract GetEventsForEstablishment(call: grpc_1.ServerUnaryCall<GetEventsForEstablishmentRequest, GetEventsResponse>, callback: grpc_1.sendUnaryData<GetEventsResponse>): void;
         abstract CreateEstablishment(call: grpc_1.ServerUnaryCall<CreateEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
         abstract CreateEvent(call: grpc_1.ServerUnaryCall<CreateEventRequest, Event>, callback: grpc_1.sendUnaryData<Event>): void;
         abstract PurchaseTicket(call: grpc_1.ServerUnaryCall<PurchaseTicketRequest, Ticket>, callback: grpc_1.sendUnaryData<Ticket>): void;
@@ -2952,6 +3029,9 @@ export namespace com.qapp.zeus {
         };
         GetEvents: GrpcUnaryServiceInterface<GetEventsRequest, GetEventsResponse> = (message: GetEventsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, callback?: grpc_1.requestCallback<GetEventsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetEvents(message, metadata, options, callback);
+        };
+        GetEventsForEstablishment: GrpcUnaryServiceInterface<GetEventsForEstablishmentRequest, GetEventsResponse> = (message: GetEventsForEstablishmentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, callback?: grpc_1.requestCallback<GetEventsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetEventsForEstablishment(message, metadata, options, callback);
         };
         CreateEstablishment: GrpcUnaryServiceInterface<CreateEstablishmentRequest, Establishment> = (message: CreateEstablishmentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Establishment>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Establishment>, callback?: grpc_1.requestCallback<Establishment>): grpc_1.ClientUnaryCall => {
             return super.CreateEstablishment(message, metadata, options, callback);

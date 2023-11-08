@@ -3,14 +3,21 @@ import { expressMiddleware } from "@apollo/server/express4";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import typeDefs from "./graphQLTypes/typeDefs";
 import authResolver from "./resolvers/authResolver";
 import creditResolver from "./resolvers/creditResolver";
 import establishmentResolver from "./resolvers/establishmentResolver";
 import { decryptToken } from "./utils/auth";
 import logger from "./logger/log";
+import { Resolvers } from "./graphQLTypes/resolvers-types";
 
-const resolvers = {
+import { readFileSync } from "fs";
+
+const typeDefs = readFileSync("./src/graphQLTypes/schema.graphql", "utf8");
+
+const resolvers: Resolvers = {
+  Establishment: {
+    ...establishmentResolver.Establishment,
+  },
   Mutation: {
     ...authResolver.Mutation,
     ...creditResolver.Mutation,

@@ -3,15 +3,16 @@ import { credentials } from "@grpc/grpc-js";
 
 import { com } from "../grpc/proto/com/qapp/cerberus/cerberus";
 import { grpcToPromise } from "../grpc/utils/index";
+import { Resolvers } from "../graphQLTypes/resolvers-types";
 
 const service = services.find((service) => service.name === "auth");
 const client = new com.qapp.cerberus.AuthServiceClient(
   service?.url || "",
   credentials.createSsl()
 );
-const authResolver = {
+const authResolver: Resolvers = {
   Mutation: {
-    login: async (_: any, args: any, context: any) => {
+    login: async (_, args, context) => {
       const request = new com.qapp.cerberus.LoginRequest({
         email: args.email,
         password: args.password,
@@ -25,7 +26,7 @@ const authResolver = {
 
       return { success: true, token: response.token };
     },
-    register: async (_: any, args: any, context: any) => {
+    register: async (_, args, context) => {
       const request = new com.qapp.cerberus.RegisterRequest({
         email: args.email,
         password: args.password,
@@ -40,7 +41,7 @@ const authResolver = {
 
       return { success: true, token: response.token };
     },
-    googleOAuth: async (_: any, args: any, context: any) => {
+    googleOAuth: async (_, args, context) => {
       const request = new com.qapp.cerberus.GoogleLoginRequest({
         idToken: args.idToken,
       });
