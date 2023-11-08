@@ -78,8 +78,9 @@ const typeDefs = `#graphql
     getCredit: CreditsBalance
 
     #Establishment
-    getEstablishment(id: Int): GetEstablishmentsResponse
+    getEstablishments: GetEstablishmentsResponse
     getEstablishmentsForUser: GetEstablishmentsResponse
+    getEstablishmentById(id: Int!): GetEstablishmentsResponse
 
     getEvents: GetEventsResponse
   }
