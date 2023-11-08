@@ -48,9 +48,10 @@ const establishmentResolver: Resolvers = {
       };
     },
     updateEstablishment: async (_, args, context) => {
-      if(!context || !context.user) throw new GraphQLError("Unauthorized");
+      if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
-      if(args.establishment_id === undefined) throw new GraphQLError("No establishment id provided");
+      if (args.establishment_id === undefined)
+        throw new GraphQLError("No establishment id provided");
 
       const request = new com.qapp.zeus.UpdateEstablishmentRequest({
         id: args.establishment_id,
@@ -63,9 +64,9 @@ const establishmentResolver: Resolvers = {
         coverImage: args.coverImage ?? undefined,
         profileImage: args.profileImage ?? undefined,
       });
-      
-      const response = await grpcToPromise<com.qapp.zeus.Establishment>((callback) =>
-        client.UpdateEstablishment(request, callback)
+
+      const response = await grpcToPromise<com.qapp.zeus.Establishment>(
+        (callback) => client.UpdateEstablishment(request, callback)
       );
 
       return {
@@ -137,21 +138,26 @@ const establishmentResolver: Resolvers = {
   },
 
   Query: {
-    getEstablishment: async (_, args, context) => {
-      if(args.id !== undefined) {
-        const request = new com.qapp.zeus.GetEstablishmentRequest({ id: args.id as number });
-        const response = await grpcToPromise<com.qapp.zeus.Establishment>(
-          (callback) => client.GetEstablishment(request, callback)
-        );
+    getEstablishmentById: async (_, args, context) => {
+      if (args.id !== undefined)
+        new GraphQLError("No establishment id provided");
 
-        return { success: true, establishments: [response] };
-      }
-      
-      const request = new com.qapp.zeus.GetEstablishmentsRequest()
-
-      const response = await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
-          (callback) => client.GetEstablishments(request, callback)
+      const request = new com.qapp.zeus.GetEstablishmentRequest({
+        id: args.id,
+      });
+      const response = await grpcToPromise<com.qapp.zeus.Establishment>(
+        (callback) => client.GetEstablishment(request, callback)
       );
+
+      return { success: true, establishments: [response] };
+    },
+    getEstablishments: async (_, args, context) => {
+      const request = new com.qapp.zeus.GetEstablishmentsRequest();
+
+      const response =
+        await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
+          (callback) => client.GetEstablishments(request, callback)
+        );
 
       return { success: true, establishments: response.establishments };
     },
@@ -162,11 +168,12 @@ const establishmentResolver: Resolvers = {
         userId: context.user.id,
       });
 
-      const response = await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>((callback) =>
-        client.GetEstablishmentForUser(request, callback)
-      );
+      const response =
+        await grpcToPromise<com.qapp.zeus.GetEstablishmentsResponse>(
+          (callback) => client.GetEstablishmentForUser(request, callback)
+        );
 
-      return { success: true, establishments: response.establishments}
+      return { success: true, establishments: response.establishments };
     },
     getEvents: async (_, args, context) => {
       if (!context.user) throw new GraphQLError("Unauthorized");

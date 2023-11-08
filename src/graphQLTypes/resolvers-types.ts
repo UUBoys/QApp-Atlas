@@ -168,14 +168,15 @@ export type PurchaseTicketResult = {
 export type Query = {
   __typename?: 'Query';
   getCredit?: Maybe<CreditsBalance>;
-  getEstablishment?: Maybe<GetEstablishmentsResponse>;
+  getEstablishmentById?: Maybe<GetEstablishmentsResponse>;
+  getEstablishments?: Maybe<GetEstablishmentsResponse>;
   getEstablishmentsForUser?: Maybe<GetEstablishmentsResponse>;
   getEvents?: Maybe<GetEventsResponse>;
 };
 
 
-export type QueryGetEstablishmentArgs = {
-  id?: InputMaybe<Scalars['Int']['input']>;
+export type QueryGetEstablishmentByIdArgs = {
+  id: Scalars['Int']['input'];
 };
 
 export type Ticket = {
@@ -392,7 +393,8 @@ export type PurchaseTicketResultResolvers<ContextType = any, ParentType extends 
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   getCredit?: Resolver<Maybe<ResolversTypes['CreditsBalance']>, ParentType, ContextType>;
-  getEstablishment?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType, Partial<QueryGetEstablishmentArgs>>;
+  getEstablishmentById?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType, RequireFields<QueryGetEstablishmentByIdArgs, 'id'>>;
+  getEstablishments?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEstablishmentsForUser?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEvents?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType>;
 }>;
