@@ -133,7 +133,6 @@ const establishmentResolver: Resolvers = {
         },
       };
     },
-    // @ts-expect-error
     search: async (_, args, context) => {
       //if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
@@ -153,7 +152,7 @@ const establishmentResolver: Resolvers = {
         return {
           results: establishments.map((establishment) => ({
             result: {
-              __typename: "Establishment",
+              __typename: "Establishment" as const,
               id: establishment.id,
               name: establishment.name,
               description: establishment.description,
@@ -177,7 +176,7 @@ const establishmentResolver: Resolvers = {
         return {
           results: events.map((event) => ({
             result: {
-              __typename: "Event",
+              __typename: "Event" as const,
               id: event.id,
               name: event.name,
               description: event.description,
@@ -211,7 +210,7 @@ const establishmentResolver: Resolvers = {
         return { results: [...establishments.map((establishment) => {
           return {
             result: {
-              __typename: "Establishment",
+              __typename: "Establishment" as const,
               id: establishment.id,
               name: establishment.name,
               description: establishment.description,
@@ -226,7 +225,7 @@ const establishmentResolver: Resolvers = {
         }), ...events.map((event) => {
           return {
             result: {
-              __typename: "Event",
+              __typename: "Event" as const,
               id: event.id,
               name: event.name,
               description: event.description,
