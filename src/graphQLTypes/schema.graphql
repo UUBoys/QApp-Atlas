@@ -1,46 +1,79 @@
+"This is the result of a Login/OAuth"
 type AuthResult {
+    "This is the token used for authentication (JWT Bearer)"
     token: String!
 }
 
+"This is the response of a Credits TopUp"
 type CreditsTopUp {
+    "This is the new balance of the user"
     newBalance: Int!
+
+    "This is the old balance of the user"
     oldBalance: Int!
 }
 
+"This is the response of a Credits Balance"
 type CreditsBalance {
+    "This is the balance of the user"
     balance: Int!
 }
 
+"Event type"
 type Event {
+    "This is the id of the event"
     id: String!
+    "This is the name of the event"
     name: String!
+    "This is the description of the event"
     description: String
+    "This is the start date of the event"
     start_date: String!
+    "This is the end date of the event"
     end_date: String!
+    "This is the price of the event"
     price: Float!
+    "ID of establishment that event belongs to"
     establishment_id: Int!
+    "Maximum capacity of the event"
     maximumCapacity: Int!
 }
 
+"Establishment type"
 type Establishment {
+    "This is the id of the establishment"
     id: Int!
+    "This is the name of the establishment"
     name: String!
+    "This is the description of the establishment"
     description: String!
+    "This is the street of the establishment"
     street: String!
+    "This is the city of the establishment"
     city: String!
+    "This is the country of the establishment"
     country: String!
+    "This is the cover image of the establishment"
     coverImage: String
+    "This is the profile image of the establishment"
     profileImage: String
+    "These are events, that belong to the establishment"
     events: [Event]
 }
 
+"Ticket type"
 type Ticket {
+    "This is the id of the ticket"
     id: String!
+    "Event ID which the ticket belongs to"
     event_id: String!
+    "Which user the ticket belongs to"
     user_id: Int!
 }
 
+"This is the result of a ticket purchase"
 type PurchaseTicketResult {
+    "This is the ticket that was purchased"
     ticket: Ticket!
 }
 
@@ -66,13 +99,19 @@ type GetEventsResponse {
 
 type Query {
     #Credits
+    "Get the credits of the user that is logged in (requires authentication)"
     getCredit: CreditsBalance
 
     #Establishment
+    "Get all establishments"
     getEstablishments: GetEstablishmentsResponse
+    "Get all establishments for a specific user (requires authentication)"
     getEstablishmentsForUser: GetEstablishmentsResponse
+    "Get a specific establishment by id"
     getEstablishmentById(id: Int!): GetEstablishmentsResponse
 
+    #Event
+    "Get all events"
     getEvents: GetEventsResponse
 }
 
@@ -80,23 +119,34 @@ type Mutation {
     #Auth   
     login(email: String!, password: String!): AuthResult
     register(email: String!, password: String!, username: String!): AuthResult
+    "Login with Google OAuth (requires Google ID Token)"
     googleOAuth(idToken: String!): AuthResult
 
     #Credits
+    "Top up the credits of the user that is logged in (requires authentication)"
     topupCredits(amount: Int!): CreditsTopUp
 
     #Establishment
+    "Create a new establishment (requires authentication)"
     createEstablishment(name: String!, description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
+    "Update an existing establishment (requires authentication)"
     updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
+    "Create new event (requires authentication)"
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!): CreateEventResult
+    "Purchase a ticket for an event (requires authentication and sufficient credits)"
     purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
+    
+    #Search
+    "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
     search(query: String!, type: SearchType!): SearchResultResponse
 }
 
+"Search result response - contains an array of search results"
 type SearchResultResponse {
     results: [SearchResult]
 }
 
+"Search result - contains the type of the result and the result itself"
 type SearchResult {
     searchType: SearchResultType
     result: SearchResultUnion
@@ -104,11 +154,13 @@ type SearchResult {
 
 union SearchResultUnion = Event | Establishment
 
+"Search result type - either event or establishment"
 enum SearchResultType {
     EVENT
     ESTABLISHMENT
 }
 
+"Search type - what to search for"
 enum SearchType {
     ALL
     ESTABLISHMENT
