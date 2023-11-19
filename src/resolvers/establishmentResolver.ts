@@ -90,6 +90,7 @@ const establishmentResolver: Resolvers = {
         start_date: args.start_date,
         end_data: args.end_date,
         price: args.price,
+        image: args.image ?? undefined,
         establishmentId: args.establishment_id,
         maximumCapacity: args.maximumCapacity,
       });
@@ -106,6 +107,7 @@ const establishmentResolver: Resolvers = {
           start_date: response.start_date,
           end_date: response.end_date,
           price: response.price,
+          image: response.image,
           establishment_id: response.establishment_id,
           maximumCapacity: response.maximumCapacity,
         },
@@ -309,6 +311,7 @@ const establishmentResolver: Resolvers = {
         start_date: event.start_date,
         end_date: event.end_date,
         price: event.price,
+        image: event.image,
         establishment_id: event.establishment_id,
         maximumCapacity: event.maximumCapacity,
       }));

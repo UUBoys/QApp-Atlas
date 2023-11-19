@@ -17,8 +17,10 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+/** This is the result of a Login/OAuth */
 export type AuthResult = {
   __typename?: 'AuthResult';
+  /** This is the token used for authentication (JWT Bearer) */
   token: Scalars['String']['output'];
 };
 
@@ -32,39 +34,65 @@ export type CreateEventResult = {
   event: Event;
 };
 
+/** This is the response of a Credits Balance */
 export type CreditsBalance = {
   __typename?: 'CreditsBalance';
+  /** This is the balance of the user */
   balance: Scalars['Int']['output'];
 };
 
+/** This is the response of a Credits TopUp */
 export type CreditsTopUp = {
   __typename?: 'CreditsTopUp';
+  /** This is the new balance of the user */
   newBalance: Scalars['Int']['output'];
+  /** This is the old balance of the user */
   oldBalance: Scalars['Int']['output'];
 };
 
+/** Establishment type */
 export type Establishment = {
   __typename?: 'Establishment';
+  /** This is the city of the establishment */
   city: Scalars['String']['output'];
+  /** This is the country of the establishment */
   country: Scalars['String']['output'];
+  /** This is the cover image of the establishment */
   coverImage?: Maybe<Scalars['String']['output']>;
+  /** This is the description of the establishment */
   description: Scalars['String']['output'];
+  /** These are events, that belong to the establishment */
   events?: Maybe<Array<Maybe<Event>>>;
+  /** This is the id of the establishment */
   id: Scalars['Int']['output'];
+  /** This is the name of the establishment */
   name: Scalars['String']['output'];
+  /** This is the profile image of the establishment */
   profileImage?: Maybe<Scalars['String']['output']>;
+  /** This is the street of the establishment */
   street: Scalars['String']['output'];
 };
 
+/** Event type */
 export type Event = {
   __typename?: 'Event';
+  /** This is the description of the event */
   description?: Maybe<Scalars['String']['output']>;
+  /** This is the end date of the event */
   end_date: Scalars['String']['output'];
+  /** ID of establishment that event belongs to */
   establishment_id: Scalars['Int']['output'];
+  /** This is the id of the event */
   id: Scalars['String']['output'];
+  /** Image of the event */
+  image?: Maybe<Scalars['String']['output']>;
+  /** Maximum capacity of the event */
   maximumCapacity: Scalars['Int']['output'];
+  /** This is the name of the event */
   name: Scalars['String']['output'];
+  /** This is the price of the event */
   price: Scalars['Float']['output'];
+  /** This is the start date of the event */
   start_date: Scalars['String']['output'];
 };
 
@@ -80,14 +108,21 @@ export type GetEventsResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Create a new establishment (requires authentication) */
   createEstablishment?: Maybe<CreateEstablishmentResult>;
+  /** Create new event (requires authentication) */
   createEvent?: Maybe<CreateEventResult>;
+  /** Login with Google OAuth (requires Google ID Token) */
   googleOAuth?: Maybe<AuthResult>;
   login?: Maybe<AuthResult>;
+  /** Purchase a ticket for an event (requires authentication and sufficient credits) */
   purchaseTicket?: Maybe<PurchaseTicketResult>;
   register?: Maybe<AuthResult>;
+  /** Search for establishments and events - performs a full text search on the name of establishments/events depending on the type */
   search?: Maybe<SearchResultResponse>;
+  /** Top up the credits of the user that is logged in (requires authentication) */
   topupCredits?: Maybe<CreditsTopUp>;
+  /** Update an existing establishment (requires authentication) */
   updateEstablishment?: Maybe<UpdateEstablishmentResult>;
 };
 
@@ -107,6 +142,7 @@ export type MutationCreateEventArgs = {
   description: Scalars['String']['input'];
   end_date: Scalars['String']['input'];
   establishment_id: Scalars['Int']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
   maximumCapacity: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
@@ -160,17 +196,24 @@ export type MutationUpdateEstablishmentArgs = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** This is the result of a ticket purchase */
 export type PurchaseTicketResult = {
   __typename?: 'PurchaseTicketResult';
+  /** This is the ticket that was purchased */
   ticket: Ticket;
 };
 
 export type Query = {
   __typename?: 'Query';
+  /** Get the credits of the user that is logged in (requires authentication) */
   getCredit?: Maybe<CreditsBalance>;
+  /** Get a specific establishment by id */
   getEstablishmentById?: Maybe<GetEstablishmentsResponse>;
+  /** Get all establishments */
   getEstablishments?: Maybe<GetEstablishmentsResponse>;
+  /** Get all establishments for a specific user (requires authentication) */
   getEstablishmentsForUser?: Maybe<GetEstablishmentsResponse>;
+  /** Get all events */
   getEvents?: Maybe<GetEventsResponse>;
 };
 
@@ -179,17 +222,20 @@ export type QueryGetEstablishmentByIdArgs = {
   id: Scalars['Int']['input'];
 };
 
+/** Search result - contains the type of the result and the result itself */
 export type SearchResult = {
   __typename?: 'SearchResult';
   result?: Maybe<SearchResultUnion>;
   searchType?: Maybe<SearchResultType>;
 };
 
+/** Search result response - contains an array of search results */
 export type SearchResultResponse = {
   __typename?: 'SearchResultResponse';
   results?: Maybe<Array<Maybe<SearchResult>>>;
 };
 
+/** Search result type - either event or establishment */
 export enum SearchResultType {
   Establishment = 'ESTABLISHMENT',
   Event = 'EVENT'
@@ -197,16 +243,21 @@ export enum SearchResultType {
 
 export type SearchResultUnion = Establishment | Event;
 
+/** Search type - what to search for */
 export enum SearchType {
   All = 'ALL',
   Establishment = 'ESTABLISHMENT',
   Event = 'EVENT'
 }
 
+/** Ticket type */
 export type Ticket = {
   __typename?: 'Ticket';
+  /** Event ID which the ticket belongs to */
   event_id: Scalars['String']['output'];
+  /** This is the id of the ticket */
   id: Scalars['String']['output'];
+  /** Which user the ticket belongs to */
   user_id: Scalars['Int']['output'];
 };
 
@@ -385,6 +436,7 @@ export type EventResolvers<ContextType = any, ParentType extends ResolversParent
   end_date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   establishment_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   maximumCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;

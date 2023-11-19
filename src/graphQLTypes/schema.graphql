@@ -37,6 +37,8 @@ type Event {
     establishment_id: Int!
     "Maximum capacity of the event"
     maximumCapacity: Int!
+    "Image of the event"
+    image: String
 }
 
 "Establishment type"
@@ -132,7 +134,7 @@ type Mutation {
     "Update an existing establishment (requires authentication)"
     updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     "Create new event (requires authentication)"
-    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!): CreateEventResult
+    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!, image: String): CreateEventResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
     purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
     
