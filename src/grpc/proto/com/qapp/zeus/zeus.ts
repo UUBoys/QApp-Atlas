@@ -550,13 +550,13 @@ export namespace com.qapp.zeus {
             return Event.deserialize(bytes);
         }
     }
-    export class Ticket extends pb_1.Message {
+    export class TicketPurchaseResult extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            id?: string;
+            id?: number;
             user_id?: number;
             event_id?: string;
-            revoked?: boolean;
+            new_balance?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -570,15 +570,15 @@ export namespace com.qapp.zeus {
                 if ("event_id" in data && data.event_id != undefined) {
                     this.event_id = data.event_id;
                 }
-                if ("revoked" in data && data.revoked != undefined) {
-                    this.revoked = data.revoked;
+                if ("new_balance" in data && data.new_balance != undefined) {
+                    this.new_balance = data.new_balance;
                 }
             }
         }
         get id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
         }
-        set id(value: string) {
+        set id(value: number) {
             pb_1.Message.setField(this, 1, value);
         }
         get user_id() {
@@ -593,19 +593,19 @@ export namespace com.qapp.zeus {
         set event_id(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
-        get revoked() {
-            return pb_1.Message.getFieldWithDefault(this, 4, false) as boolean;
+        get new_balance() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
         }
-        set revoked(value: boolean) {
+        set new_balance(value: number) {
             pb_1.Message.setField(this, 4, value);
         }
         static fromObject(data: {
-            id?: string;
+            id?: number;
             user_id?: number;
             event_id?: string;
-            revoked?: boolean;
-        }): Ticket {
-            const message = new Ticket({});
+            new_balance?: number;
+        }): TicketPurchaseResult {
+            const message = new TicketPurchaseResult({});
             if (data.id != null) {
                 message.id = data.id;
             }
@@ -615,17 +615,17 @@ export namespace com.qapp.zeus {
             if (data.event_id != null) {
                 message.event_id = data.event_id;
             }
-            if (data.revoked != null) {
-                message.revoked = data.revoked;
+            if (data.new_balance != null) {
+                message.new_balance = data.new_balance;
             }
             return message;
         }
         toObject() {
             const data: {
-                id?: string;
+                id?: number;
                 user_id?: number;
                 event_id?: string;
-                revoked?: boolean;
+                new_balance?: number;
             } = {};
             if (this.id != null) {
                 data.id = this.id;
@@ -636,8 +636,8 @@ export namespace com.qapp.zeus {
             if (this.event_id != null) {
                 data.event_id = this.event_id;
             }
-            if (this.revoked != null) {
-                data.revoked = this.revoked;
+            if (this.new_balance != null) {
+                data.new_balance = this.new_balance;
             }
             return data;
         }
@@ -645,25 +645,25 @@ export namespace com.qapp.zeus {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.id.length)
-                writer.writeString(1, this.id);
+            if (this.id != 0)
+                writer.writeInt32(1, this.id);
             if (this.user_id != 0)
                 writer.writeInt32(2, this.user_id);
             if (this.event_id.length)
                 writer.writeString(3, this.event_id);
-            if (this.revoked != false)
-                writer.writeBool(4, this.revoked);
+            if (this.new_balance != 0)
+                writer.writeFloat(4, this.new_balance);
             if (!w)
                 return writer.getResultBuffer();
         }
-        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Ticket {
-            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Ticket();
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TicketPurchaseResult {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TicketPurchaseResult();
             while (reader.nextField()) {
                 if (reader.isEndGroup())
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.id = reader.readString();
+                        message.id = reader.readInt32();
                         break;
                     case 2:
                         message.user_id = reader.readInt32();
@@ -672,7 +672,7 @@ export namespace com.qapp.zeus {
                         message.event_id = reader.readString();
                         break;
                     case 4:
-                        message.revoked = reader.readBool();
+                        message.new_balance = reader.readFloat();
                         break;
                     default: reader.skipField();
                 }
@@ -682,8 +682,75 @@ export namespace com.qapp.zeus {
         serializeBinary(): Uint8Array {
             return this.serialize();
         }
-        static deserializeBinary(bytes: Uint8Array): Ticket {
-            return Ticket.deserialize(bytes);
+        static deserializeBinary(bytes: Uint8Array): TicketPurchaseResult {
+            return TicketPurchaseResult.deserialize(bytes);
+        }
+    }
+    export class GetEventRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            id?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("id" in data && data.id != undefined) {
+                    this.id = data.id;
+                }
+            }
+        }
+        get id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            id?: string;
+        }): GetEventRequest {
+            const message = new GetEventRequest({});
+            if (data.id != null) {
+                message.id = data.id;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                id?: string;
+            } = {};
+            if (this.id != null) {
+                data.id = this.id;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.id.length)
+                writer.writeString(1, this.id);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetEventRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetEventRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.id = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetEventRequest {
+            return GetEventRequest.deserialize(bytes);
         }
     }
     export class GetEstablishmentsRequest extends pb_1.Message {
@@ -1874,7 +1941,8 @@ export namespace com.qapp.zeus {
     export class PurchaseTicketRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            eventId?: number;
+            eventId?: string;
+            ticketId?: number;
             userId?: number;
         }) {
             super();
@@ -1883,30 +1951,43 @@ export namespace com.qapp.zeus {
                 if ("eventId" in data && data.eventId != undefined) {
                     this.eventId = data.eventId;
                 }
+                if ("ticketId" in data && data.ticketId != undefined) {
+                    this.ticketId = data.ticketId;
+                }
                 if ("userId" in data && data.userId != undefined) {
                     this.userId = data.userId;
                 }
             }
         }
         get eventId() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set eventId(value: number) {
+        set eventId(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
-        get userId() {
+        get ticketId() {
             return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
         }
-        set userId(value: number) {
+        set ticketId(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
+        get userId() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set userId(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
         static fromObject(data: {
-            eventId?: number;
+            eventId?: string;
+            ticketId?: number;
             userId?: number;
         }): PurchaseTicketRequest {
             const message = new PurchaseTicketRequest({});
             if (data.eventId != null) {
                 message.eventId = data.eventId;
+            }
+            if (data.ticketId != null) {
+                message.ticketId = data.ticketId;
             }
             if (data.userId != null) {
                 message.userId = data.userId;
@@ -1915,11 +1996,15 @@ export namespace com.qapp.zeus {
         }
         toObject() {
             const data: {
-                eventId?: number;
+                eventId?: string;
+                ticketId?: number;
                 userId?: number;
             } = {};
             if (this.eventId != null) {
                 data.eventId = this.eventId;
+            }
+            if (this.ticketId != null) {
+                data.ticketId = this.ticketId;
             }
             if (this.userId != null) {
                 data.userId = this.userId;
@@ -1930,10 +2015,12 @@ export namespace com.qapp.zeus {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.eventId != 0)
-                writer.writeInt32(1, this.eventId);
+            if (this.eventId.length)
+                writer.writeString(1, this.eventId);
+            if (this.ticketId != 0)
+                writer.writeInt32(2, this.ticketId);
             if (this.userId != 0)
-                writer.writeInt32(2, this.userId);
+                writer.writeInt32(3, this.userId);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1944,9 +2031,12 @@ export namespace com.qapp.zeus {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.eventId = reader.readInt32();
+                        message.eventId = reader.readString();
                         break;
                     case 2:
+                        message.ticketId = reader.readInt32();
+                        break;
+                    case 3:
                         message.userId = reader.readInt32();
                         break;
                     default: reader.skipField();
@@ -2906,6 +2996,15 @@ export namespace com.qapp.zeus {
                 responseSerialize: (message: GetEstablishmentsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetEstablishmentsResponse.deserialize(new Uint8Array(bytes))
             },
+            GetEvent: {
+                path: "/com.qapp.zeus.Zeus/GetEvent",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetEventRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetEventRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: Event) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => Event.deserialize(new Uint8Array(bytes))
+            },
             GetEvents: {
                 path: "/com.qapp.zeus.Zeus/GetEvents",
                 requestStream: false,
@@ -2948,8 +3047,8 @@ export namespace com.qapp.zeus {
                 responseStream: false,
                 requestSerialize: (message: PurchaseTicketRequest) => Buffer.from(message.serialize()),
                 requestDeserialize: (bytes: Buffer) => PurchaseTicketRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: Ticket) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => Ticket.deserialize(new Uint8Array(bytes))
+                responseSerialize: (message: TicketPurchaseResult) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => TicketPurchaseResult.deserialize(new Uint8Array(bytes))
             },
             RefundTicket: {
                 path: "/com.qapp.zeus.Zeus/RefundTicket",
@@ -3008,11 +3107,12 @@ export namespace com.qapp.zeus {
         };
         [method: string]: grpc_1.UntypedHandleCall;
         abstract GetEstablishments(call: grpc_1.ServerUnaryCall<GetEstablishmentsRequest, GetEstablishmentsResponse>, callback: grpc_1.sendUnaryData<GetEstablishmentsResponse>): void;
+        abstract GetEvent(call: grpc_1.ServerUnaryCall<GetEventRequest, Event>, callback: grpc_1.sendUnaryData<Event>): void;
         abstract GetEvents(call: grpc_1.ServerUnaryCall<GetEventsRequest, GetEventsResponse>, callback: grpc_1.sendUnaryData<GetEventsResponse>): void;
         abstract GetEventsForEstablishment(call: grpc_1.ServerUnaryCall<GetEventsForEstablishmentRequest, GetEventsResponse>, callback: grpc_1.sendUnaryData<GetEventsResponse>): void;
         abstract CreateEstablishment(call: grpc_1.ServerUnaryCall<CreateEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
         abstract CreateEvent(call: grpc_1.ServerUnaryCall<CreateEventRequest, Event>, callback: grpc_1.sendUnaryData<Event>): void;
-        abstract PurchaseTicket(call: grpc_1.ServerUnaryCall<PurchaseTicketRequest, Ticket>, callback: grpc_1.sendUnaryData<Ticket>): void;
+        abstract PurchaseTicket(call: grpc_1.ServerUnaryCall<PurchaseTicketRequest, TicketPurchaseResult>, callback: grpc_1.sendUnaryData<TicketPurchaseResult>): void;
         abstract RefundTicket(call: grpc_1.ServerUnaryCall<RefundTicketRequest, RefundTicketResponse>, callback: grpc_1.sendUnaryData<RefundTicketResponse>): void;
         abstract SetEstablishmentRole(call: grpc_1.ServerUnaryCall<SetEstablishmentRoleRequest, SetEstablishmentRoleResponse>, callback: grpc_1.sendUnaryData<SetEstablishmentRoleResponse>): void;
         abstract UpdateEstablishment(call: grpc_1.ServerUnaryCall<UpdateEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
@@ -3027,6 +3127,9 @@ export namespace com.qapp.zeus {
         GetEstablishments: GrpcUnaryServiceInterface<GetEstablishmentsRequest, GetEstablishmentsResponse> = (message: GetEstablishmentsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, callback?: grpc_1.requestCallback<GetEstablishmentsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetEstablishments(message, metadata, options, callback);
         };
+        GetEvent: GrpcUnaryServiceInterface<GetEventRequest, Event> = (message: GetEventRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Event>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Event>, callback?: grpc_1.requestCallback<Event>): grpc_1.ClientUnaryCall => {
+            return super.GetEvent(message, metadata, options, callback);
+        };
         GetEvents: GrpcUnaryServiceInterface<GetEventsRequest, GetEventsResponse> = (message: GetEventsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEventsResponse>, callback?: grpc_1.requestCallback<GetEventsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetEvents(message, metadata, options, callback);
         };
@@ -3039,7 +3142,7 @@ export namespace com.qapp.zeus {
         CreateEvent: GrpcUnaryServiceInterface<CreateEventRequest, Event> = (message: CreateEventRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Event>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Event>, callback?: grpc_1.requestCallback<Event>): grpc_1.ClientUnaryCall => {
             return super.CreateEvent(message, metadata, options, callback);
         };
-        PurchaseTicket: GrpcUnaryServiceInterface<PurchaseTicketRequest, Ticket> = (message: PurchaseTicketRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<Ticket>, options?: grpc_1.CallOptions | grpc_1.requestCallback<Ticket>, callback?: grpc_1.requestCallback<Ticket>): grpc_1.ClientUnaryCall => {
+        PurchaseTicket: GrpcUnaryServiceInterface<PurchaseTicketRequest, TicketPurchaseResult> = (message: PurchaseTicketRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<TicketPurchaseResult>, options?: grpc_1.CallOptions | grpc_1.requestCallback<TicketPurchaseResult>, callback?: grpc_1.requestCallback<TicketPurchaseResult>): grpc_1.ClientUnaryCall => {
             return super.PurchaseTicket(message, metadata, options, callback);
         };
         RefundTicket: GrpcUnaryServiceInterface<RefundTicketRequest, RefundTicketResponse> = (message: RefundTicketRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<RefundTicketResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<RefundTicketResponse>, callback?: grpc_1.requestCallback<RefundTicketResponse>): grpc_1.ClientUnaryCall => {

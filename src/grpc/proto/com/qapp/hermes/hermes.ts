@@ -6,6 +6,299 @@
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
 export namespace com.qapp.hermes {
+    export class GetEventAvailableTicketsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tickets?: EventAvailableTickets[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tickets" in data && data.tickets != undefined) {
+                    this.tickets = data.tickets;
+                }
+            }
+        }
+        get tickets() {
+            return pb_1.Message.getRepeatedWrapperField(this, EventAvailableTickets, 1) as EventAvailableTickets[];
+        }
+        set tickets(value: EventAvailableTickets[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+        }): GetEventAvailableTicketsResponse {
+            const message = new GetEventAvailableTicketsResponse({});
+            if (data.tickets != null) {
+                message.tickets = data.tickets.map(item => EventAvailableTickets.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+            } = {};
+            if (this.tickets != null) {
+                data.tickets = this.tickets.map((item: EventAvailableTickets) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tickets.length)
+                writer.writeRepeatedMessage(1, this.tickets, (item: EventAvailableTickets) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetEventAvailableTicketsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetEventAvailableTicketsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tickets, () => pb_1.Message.addToRepeatedWrapperField(message, 1, EventAvailableTickets.deserialize(reader), EventAvailableTickets));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetEventAvailableTicketsResponse {
+            return GetEventAvailableTicketsResponse.deserialize(bytes);
+        }
+    }
+    export class GetEventAvailableTicketsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            event_id?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
+            }
+        }
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set event_id(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            event_id?: string;
+        }): GetEventAvailableTicketsRequest {
+            const message = new GetEventAvailableTicketsRequest({});
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                event_id?: string;
+            } = {};
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.event_id.length)
+                writer.writeString(2, this.event_id);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetEventAvailableTicketsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetEventAvailableTicketsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 2:
+                        message.event_id = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetEventAvailableTicketsRequest {
+            return GetEventAvailableTicketsRequest.deserialize(bytes);
+        }
+    }
+    export class EventAvailableTickets extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            id?: number;
+            event_id?: string;
+            ticket_name?: string;
+            price?: number;
+            quantity?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("id" in data && data.id != undefined) {
+                    this.id = data.id;
+                }
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
+                if ("ticket_name" in data && data.ticket_name != undefined) {
+                    this.ticket_name = data.ticket_name;
+                }
+                if ("price" in data && data.price != undefined) {
+                    this.price = data.price;
+                }
+                if ("quantity" in data && data.quantity != undefined) {
+                    this.quantity = data.quantity;
+                }
+            }
+        }
+        get id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set event_id(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get ticket_name() {
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
+        }
+        set ticket_name(value: string) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get price() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set price(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        get quantity() {
+            return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+        }
+        set quantity(value: number) {
+            pb_1.Message.setField(this, 5, value);
+        }
+        static fromObject(data: {
+            id?: number;
+            event_id?: string;
+            ticket_name?: string;
+            price?: number;
+            quantity?: number;
+        }): EventAvailableTickets {
+            const message = new EventAvailableTickets({});
+            if (data.id != null) {
+                message.id = data.id;
+            }
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
+            if (data.ticket_name != null) {
+                message.ticket_name = data.ticket_name;
+            }
+            if (data.price != null) {
+                message.price = data.price;
+            }
+            if (data.quantity != null) {
+                message.quantity = data.quantity;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                id?: number;
+                event_id?: string;
+                ticket_name?: string;
+                price?: number;
+                quantity?: number;
+            } = {};
+            if (this.id != null) {
+                data.id = this.id;
+            }
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
+            if (this.ticket_name != null) {
+                data.ticket_name = this.ticket_name;
+            }
+            if (this.price != null) {
+                data.price = this.price;
+            }
+            if (this.quantity != null) {
+                data.quantity = this.quantity;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.id != 0)
+                writer.writeInt32(1, this.id);
+            if (this.event_id.length)
+                writer.writeString(2, this.event_id);
+            if (this.ticket_name.length)
+                writer.writeString(3, this.ticket_name);
+            if (this.price != 0)
+                writer.writeFloat(4, this.price);
+            if (this.quantity != 0)
+                writer.writeInt32(5, this.quantity);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): EventAvailableTickets {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new EventAvailableTickets();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.id = reader.readInt32();
+                        break;
+                    case 2:
+                        message.event_id = reader.readString();
+                        break;
+                    case 3:
+                        message.ticket_name = reader.readString();
+                        break;
+                    case 4:
+                        message.price = reader.readFloat();
+                        break;
+                    case 5:
+                        message.quantity = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): EventAvailableTickets {
+            return EventAvailableTickets.deserialize(bytes);
+        }
+    }
     export class TopupCreditsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -209,6 +502,102 @@ export namespace com.qapp.hermes {
             return CreditsOperationResponse.deserialize(bytes);
         }
     }
+    export class PurchaseTicketResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            creditOperation?: CreditsOperationResponse;
+            Ticket?: EventAvailableTickets;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("creditOperation" in data && data.creditOperation != undefined) {
+                    this.creditOperation = data.creditOperation;
+                }
+                if ("Ticket" in data && data.Ticket != undefined) {
+                    this.Ticket = data.Ticket;
+                }
+            }
+        }
+        get creditOperation() {
+            return pb_1.Message.getWrapperField(this, CreditsOperationResponse, 1) as CreditsOperationResponse;
+        }
+        set creditOperation(value: CreditsOperationResponse) {
+            pb_1.Message.setWrapperField(this, 1, value);
+        }
+        get has_creditOperation() {
+            return pb_1.Message.getField(this, 1) != null;
+        }
+        get Ticket() {
+            return pb_1.Message.getWrapperField(this, EventAvailableTickets, 2) as EventAvailableTickets;
+        }
+        set Ticket(value: EventAvailableTickets) {
+            pb_1.Message.setWrapperField(this, 2, value);
+        }
+        get has_Ticket() {
+            return pb_1.Message.getField(this, 2) != null;
+        }
+        static fromObject(data: {
+            creditOperation?: ReturnType<typeof CreditsOperationResponse.prototype.toObject>;
+            Ticket?: ReturnType<typeof EventAvailableTickets.prototype.toObject>;
+        }): PurchaseTicketResponse {
+            const message = new PurchaseTicketResponse({});
+            if (data.creditOperation != null) {
+                message.creditOperation = CreditsOperationResponse.fromObject(data.creditOperation);
+            }
+            if (data.Ticket != null) {
+                message.Ticket = EventAvailableTickets.fromObject(data.Ticket);
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                creditOperation?: ReturnType<typeof CreditsOperationResponse.prototype.toObject>;
+                Ticket?: ReturnType<typeof EventAvailableTickets.prototype.toObject>;
+            } = {};
+            if (this.creditOperation != null) {
+                data.creditOperation = this.creditOperation.toObject();
+            }
+            if (this.Ticket != null) {
+                data.Ticket = this.Ticket.toObject();
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.has_creditOperation)
+                writer.writeMessage(1, this.creditOperation, () => this.creditOperation.serialize(writer));
+            if (this.has_Ticket)
+                writer.writeMessage(2, this.Ticket, () => this.Ticket.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PurchaseTicketResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PurchaseTicketResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.creditOperation, () => message.creditOperation = CreditsOperationResponse.deserialize(reader));
+                        break;
+                    case 2:
+                        reader.readMessage(message.Ticket, () => message.Ticket = EventAvailableTickets.deserialize(reader));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): PurchaseTicketResponse {
+            return PurchaseTicketResponse.deserialize(bytes);
+        }
+    }
     export class GetCreditsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -369,55 +758,73 @@ export namespace com.qapp.hermes {
     export class PurchaseRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
+            event_id?: string;
             user_id?: number;
-            amount?: number;
+            ticket_id?: number;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
                 if ("user_id" in data && data.user_id != undefined) {
                     this.user_id = data.user_id;
                 }
-                if ("amount" in data && data.amount != undefined) {
-                    this.amount = data.amount;
+                if ("ticket_id" in data && data.ticket_id != undefined) {
+                    this.ticket_id = data.ticket_id;
                 }
             }
         }
-        get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set event_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
-        get amount() {
+        get user_id() {
             return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
         }
-        set amount(value: number) {
+        set user_id(value: number) {
             pb_1.Message.setField(this, 2, value);
         }
+        get ticket_id() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set ticket_id(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
         static fromObject(data: {
+            event_id?: string;
             user_id?: number;
-            amount?: number;
+            ticket_id?: number;
         }): PurchaseRequest {
             const message = new PurchaseRequest({});
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
             if (data.user_id != null) {
                 message.user_id = data.user_id;
             }
-            if (data.amount != null) {
-                message.amount = data.amount;
+            if (data.ticket_id != null) {
+                message.ticket_id = data.ticket_id;
             }
             return message;
         }
         toObject() {
             const data: {
+                event_id?: string;
                 user_id?: number;
-                amount?: number;
+                ticket_id?: number;
             } = {};
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
             if (this.user_id != null) {
                 data.user_id = this.user_id;
             }
-            if (this.amount != null) {
-                data.amount = this.amount;
+            if (this.ticket_id != null) {
+                data.ticket_id = this.ticket_id;
             }
             return data;
         }
@@ -425,10 +832,12 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
+            if (this.event_id.length)
+                writer.writeString(1, this.event_id);
             if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
-            if (this.amount != 0)
-                writer.writeInt32(2, this.amount);
+                writer.writeInt32(2, this.user_id);
+            if (this.ticket_id != 0)
+                writer.writeInt32(3, this.ticket_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -439,10 +848,13 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.event_id = reader.readString();
                         break;
                     case 2:
-                        message.amount = reader.readInt32();
+                        message.user_id = reader.readInt32();
+                        break;
+                    case 3:
+                        message.ticket_id = reader.readInt32();
                         break;
                     default: reader.skipField();
                 }
@@ -454,6 +866,232 @@ export namespace com.qapp.hermes {
         }
         static deserializeBinary(bytes: Uint8Array): PurchaseRequest {
             return PurchaseRequest.deserialize(bytes);
+        }
+    }
+    export class CreateEventTicketsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            event_id?: string;
+            ticket_name?: string;
+            price?: number;
+            quantity?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
+                if ("ticket_name" in data && data.ticket_name != undefined) {
+                    this.ticket_name = data.ticket_name;
+                }
+                if ("price" in data && data.price != undefined) {
+                    this.price = data.price;
+                }
+                if ("quantity" in data && data.quantity != undefined) {
+                    this.quantity = data.quantity;
+                }
+            }
+        }
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set event_id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get ticket_name() {
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
+        }
+        set ticket_name(value: string) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        get price() {
+            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+        }
+        set price(value: number) {
+            pb_1.Message.setField(this, 3, value);
+        }
+        get quantity() {
+            return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+        }
+        set quantity(value: number) {
+            pb_1.Message.setField(this, 4, value);
+        }
+        static fromObject(data: {
+            event_id?: string;
+            ticket_name?: string;
+            price?: number;
+            quantity?: number;
+        }): CreateEventTicketsRequest {
+            const message = new CreateEventTicketsRequest({});
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
+            if (data.ticket_name != null) {
+                message.ticket_name = data.ticket_name;
+            }
+            if (data.price != null) {
+                message.price = data.price;
+            }
+            if (data.quantity != null) {
+                message.quantity = data.quantity;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                event_id?: string;
+                ticket_name?: string;
+                price?: number;
+                quantity?: number;
+            } = {};
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
+            if (this.ticket_name != null) {
+                data.ticket_name = this.ticket_name;
+            }
+            if (this.price != null) {
+                data.price = this.price;
+            }
+            if (this.quantity != null) {
+                data.quantity = this.quantity;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.event_id.length)
+                writer.writeString(1, this.event_id);
+            if (this.ticket_name.length)
+                writer.writeString(2, this.ticket_name);
+            if (this.price != 0)
+                writer.writeFloat(3, this.price);
+            if (this.quantity != 0)
+                writer.writeInt32(4, this.quantity);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CreateEventTicketsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CreateEventTicketsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.event_id = reader.readString();
+                        break;
+                    case 2:
+                        message.ticket_name = reader.readString();
+                        break;
+                    case 3:
+                        message.price = reader.readFloat();
+                        break;
+                    case 4:
+                        message.quantity = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): CreateEventTicketsRequest {
+            return CreateEventTicketsRequest.deserialize(bytes);
+        }
+    }
+    export class CreateEventTicketsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            event_id?: string;
+            ticket_id?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
+                if ("ticket_id" in data && data.ticket_id != undefined) {
+                    this.ticket_id = data.ticket_id;
+                }
+            }
+        }
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set event_id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get ticket_id() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set ticket_id(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            event_id?: string;
+            ticket_id?: number;
+        }): CreateEventTicketsResponse {
+            const message = new CreateEventTicketsResponse({});
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
+            if (data.ticket_id != null) {
+                message.ticket_id = data.ticket_id;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                event_id?: string;
+                ticket_id?: number;
+            } = {};
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
+            if (this.ticket_id != null) {
+                data.ticket_id = this.ticket_id;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.event_id.length)
+                writer.writeString(1, this.event_id);
+            if (this.ticket_id != 0)
+                writer.writeInt32(2, this.ticket_id);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): CreateEventTicketsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new CreateEventTicketsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.event_id = reader.readString();
+                        break;
+                    case 2:
+                        message.ticket_id = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): CreateEventTicketsResponse {
+            return CreateEventTicketsResponse.deserialize(bytes);
         }
     }
     interface GrpcUnaryServiceInterface<P, R> {
@@ -506,14 +1144,34 @@ export namespace com.qapp.hermes {
                 responseStream: false,
                 requestSerialize: (message: PurchaseRequest) => Buffer.from(message.serialize()),
                 requestDeserialize: (bytes: Buffer) => PurchaseRequest.deserialize(new Uint8Array(bytes)),
-                responseSerialize: (message: CreditsOperationResponse) => Buffer.from(message.serialize()),
-                responseDeserialize: (bytes: Buffer) => CreditsOperationResponse.deserialize(new Uint8Array(bytes))
+                responseSerialize: (message: PurchaseTicketResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => PurchaseTicketResponse.deserialize(new Uint8Array(bytes))
+            },
+            CreateEventTickets: {
+                path: "/com.qapp.hermes.CreditService/CreateEventTickets",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: CreateEventTicketsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => CreateEventTicketsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: CreateEventTicketsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => CreateEventTicketsResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetEventAvailableTickets: {
+                path: "/com.qapp.hermes.CreditService/GetEventAvailableTickets",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetEventAvailableTicketsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetEventAvailableTicketsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetEventAvailableTicketsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetEventAvailableTicketsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
         abstract TopupCredits(call: grpc_1.ServerUnaryCall<TopupCreditsRequest, CreditsOperationResponse>, callback: grpc_1.sendUnaryData<CreditsOperationResponse>): void;
         abstract GetCredits(call: grpc_1.ServerUnaryCall<GetCreditsRequest, CreditStatusResponse>, callback: grpc_1.sendUnaryData<CreditStatusResponse>): void;
-        abstract Purchase(call: grpc_1.ServerUnaryCall<PurchaseRequest, CreditsOperationResponse>, callback: grpc_1.sendUnaryData<CreditsOperationResponse>): void;
+        abstract Purchase(call: grpc_1.ServerUnaryCall<PurchaseRequest, PurchaseTicketResponse>, callback: grpc_1.sendUnaryData<PurchaseTicketResponse>): void;
+        abstract CreateEventTickets(call: grpc_1.ServerUnaryCall<CreateEventTicketsRequest, CreateEventTicketsResponse>, callback: grpc_1.sendUnaryData<CreateEventTicketsResponse>): void;
+        abstract GetEventAvailableTickets(call: grpc_1.ServerUnaryCall<GetEventAvailableTicketsRequest, GetEventAvailableTicketsResponse>, callback: grpc_1.sendUnaryData<GetEventAvailableTicketsResponse>): void;
     }
     export class CreditServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedCreditServiceService.definition, "CreditService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -525,8 +1183,14 @@ export namespace com.qapp.hermes {
         GetCredits: GrpcUnaryServiceInterface<GetCreditsRequest, CreditStatusResponse> = (message: GetCreditsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<CreditStatusResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<CreditStatusResponse>, callback?: grpc_1.requestCallback<CreditStatusResponse>): grpc_1.ClientUnaryCall => {
             return super.GetCredits(message, metadata, options, callback);
         };
-        Purchase: GrpcUnaryServiceInterface<PurchaseRequest, CreditsOperationResponse> = (message: PurchaseRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<CreditsOperationResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<CreditsOperationResponse>, callback?: grpc_1.requestCallback<CreditsOperationResponse>): grpc_1.ClientUnaryCall => {
+        Purchase: GrpcUnaryServiceInterface<PurchaseRequest, PurchaseTicketResponse> = (message: PurchaseRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<PurchaseTicketResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<PurchaseTicketResponse>, callback?: grpc_1.requestCallback<PurchaseTicketResponse>): grpc_1.ClientUnaryCall => {
             return super.Purchase(message, metadata, options, callback);
+        };
+        CreateEventTickets: GrpcUnaryServiceInterface<CreateEventTicketsRequest, CreateEventTicketsResponse> = (message: CreateEventTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<CreateEventTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<CreateEventTicketsResponse>, callback?: grpc_1.requestCallback<CreateEventTicketsResponse>): grpc_1.ClientUnaryCall => {
+            return super.CreateEventTickets(message, metadata, options, callback);
+        };
+        GetEventAvailableTickets: GrpcUnaryServiceInterface<GetEventAvailableTicketsRequest, GetEventAvailableTicketsResponse> = (message: GetEventAvailableTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEventAvailableTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEventAvailableTicketsResponse>, callback?: grpc_1.requestCallback<GetEventAvailableTicketsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetEventAvailableTickets(message, metadata, options, callback);
         };
     }
 }

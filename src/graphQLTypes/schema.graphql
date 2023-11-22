@@ -115,6 +115,8 @@ type Query {
     #Event
     "Get all events"
     getEvents: GetEventsResponse
+    "Get event by id"
+    getEventById(id: String!): GetEventsResponse
 }
 
 type Mutation {
@@ -136,7 +138,7 @@ type Mutation {
     "Create new event (requires authentication)"
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!, image: String): CreateEventResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
-    purchaseTicket(event_id: Int!, user_id: Int!): PurchaseTicketResult
+    purchaseTicket(event_id: String!, user_id: Int!): PurchaseTicketResult
     
     #Search
     "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"

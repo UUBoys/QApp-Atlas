@@ -122,14 +122,14 @@ const establishmentResolver: Resolvers = {
         userId: context.user.id,
       });
 
-      const response = await grpcToPromise<com.qapp.zeus.Ticket>((callback) =>
+      const response = await grpcToPromise<com.qapp.zeus.TicketPurchaseResult>((callback) =>
         client.PurchaseTicket(request, callback)
       );
 
       return {
         success: true,
         ticket: {
-          id: response.id,
+          id: response.id.toString(),
           event_id: response.event_id,
           user_id: response.user_id,
         },
@@ -283,7 +283,7 @@ const establishmentResolver: Resolvers = {
       return { establishments: response.establishments };
     },
     getEvents: async (_, args, context) => {
-      if (!context.user) throw new GraphQLError("Unauthorized");
+      //if (!context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.GetEventsRequest({});
 
@@ -293,6 +293,15 @@ const establishmentResolver: Resolvers = {
 
       return { events: response.events };
     },
+    getEventById: async (_, args, context) => {
+      const request = new com.qapp.zeus.GetEventRequest({ id: args.id });
+
+      const response = await grpcToPromise<com.qapp.zeus.Event>((callback) =>
+        client.GetEvent(request, callback)
+      );
+
+      return { events: [response] };
+    }
   },
   Establishment: {
     events: async ({ id }) => {
