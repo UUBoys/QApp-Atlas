@@ -112,6 +112,8 @@ export type Mutation = {
   createEstablishment?: Maybe<CreateEstablishmentResult>;
   /** Create new event (requires authentication) */
   createEvent?: Maybe<CreateEventResult>;
+  /** Get all tickets for an event */
+  getTicketsForEvent?: Maybe<Array<Maybe<Ticket>>>;
   /** Login with Google OAuth (requires Google ID Token) */
   googleOAuth?: Maybe<AuthResult>;
   login?: Maybe<AuthResult>;
@@ -147,6 +149,11 @@ export type MutationCreateEventArgs = {
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   start_date: Scalars['String']['input'];
+};
+
+
+export type MutationGetTicketsForEventArgs = {
+  event_id: Scalars['String']['input'];
 };
 
 
@@ -217,6 +224,10 @@ export type Query = {
   getEventById?: Maybe<GetEventsResponse>;
   /** Get all events */
   getEvents?: Maybe<GetEventsResponse>;
+  /** Get all available tickets */
+  getTickets?: Maybe<Array<Maybe<Ticket>>>;
+  /** Get all tickets for a user (requires authentication) */
+  getTicketsForUser?: Maybe<Array<Maybe<Ticket>>>;
 };
 
 
@@ -260,12 +271,14 @@ export enum SearchType {
 /** Ticket type */
 export type Ticket = {
   __typename?: 'Ticket';
+  amount?: Maybe<Scalars['Int']['output']>;
   /** Event ID which the ticket belongs to */
   event_id: Scalars['String']['output'];
   /** This is the id of the ticket */
-  id: Scalars['String']['output'];
-  /** Which user the ticket belongs to */
-  user_id: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  /** Ticket name */
+  name?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 export type UpdateEstablishmentResult = {
@@ -464,6 +477,7 @@ export type GetEventsResponseResolvers<ContextType = any, ParentType extends Res
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createEstablishment?: Resolver<Maybe<ResolversTypes['CreateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationCreateEstablishmentArgs, 'city' | 'country' | 'description' | 'name' | 'street'>>;
   createEvent?: Resolver<Maybe<ResolversTypes['CreateEventResult']>, ParentType, ContextType, RequireFields<MutationCreateEventArgs, 'description' | 'end_date' | 'establishment_id' | 'maximumCapacity' | 'name' | 'price' | 'start_date'>>;
+  getTicketsForEvent?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType, RequireFields<MutationGetTicketsForEventArgs, 'event_id'>>;
   googleOAuth?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationGoogleOAuthArgs, 'idToken'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id' | 'user_id'>>;
@@ -485,6 +499,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getEstablishmentsForUser?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEventById?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType, RequireFields<QueryGetEventByIdArgs, 'id'>>;
   getEvents?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType>;
+  getTickets?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType>;
+  getTicketsForUser?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType>;
 }>;
 
 export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = ResolversObject<{
@@ -503,9 +519,11 @@ export type SearchResultUnionResolvers<ContextType = any, ParentType extends Res
 }>;
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = ResolversObject<{
+  amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

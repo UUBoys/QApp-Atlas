@@ -50,6 +50,44 @@ const creditResolver: Resolvers = {
       console.log(response.user_id);
       return { balance: response.balance };
     },
+    getTicketsForUser: async (_, args, context) => {
+      if (!context.user) throw new GraphQLError("Unauthorized");
+
+      const request = new com.qapp.hermes.GetUserTicketsRequest({
+        user_id: context.user.id,
+      });
+
+      const response =
+        await grpcToPromise<com.qapp.hermes.GetUserTicketsResponse>(
+          (callback) => client.GetUserTickets(request, callback)
+        );
+
+      return response.tickets.map((ticket) => {
+        return {
+          id: ticket.id,
+          event_id: ticket.event_id,
+          user_id: context.user.id,
+        };
+      });
+    },
+    getTickets: async (_, args, context) => {
+      if (!context.user) throw new GraphQLError("Unauthorized");
+
+      const request = new com.qapp.hermes.GetAllTIcketsRequest({});
+
+      const response =
+        await grpcToPromise<com.qapp.hermes.GetAllTicketsResponse>((callback) =>
+          client.GetAllTickets(request, callback)
+        );
+
+      return response.tickets.map((ticket) => {
+        return {
+          id: ticket.id,
+          event_id: ticket.event_id,
+          name: ticket.ticket_name
+        };
+      });
+    }
   },
 };
 

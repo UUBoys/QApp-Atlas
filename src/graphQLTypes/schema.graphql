@@ -66,11 +66,13 @@ type Establishment {
 "Ticket type"
 type Ticket {
     "This is the id of the ticket"
-    id: String!
+    id: Int!
     "Event ID which the ticket belongs to"
     event_id: String!
-    "Which user the ticket belongs to"
-    user_id: Int!
+    "Ticket name"
+    name: String
+    user_id: Int
+    amount: Int
 }
 
 "This is the result of a ticket purchase"
@@ -111,6 +113,10 @@ type Query {
     getEstablishmentsForUser: GetEstablishmentsResponse
     "Get a specific establishment by id"
     getEstablishmentById(id: Int!): GetEstablishmentsResponse
+    "Get all tickets for a user (requires authentication)"
+    getTicketsForUser: [Ticket]
+    "Get all available tickets"
+    getTickets: [Ticket]
 
     #Event
     "Get all events"
@@ -139,6 +145,8 @@ type Mutation {
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!, image: String): CreateEventResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
     purchaseTicket(event_id: String!, user_id: Int!): PurchaseTicketResult
+    "Get all tickets for an event"
+    getTicketsForEvent(event_id: String!): [Ticket]
     
     #Search
     "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"

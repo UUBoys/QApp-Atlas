@@ -46,9 +46,15 @@ server.start().then(() => {
 
         if (token === undefined) return { user: null };
 
-        const jwtData = decryptToken(token);
+        try {
+          const jwtData = decryptToken(token);
 
-        return { user: jwtData };
+          if (jwtData === null) return { user: null };
+          
+          return { user: jwtData };
+        } catch (error) {
+          return { user: null };
+        }
       },
     })
   );

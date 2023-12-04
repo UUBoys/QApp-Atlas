@@ -1693,6 +1693,7 @@ export namespace com.qapp.zeus {
             price?: number;
             establishmentId?: number;
             maximumCapacity?: number;
+            ticketName?: string;
         } & (({
             description?: string;
         }) | ({
@@ -1724,6 +1725,9 @@ export namespace com.qapp.zeus {
                 }
                 if ("maximumCapacity" in data && data.maximumCapacity != undefined) {
                     this.maximumCapacity = data.maximumCapacity;
+                }
+                if ("ticketName" in data && data.ticketName != undefined) {
+                    this.ticketName = data.ticketName;
                 }
             }
         }
@@ -1781,6 +1785,12 @@ export namespace com.qapp.zeus {
         set maximumCapacity(value: number) {
             pb_1.Message.setField(this, 8, value);
         }
+        get ticketName() {
+            return pb_1.Message.getFieldWithDefault(this, 9, "") as string;
+        }
+        set ticketName(value: string) {
+            pb_1.Message.setField(this, 9, value);
+        }
         get _description() {
             const cases: {
                 [index: number]: "none" | "description";
@@ -1808,6 +1818,7 @@ export namespace com.qapp.zeus {
             price?: number;
             establishmentId?: number;
             maximumCapacity?: number;
+            ticketName?: string;
         }): CreateEventRequest {
             const message = new CreateEventRequest({});
             if (data.name != null) {
@@ -1834,6 +1845,9 @@ export namespace com.qapp.zeus {
             if (data.maximumCapacity != null) {
                 message.maximumCapacity = data.maximumCapacity;
             }
+            if (data.ticketName != null) {
+                message.ticketName = data.ticketName;
+            }
             return message;
         }
         toObject() {
@@ -1846,6 +1860,7 @@ export namespace com.qapp.zeus {
                 price?: number;
                 establishmentId?: number;
                 maximumCapacity?: number;
+                ticketName?: string;
             } = {};
             if (this.name != null) {
                 data.name = this.name;
@@ -1871,6 +1886,9 @@ export namespace com.qapp.zeus {
             if (this.maximumCapacity != null) {
                 data.maximumCapacity = this.maximumCapacity;
             }
+            if (this.ticketName != null) {
+                data.ticketName = this.ticketName;
+            }
             return data;
         }
         serialize(): Uint8Array;
@@ -1893,6 +1911,8 @@ export namespace com.qapp.zeus {
                 writer.writeInt32(7, this.establishmentId);
             if (this.maximumCapacity != 0)
                 writer.writeInt32(8, this.maximumCapacity);
+            if (this.ticketName.length)
+                writer.writeString(9, this.ticketName);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1925,6 +1945,9 @@ export namespace com.qapp.zeus {
                         break;
                     case 8:
                         message.maximumCapacity = reader.readInt32();
+                        break;
+                    case 9:
+                        message.ticketName = reader.readString();
                         break;
                     default: reader.skipField();
                 }

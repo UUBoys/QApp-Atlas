@@ -73,6 +73,247 @@ export namespace com.qapp.hermes {
             return GetEventAvailableTicketsResponse.deserialize(bytes);
         }
     }
+    export class GetAllTIcketsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {}) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") { }
+        }
+        static fromObject(data: {}): GetAllTIcketsRequest {
+            const message = new GetAllTIcketsRequest({});
+            return message;
+        }
+        toObject() {
+            const data: {} = {};
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllTIcketsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllTIcketsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetAllTIcketsRequest {
+            return GetAllTIcketsRequest.deserialize(bytes);
+        }
+    }
+    export class GetAllTicketsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tickets?: EventAvailableTickets[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tickets" in data && data.tickets != undefined) {
+                    this.tickets = data.tickets;
+                }
+            }
+        }
+        get tickets() {
+            return pb_1.Message.getRepeatedWrapperField(this, EventAvailableTickets, 1) as EventAvailableTickets[];
+        }
+        set tickets(value: EventAvailableTickets[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+        }): GetAllTicketsResponse {
+            const message = new GetAllTicketsResponse({});
+            if (data.tickets != null) {
+                message.tickets = data.tickets.map(item => EventAvailableTickets.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+            } = {};
+            if (this.tickets != null) {
+                data.tickets = this.tickets.map((item: EventAvailableTickets) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tickets.length)
+                writer.writeRepeatedMessage(1, this.tickets, (item: EventAvailableTickets) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetAllTicketsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetAllTicketsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tickets, () => pb_1.Message.addToRepeatedWrapperField(message, 1, EventAvailableTickets.deserialize(reader), EventAvailableTickets));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetAllTicketsResponse {
+            return GetAllTicketsResponse.deserialize(bytes);
+        }
+    }
+    export class GetUserTicketsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            user_id?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("user_id" in data && data.user_id != undefined) {
+                    this.user_id = data.user_id;
+                }
+            }
+        }
+        get user_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set user_id(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            user_id?: number;
+        }): GetUserTicketsRequest {
+            const message = new GetUserTicketsRequest({});
+            if (data.user_id != null) {
+                message.user_id = data.user_id;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                user_id?: number;
+            } = {};
+            if (this.user_id != null) {
+                data.user_id = this.user_id;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.user_id != 0)
+                writer.writeInt32(1, this.user_id);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetUserTicketsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetUserTicketsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.user_id = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetUserTicketsRequest {
+            return GetUserTicketsRequest.deserialize(bytes);
+        }
+    }
+    export class GetUserTicketsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            tickets?: EventAvailableTickets[];
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("tickets" in data && data.tickets != undefined) {
+                    this.tickets = data.tickets;
+                }
+            }
+        }
+        get tickets() {
+            return pb_1.Message.getRepeatedWrapperField(this, EventAvailableTickets, 1) as EventAvailableTickets[];
+        }
+        set tickets(value: EventAvailableTickets[]) {
+            pb_1.Message.setRepeatedWrapperField(this, 1, value);
+        }
+        static fromObject(data: {
+            tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+        }): GetUserTicketsResponse {
+            const message = new GetUserTicketsResponse({});
+            if (data.tickets != null) {
+                message.tickets = data.tickets.map(item => EventAvailableTickets.fromObject(item));
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                tickets?: ReturnType<typeof EventAvailableTickets.prototype.toObject>[];
+            } = {};
+            if (this.tickets != null) {
+                data.tickets = this.tickets.map((item: EventAvailableTickets) => item.toObject());
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.tickets.length)
+                writer.writeRepeatedMessage(1, this.tickets, (item: EventAvailableTickets) => item.serialize(writer));
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): GetUserTicketsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new GetUserTicketsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        reader.readMessage(message.tickets, () => pb_1.Message.addToRepeatedWrapperField(message, 1, EventAvailableTickets.deserialize(reader), EventAvailableTickets));
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): GetUserTicketsResponse {
+            return GetUserTicketsResponse.deserialize(bytes);
+        }
+    }
     export class GetEventAvailableTicketsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -1164,6 +1405,24 @@ export namespace com.qapp.hermes {
                 requestDeserialize: (bytes: Buffer) => GetEventAvailableTicketsRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetEventAvailableTicketsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetEventAvailableTicketsResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetAllTickets: {
+                path: "/com.qapp.hermes.CreditService/GetAllTickets",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetAllTIcketsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetAllTIcketsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetAllTicketsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetAllTicketsResponse.deserialize(new Uint8Array(bytes))
+            },
+            GetUserTickets: {
+                path: "/com.qapp.hermes.CreditService/GetUserTickets",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: GetUserTicketsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => GetUserTicketsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: GetUserTicketsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => GetUserTicketsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -1172,6 +1431,8 @@ export namespace com.qapp.hermes {
         abstract Purchase(call: grpc_1.ServerUnaryCall<PurchaseRequest, PurchaseTicketResponse>, callback: grpc_1.sendUnaryData<PurchaseTicketResponse>): void;
         abstract CreateEventTickets(call: grpc_1.ServerUnaryCall<CreateEventTicketsRequest, CreateEventTicketsResponse>, callback: grpc_1.sendUnaryData<CreateEventTicketsResponse>): void;
         abstract GetEventAvailableTickets(call: grpc_1.ServerUnaryCall<GetEventAvailableTicketsRequest, GetEventAvailableTicketsResponse>, callback: grpc_1.sendUnaryData<GetEventAvailableTicketsResponse>): void;
+        abstract GetAllTickets(call: grpc_1.ServerUnaryCall<GetAllTIcketsRequest, GetAllTicketsResponse>, callback: grpc_1.sendUnaryData<GetAllTicketsResponse>): void;
+        abstract GetUserTickets(call: grpc_1.ServerUnaryCall<GetUserTicketsRequest, GetUserTicketsResponse>, callback: grpc_1.sendUnaryData<GetUserTicketsResponse>): void;
     }
     export class CreditServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedCreditServiceService.definition, "CreditService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -1191,6 +1452,12 @@ export namespace com.qapp.hermes {
         };
         GetEventAvailableTickets: GrpcUnaryServiceInterface<GetEventAvailableTicketsRequest, GetEventAvailableTicketsResponse> = (message: GetEventAvailableTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEventAvailableTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEventAvailableTicketsResponse>, callback?: grpc_1.requestCallback<GetEventAvailableTicketsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetEventAvailableTickets(message, metadata, options, callback);
+        };
+        GetAllTickets: GrpcUnaryServiceInterface<GetAllTIcketsRequest, GetAllTicketsResponse> = (message: GetAllTIcketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetAllTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetAllTicketsResponse>, callback?: grpc_1.requestCallback<GetAllTicketsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetAllTickets(message, metadata, options, callback);
+        };
+        GetUserTickets: GrpcUnaryServiceInterface<GetUserTicketsRequest, GetUserTicketsResponse> = (message: GetUserTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetUserTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetUserTicketsResponse>, callback?: grpc_1.requestCallback<GetUserTicketsResponse>): grpc_1.ClientUnaryCall => {
+            return super.GetUserTickets(message, metadata, options, callback);
         };
     }
 }

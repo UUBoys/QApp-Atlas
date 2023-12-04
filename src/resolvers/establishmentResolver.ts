@@ -129,7 +129,7 @@ const establishmentResolver: Resolvers = {
       return {
         success: true,
         ticket: {
-          id: response.id.toString(),
+          id: response.id,
           event_id: response.event_id,
           user_id: response.user_id,
         },
@@ -301,7 +301,7 @@ const establishmentResolver: Resolvers = {
       );
 
       return { events: [response] };
-    }
+    },
   },
   Establishment: {
     events: async ({ id }) => {
