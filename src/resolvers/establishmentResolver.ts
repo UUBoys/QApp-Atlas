@@ -2,6 +2,7 @@ import services from "../services";
 import { credentials } from "@grpc/grpc-js";
 
 import { com } from "../grpc/proto/com/qapp/zeus/zeus";
+import { com as hermes } from "../grpc/proto/com/qapp/hermes/hermes";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
 import { Resolvers, SearchResultType } from "../graphQLTypes/resolvers-types";
@@ -10,6 +11,12 @@ import logger from "../logger/log";
 const service = services.find((service) => service.name === "establishment");
 const client = new com.qapp.zeus.ZeusClient(
   service?.url || "",
+  credentials.createSsl()
+);
+
+const hermesService = services.find((service) => service.name === "credits");
+const hermesClient = new hermes.qapp.hermes.CreditServiceClient(
+  hermesService?.url || "",
   credentials.createSsl()
 );
 
@@ -84,6 +91,17 @@ const establishmentResolver: Resolvers = {
     createEvent: async (_, args, context) => {
       if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
+      const isModeratorRequest = new com.qapp.zeus.IsManagerOfEstablishmentRequest({
+        establishmentId: args.establishment_id,
+        userId: context.user.id,
+      });
+
+      const isModeratorResponse = await grpcToPromise<com.qapp.zeus.IsManagerOfEstablishmentResponse>((callback) =>
+        client.IsManagerOfEstablishment(isModeratorRequest, callback)
+      );
+
+      if(!isModeratorResponse.isManager) throw new GraphQLError("Unauthorized");
+
       const request = new com.qapp.zeus.CreateEventRequest({
         name: args.name,
         description: args.description,
@@ -127,17 +145,16 @@ const establishmentResolver: Resolvers = {
       );
 
       return {
-        success: true,
-        ticket: {
-          id: response.id,
           event_id: response.event_id,
+          ticket_id: response.id,
+          new_balance: response.new_balance,
           user_id: response.user_id,
-        },
       };
     },
-    search: async (_, args, context) => {
-      //if (!context || !context.user) throw new GraphQLError("Unauthorized");
+  },
 
+  Query: {
+    search: async (_, args, context) => {
       const EstablishmentRequest = new com.qapp.zeus.GetEstablishmentsRequest();
       const EventRequest = new com.qapp.zeus.GetEventsRequest();
 
@@ -242,9 +259,6 @@ const establishmentResolver: Resolvers = {
         })] };
       }
     },
-  },
-
-  Query: {
     getEstablishmentById: async (_, args, context) => {
       if (args.id !== undefined)
         new GraphQLError("No establishment id provided");
@@ -283,8 +297,6 @@ const establishmentResolver: Resolvers = {
       return { establishments: response.establishments };
     },
     getEvents: async (_, args, context) => {
-      //if (!context.user) throw new GraphQLError("Unauthorized");
-
       const request = new com.qapp.zeus.GetEventsRequest({});
 
       const response = await grpcToPromise<com.qapp.zeus.GetEventsResponse>(
@@ -326,6 +338,26 @@ const establishmentResolver: Resolvers = {
       }));
     },
   },
+  Event: {
+    tickets: async ({ id }) => {
+      const request = new hermes.qapp.hermes.GetEventAvailableTicketsRequest({
+        event_id: id,
+      });
+
+      const response =
+        await grpcToPromise<hermes.qapp.hermes.GetEventAvailableTicketsResponse>(
+          (callback) => hermesClient.GetEventAvailableTickets(request, callback)
+        );
+
+      return response.tickets.map((ticket) => ({
+        ticket_id: ticket.id,
+        event_id: ticket.event_id,
+        ticket_name: ticket.ticket_name,
+        available_quantity: ticket.quantity,
+        price: ticket.price,
+      }));
+    }
+  }
 };
 
 export default establishmentResolver;

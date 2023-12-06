@@ -18,6 +18,9 @@ const resolvers: Resolvers = {
   Establishment: {
     ...establishmentResolver.Establishment,
   },
+  Event: {
+    ...establishmentResolver.Event,
+  },
   Mutation: {
     ...authResolver.Mutation,
     ...creditResolver.Mutation,

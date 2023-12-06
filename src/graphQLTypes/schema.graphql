@@ -39,6 +39,9 @@ type Event {
     maximumCapacity: Int!
     "Image of the event"
     image: String
+
+    "Tickets assigned to this event"
+    tickets: [EventAvailableTickets]
 }
 
 "Establishment type"
@@ -63,22 +66,31 @@ type Establishment {
     events: [Event]
 }
 
-"Ticket type"
-type Ticket {
-    "This is the id of the ticket"
-    id: Int!
-    "Event ID which the ticket belongs to"
+"User ticket type"
+type UserTicket {
+    user_id: Int!
+    ticket_id: Int!
     event_id: String!
-    "Ticket name"
-    name: String
-    user_id: Int
-    amount: Int
+    ticket_name: String!
+    price: Float!
+    bought_quantity: Int!
+}
+
+"Event available tickets"
+type EventAvailableTickets {
+    ticket_id: Int!
+    event_id: String!
+    ticket_name: String!
+    price: Float!
+    available_quantity: Int!
 }
 
 "This is the result of a ticket purchase"
 type PurchaseTicketResult {
-    "This is the ticket that was purchased"
-    ticket: Ticket!
+    ticket_id: Int!
+    user_id: Int!
+    event_id: String!
+    new_balance: Int!
 }
 
 type CreateEstablishmentResult {
@@ -114,15 +126,21 @@ type Query {
     "Get a specific establishment by id"
     getEstablishmentById(id: Int!): GetEstablishmentsResponse
     "Get all tickets for a user (requires authentication)"
-    getTicketsForUser: [Ticket]
+    getTicketsForUser: [UserTicket]
     "Get all available tickets"
-    getTickets: [Ticket]
+    getTickets: [EventAvailableTickets]
+    "Get all tickets for an event"
+    getTicketsForEvent(event_id: String!): [EventAvailableTickets]
 
     #Event
     "Get all events"
     getEvents: GetEventsResponse
     "Get event by id"
     getEventById(id: String!): GetEventsResponse
+
+    #Search
+    "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
+    search(query: String!, type: SearchType!): SearchResultResponse
 }
 
 type Mutation {
@@ -145,12 +163,6 @@ type Mutation {
     createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!, image: String): CreateEventResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
     purchaseTicket(event_id: String!, user_id: Int!): PurchaseTicketResult
-    "Get all tickets for an event"
-    getTicketsForEvent(event_id: String!): [Ticket]
-    
-    #Search
-    "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
-    search(query: String!, type: SearchType!): SearchResultResponse
 }
 
 "Search result response - contains an array of search results"

@@ -94,6 +94,18 @@ export type Event = {
   price: Scalars['Float']['output'];
   /** This is the start date of the event */
   start_date: Scalars['String']['output'];
+  /** Tickets assigned to this event */
+  tickets?: Maybe<Array<Maybe<EventAvailableTickets>>>;
+};
+
+/** Event available tickets */
+export type EventAvailableTickets = {
+  __typename?: 'EventAvailableTickets';
+  available_quantity: Scalars['Int']['output'];
+  event_id: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  ticket_id: Scalars['Int']['output'];
+  ticket_name: Scalars['String']['output'];
 };
 
 export type GetEstablishmentsResponse = {
@@ -112,16 +124,12 @@ export type Mutation = {
   createEstablishment?: Maybe<CreateEstablishmentResult>;
   /** Create new event (requires authentication) */
   createEvent?: Maybe<CreateEventResult>;
-  /** Get all tickets for an event */
-  getTicketsForEvent?: Maybe<Array<Maybe<Ticket>>>;
   /** Login with Google OAuth (requires Google ID Token) */
   googleOAuth?: Maybe<AuthResult>;
   login?: Maybe<AuthResult>;
   /** Purchase a ticket for an event (requires authentication and sufficient credits) */
   purchaseTicket?: Maybe<PurchaseTicketResult>;
   register?: Maybe<AuthResult>;
-  /** Search for establishments and events - performs a full text search on the name of establishments/events depending on the type */
-  search?: Maybe<SearchResultResponse>;
   /** Top up the credits of the user that is logged in (requires authentication) */
   topupCredits?: Maybe<CreditsTopUp>;
   /** Update an existing establishment (requires authentication) */
@@ -152,11 +160,6 @@ export type MutationCreateEventArgs = {
 };
 
 
-export type MutationGetTicketsForEventArgs = {
-  event_id: Scalars['String']['input'];
-};
-
-
 export type MutationGoogleOAuthArgs = {
   idToken: Scalars['String']['input'];
 };
@@ -181,12 +184,6 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationSearchArgs = {
-  query: Scalars['String']['input'];
-  type: SearchType;
-};
-
-
 export type MutationTopupCreditsArgs = {
   amount: Scalars['Int']['input'];
 };
@@ -206,8 +203,10 @@ export type MutationUpdateEstablishmentArgs = {
 /** This is the result of a ticket purchase */
 export type PurchaseTicketResult = {
   __typename?: 'PurchaseTicketResult';
-  /** This is the ticket that was purchased */
-  ticket: Ticket;
+  event_id: Scalars['String']['output'];
+  new_balance: Scalars['Int']['output'];
+  ticket_id: Scalars['Int']['output'];
+  user_id: Scalars['Int']['output'];
 };
 
 export type Query = {
@@ -225,9 +224,13 @@ export type Query = {
   /** Get all events */
   getEvents?: Maybe<GetEventsResponse>;
   /** Get all available tickets */
-  getTickets?: Maybe<Array<Maybe<Ticket>>>;
+  getTickets?: Maybe<Array<Maybe<EventAvailableTickets>>>;
+  /** Get all tickets for an event */
+  getTicketsForEvent?: Maybe<Array<Maybe<EventAvailableTickets>>>;
   /** Get all tickets for a user (requires authentication) */
-  getTicketsForUser?: Maybe<Array<Maybe<Ticket>>>;
+  getTicketsForUser?: Maybe<Array<Maybe<UserTicket>>>;
+  /** Search for establishments and events - performs a full text search on the name of establishments/events depending on the type */
+  search?: Maybe<SearchResultResponse>;
 };
 
 
@@ -238,6 +241,17 @@ export type QueryGetEstablishmentByIdArgs = {
 
 export type QueryGetEventByIdArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryGetTicketsForEventArgs = {
+  event_id: Scalars['String']['input'];
+};
+
+
+export type QuerySearchArgs = {
+  query: Scalars['String']['input'];
+  type: SearchType;
 };
 
 /** Search result - contains the type of the result and the result itself */
@@ -268,22 +282,20 @@ export enum SearchType {
   Event = 'EVENT'
 }
 
-/** Ticket type */
-export type Ticket = {
-  __typename?: 'Ticket';
-  amount?: Maybe<Scalars['Int']['output']>;
-  /** Event ID which the ticket belongs to */
-  event_id: Scalars['String']['output'];
-  /** This is the id of the ticket */
-  id: Scalars['Int']['output'];
-  /** Ticket name */
-  name?: Maybe<Scalars['String']['output']>;
-  user_id?: Maybe<Scalars['Int']['output']>;
-};
-
 export type UpdateEstablishmentResult = {
   __typename?: 'UpdateEstablishmentResult';
   establishment: Establishment;
+};
+
+/** User ticket type */
+export type UserTicket = {
+  __typename?: 'UserTicket';
+  bought_quantity: Scalars['Int']['output'];
+  event_id: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  ticket_id: Scalars['Int']['output'];
+  ticket_name: Scalars['String']['output'];
+  user_id: Scalars['Int']['output'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -370,6 +382,7 @@ export type ResolversTypes = ResolversObject<{
   CreditsTopUp: ResolverTypeWrapper<CreditsTopUp>;
   Establishment: ResolverTypeWrapper<Establishment>;
   Event: ResolverTypeWrapper<Event>;
+  EventAvailableTickets: ResolverTypeWrapper<EventAvailableTickets>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   GetEstablishmentsResponse: ResolverTypeWrapper<GetEstablishmentsResponse>;
   GetEventsResponse: ResolverTypeWrapper<GetEventsResponse>;
@@ -383,8 +396,8 @@ export type ResolversTypes = ResolversObject<{
   SearchResultUnion: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['SearchResultUnion']>;
   SearchType: SearchType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  Ticket: ResolverTypeWrapper<Ticket>;
   UpdateEstablishmentResult: ResolverTypeWrapper<UpdateEstablishmentResult>;
+  UserTicket: ResolverTypeWrapper<UserTicket>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -397,6 +410,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreditsTopUp: CreditsTopUp;
   Establishment: Establishment;
   Event: Event;
+  EventAvailableTickets: EventAvailableTickets;
   Float: Scalars['Float']['output'];
   GetEstablishmentsResponse: GetEstablishmentsResponse;
   GetEventsResponse: GetEventsResponse;
@@ -408,8 +422,8 @@ export type ResolversParentTypes = ResolversObject<{
   SearchResultResponse: SearchResultResponse;
   SearchResultUnion: ResolversUnionTypes<ResolversParentTypes>['SearchResultUnion'];
   String: Scalars['String']['output'];
-  Ticket: Ticket;
   UpdateEstablishmentResult: UpdateEstablishmentResult;
+  UserTicket: UserTicket;
 }>;
 
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
@@ -461,6 +475,16 @@ export type EventResolvers<ContextType = any, ParentType extends ResolversParent
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   start_date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tickets?: Resolver<Maybe<Array<Maybe<ResolversTypes['EventAvailableTickets']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type EventAvailableTicketsResolvers<ContextType = any, ParentType extends ResolversParentTypes['EventAvailableTickets'] = ResolversParentTypes['EventAvailableTickets']> = ResolversObject<{
+  available_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -477,18 +501,19 @@ export type GetEventsResponseResolvers<ContextType = any, ParentType extends Res
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createEstablishment?: Resolver<Maybe<ResolversTypes['CreateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationCreateEstablishmentArgs, 'city' | 'country' | 'description' | 'name' | 'street'>>;
   createEvent?: Resolver<Maybe<ResolversTypes['CreateEventResult']>, ParentType, ContextType, RequireFields<MutationCreateEventArgs, 'description' | 'end_date' | 'establishment_id' | 'maximumCapacity' | 'name' | 'price' | 'start_date'>>;
-  getTicketsForEvent?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType, RequireFields<MutationGetTicketsForEventArgs, 'event_id'>>;
   googleOAuth?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationGoogleOAuthArgs, 'idToken'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id' | 'user_id'>>;
   register?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
-  search?: Resolver<Maybe<ResolversTypes['SearchResultResponse']>, ParentType, ContextType, RequireFields<MutationSearchArgs, 'query' | 'type'>>;
   topupCredits?: Resolver<Maybe<ResolversTypes['CreditsTopUp']>, ParentType, ContextType, RequireFields<MutationTopupCreditsArgs, 'amount'>>;
   updateEstablishment?: Resolver<Maybe<ResolversTypes['UpdateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationUpdateEstablishmentArgs, 'establishment_id'>>;
 }>;
 
 export type PurchaseTicketResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['PurchaseTicketResult'] = ResolversParentTypes['PurchaseTicketResult']> = ResolversObject<{
-  ticket?: Resolver<ResolversTypes['Ticket'], ParentType, ContextType>;
+  event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  new_balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -499,8 +524,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getEstablishmentsForUser?: Resolver<Maybe<ResolversTypes['GetEstablishmentsResponse']>, ParentType, ContextType>;
   getEventById?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType, RequireFields<QueryGetEventByIdArgs, 'id'>>;
   getEvents?: Resolver<Maybe<ResolversTypes['GetEventsResponse']>, ParentType, ContextType>;
-  getTickets?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType>;
-  getTicketsForUser?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ticket']>>>, ParentType, ContextType>;
+  getTickets?: Resolver<Maybe<Array<Maybe<ResolversTypes['EventAvailableTickets']>>>, ParentType, ContextType>;
+  getTicketsForEvent?: Resolver<Maybe<Array<Maybe<ResolversTypes['EventAvailableTickets']>>>, ParentType, ContextType, RequireFields<QueryGetTicketsForEventArgs, 'event_id'>>;
+  getTicketsForUser?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTicket']>>>, ParentType, ContextType>;
+  search?: Resolver<Maybe<ResolversTypes['SearchResultResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
 }>;
 
 export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = ResolversObject<{
@@ -518,17 +545,18 @@ export type SearchResultUnionResolvers<ContextType = any, ParentType extends Res
   __resolveType: TypeResolveFn<'Establishment' | 'Event', ParentType, ContextType>;
 }>;
 
-export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = ResolversObject<{
-  amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  user_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+export type UpdateEstablishmentResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateEstablishmentResult'] = ResolversParentTypes['UpdateEstablishmentResult']> = ResolversObject<{
+  establishment?: Resolver<ResolversTypes['Establishment'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UpdateEstablishmentResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateEstablishmentResult'] = ResolversParentTypes['UpdateEstablishmentResult']> = ResolversObject<{
-  establishment?: Resolver<ResolversTypes['Establishment'], ParentType, ContextType>;
+export type UserTicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserTicket'] = ResolversParentTypes['UserTicket']> = ResolversObject<{
+  bought_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -540,6 +568,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   CreditsTopUp?: CreditsTopUpResolvers<ContextType>;
   Establishment?: EstablishmentResolvers<ContextType>;
   Event?: EventResolvers<ContextType>;
+  EventAvailableTickets?: EventAvailableTicketsResolvers<ContextType>;
   GetEstablishmentsResponse?: GetEstablishmentsResponseResolvers<ContextType>;
   GetEventsResponse?: GetEventsResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
@@ -548,7 +577,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   SearchResult?: SearchResultResolvers<ContextType>;
   SearchResultResponse?: SearchResultResponseResolvers<ContextType>;
   SearchResultUnion?: SearchResultUnionResolvers<ContextType>;
-  Ticket?: TicketResolvers<ContextType>;
   UpdateEstablishmentResult?: UpdateEstablishmentResultResolvers<ContextType>;
+  UserTicket?: UserTicketResolvers<ContextType>;
 }>;
 

@@ -5,6 +5,7 @@ import { com } from "../grpc/proto/com/qapp/hermes/hermes";
 import { grpcToPromise } from "../grpc/utils/index";
 import { GraphQLError } from "graphql";
 import { Resolvers } from "../graphQLTypes/resolvers-types";
+import logger from "../logger/log";
 
 const service = services.find((service) => service.name === "credits");
 const client = new com.qapp.hermes.CreditServiceClient(
@@ -64,15 +65,16 @@ const creditResolver: Resolvers = {
 
       return response.tickets.map((ticket) => {
         return {
-          id: ticket.id,
+          user_id: ticket.user_id,
+          ticket_id: ticket.ticket_id,
           event_id: ticket.event_id,
-          user_id: context.user.id,
+          ticket_name: ticket.ticket_name,
+          price: ticket.price,
+          bought_quantity: ticket.bought_quantity,
         };
       });
     },
     getTickets: async (_, args, context) => {
-      if (!context.user) throw new GraphQLError("Unauthorized");
-
       const request = new com.qapp.hermes.GetAllTIcketsRequest({});
 
       const response =
@@ -82,9 +84,31 @@ const creditResolver: Resolvers = {
 
       return response.tickets.map((ticket) => {
         return {
-          id: ticket.id,
+          ticket_id: ticket.id,
           event_id: ticket.event_id,
-          name: ticket.ticket_name
+          ticket_name: ticket.ticket_name,
+          available_quantity: ticket.quantity,
+          price: ticket.price,
+        };
+      });
+    },
+    getTicketsForEvent: async (_, args, context) => {
+      const request = new com.qapp.hermes.GetEventAvailableTicketsRequest({
+        event_id: args.event_id,
+      });
+
+      const response =
+        await grpcToPromise<com.qapp.hermes.GetEventAvailableTicketsResponse>(
+          (callback) => client.GetEventAvailableTickets(request, callback)
+        );
+
+      return response.tickets.map((ticket) => {
+        return {
+          ticket_id: ticket.id,
+          event_id: ticket.event_id,
+          ticket_name: ticket.ticket_name,
+          available_quantity: ticket.quantity,
+          price: ticket.price,
         };
       });
     }

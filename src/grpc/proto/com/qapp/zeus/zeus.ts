@@ -686,6 +686,163 @@ export namespace com.qapp.zeus {
             return TicketPurchaseResult.deserialize(bytes);
         }
     }
+    export class IsManagerOfEstablishmentRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            userId?: number;
+            establishmentId?: number;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("userId" in data && data.userId != undefined) {
+                    this.userId = data.userId;
+                }
+                if ("establishmentId" in data && data.establishmentId != undefined) {
+                    this.establishmentId = data.establishmentId;
+                }
+            }
+        }
+        get userId() {
+            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+        }
+        set userId(value: number) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        get establishmentId() {
+            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+        }
+        set establishmentId(value: number) {
+            pb_1.Message.setField(this, 2, value);
+        }
+        static fromObject(data: {
+            userId?: number;
+            establishmentId?: number;
+        }): IsManagerOfEstablishmentRequest {
+            const message = new IsManagerOfEstablishmentRequest({});
+            if (data.userId != null) {
+                message.userId = data.userId;
+            }
+            if (data.establishmentId != null) {
+                message.establishmentId = data.establishmentId;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                userId?: number;
+                establishmentId?: number;
+            } = {};
+            if (this.userId != null) {
+                data.userId = this.userId;
+            }
+            if (this.establishmentId != null) {
+                data.establishmentId = this.establishmentId;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.userId != 0)
+                writer.writeInt32(1, this.userId);
+            if (this.establishmentId != 0)
+                writer.writeInt32(2, this.establishmentId);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): IsManagerOfEstablishmentRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new IsManagerOfEstablishmentRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.userId = reader.readInt32();
+                        break;
+                    case 2:
+                        message.establishmentId = reader.readInt32();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): IsManagerOfEstablishmentRequest {
+            return IsManagerOfEstablishmentRequest.deserialize(bytes);
+        }
+    }
+    export class IsManagerOfEstablishmentResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            isManager?: boolean;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("isManager" in data && data.isManager != undefined) {
+                    this.isManager = data.isManager;
+                }
+            }
+        }
+        get isManager() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set isManager(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            isManager?: boolean;
+        }): IsManagerOfEstablishmentResponse {
+            const message = new IsManagerOfEstablishmentResponse({});
+            if (data.isManager != null) {
+                message.isManager = data.isManager;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                isManager?: boolean;
+            } = {};
+            if (this.isManager != null) {
+                data.isManager = this.isManager;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.isManager != false)
+                writer.writeBool(1, this.isManager);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): IsManagerOfEstablishmentResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new IsManagerOfEstablishmentResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.isManager = reader.readBool();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): IsManagerOfEstablishmentResponse {
+            return IsManagerOfEstablishmentResponse.deserialize(bytes);
+        }
+    }
     export class GetEventRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -3126,6 +3283,15 @@ export namespace com.qapp.zeus {
                 requestDeserialize: (bytes: Buffer) => GetEstablishmentsForUserRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetEstablishmentsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetEstablishmentsResponse.deserialize(new Uint8Array(bytes))
+            },
+            IsManagerOfEstablishment: {
+                path: "/com.qapp.zeus.Zeus/IsManagerOfEstablishment",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: IsManagerOfEstablishmentRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => IsManagerOfEstablishmentRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: IsManagerOfEstablishmentResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => IsManagerOfEstablishmentResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -3142,6 +3308,7 @@ export namespace com.qapp.zeus {
         abstract UpdateEvent(call: grpc_1.ServerUnaryCall<UpdateEventRequest, Event>, callback: grpc_1.sendUnaryData<Event>): void;
         abstract GetEstablishment(call: grpc_1.ServerUnaryCall<GetEstablishmentRequest, Establishment>, callback: grpc_1.sendUnaryData<Establishment>): void;
         abstract GetEstablishmentForUser(call: grpc_1.ServerUnaryCall<GetEstablishmentsForUserRequest, GetEstablishmentsResponse>, callback: grpc_1.sendUnaryData<GetEstablishmentsResponse>): void;
+        abstract IsManagerOfEstablishment(call: grpc_1.ServerUnaryCall<IsManagerOfEstablishmentRequest, IsManagerOfEstablishmentResponse>, callback: grpc_1.sendUnaryData<IsManagerOfEstablishmentResponse>): void;
     }
     export class ZeusClient extends grpc_1.makeGenericClientConstructor(UnimplementedZeusService.definition, "Zeus", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -3185,6 +3352,9 @@ export namespace com.qapp.zeus {
         };
         GetEstablishmentForUser: GrpcUnaryServiceInterface<GetEstablishmentsForUserRequest, GetEstablishmentsResponse> = (message: GetEstablishmentsForUserRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetEstablishmentsResponse>, callback?: grpc_1.requestCallback<GetEstablishmentsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetEstablishmentForUser(message, metadata, options, callback);
+        };
+        IsManagerOfEstablishment: GrpcUnaryServiceInterface<IsManagerOfEstablishmentRequest, IsManagerOfEstablishmentResponse> = (message: IsManagerOfEstablishmentRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<IsManagerOfEstablishmentResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<IsManagerOfEstablishmentResponse>, callback?: grpc_1.requestCallback<IsManagerOfEstablishmentResponse>): grpc_1.ClientUnaryCall => {
+            return super.IsManagerOfEstablishment(message, metadata, options, callback);
         };
     }
 }
