@@ -64,7 +64,7 @@ export type Establishment = {
   /** These are events, that belong to the establishment */
   events?: Maybe<Array<Maybe<Event>>>;
   /** This is the id of the establishment */
-  id: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
   /** This is the name of the establishment */
   name: Scalars['String']['output'];
   /** This is the profile image of the establishment */
@@ -81,7 +81,7 @@ export type Event = {
   /** This is the end date of the event */
   end_date: Scalars['String']['output'];
   /** ID of establishment that event belongs to */
-  establishment_id: Scalars['Int']['output'];
+  establishment_id: Scalars['String']['output'];
   /** This is the id of the event */
   id: Scalars['String']['output'];
   /** Image of the event */
@@ -104,7 +104,7 @@ export type EventAvailableTickets = {
   available_quantity: Scalars['Int']['output'];
   event_id: Scalars['String']['output'];
   price: Scalars['Float']['output'];
-  ticket_id: Scalars['Int']['output'];
+  ticket_id: Scalars['String']['output'];
   ticket_name: Scalars['String']['output'];
 };
 
@@ -124,6 +124,8 @@ export type Mutation = {
   createEstablishment?: Maybe<CreateEstablishmentResult>;
   /** Create new event (requires authentication) */
   createEvent?: Maybe<CreateEventResult>;
+  /** Delete event (requires authentication) */
+  deleteEvent?: Maybe<RemoveEventResult>;
   /** Login with Google OAuth (requires Google ID Token) */
   googleOAuth?: Maybe<AuthResult>;
   login?: Maybe<AuthResult>;
@@ -134,6 +136,8 @@ export type Mutation = {
   topupCredits?: Maybe<CreditsTopUp>;
   /** Update an existing establishment (requires authentication) */
   updateEstablishment?: Maybe<UpdateEstablishmentResult>;
+  /** Update event (requires authentication) */
+  updateEvent?: Maybe<UpdateEventResult>;
 };
 
 
@@ -151,12 +155,17 @@ export type MutationCreateEstablishmentArgs = {
 export type MutationCreateEventArgs = {
   description: Scalars['String']['input'];
   end_date: Scalars['String']['input'];
-  establishment_id: Scalars['Int']['input'];
+  establishment_id: Scalars['String']['input'];
   image?: InputMaybe<Scalars['String']['input']>;
   maximumCapacity: Scalars['Int']['input'];
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   start_date: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteEventArgs = {
+  event_id: Scalars['String']['input'];
 };
 
 
@@ -173,7 +182,6 @@ export type MutationLoginArgs = {
 
 export type MutationPurchaseTicketArgs = {
   event_id: Scalars['String']['input'];
-  user_id: Scalars['Int']['input'];
 };
 
 
@@ -194,10 +202,22 @@ export type MutationUpdateEstablishmentArgs = {
   country?: InputMaybe<Scalars['String']['input']>;
   coverImage?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  establishment_id: Scalars['Int']['input'];
+  establishment_id: Scalars['String']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
   profileImage?: InputMaybe<Scalars['String']['input']>;
   street?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateEventArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  end_date?: InputMaybe<Scalars['String']['input']>;
+  event_id: Scalars['String']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
+  maximumCapacity?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['Float']['input']>;
+  start_date?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** This is the result of a ticket purchase */
@@ -205,8 +225,8 @@ export type PurchaseTicketResult = {
   __typename?: 'PurchaseTicketResult';
   event_id: Scalars['String']['output'];
   new_balance: Scalars['Int']['output'];
-  ticket_id: Scalars['Int']['output'];
-  user_id: Scalars['Int']['output'];
+  ticket_id: Scalars['String']['output'];
+  user_id: Scalars['String']['output'];
 };
 
 export type Query = {
@@ -235,7 +255,7 @@ export type Query = {
 
 
 export type QueryGetEstablishmentByIdArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 };
 
 
@@ -252,6 +272,11 @@ export type QueryGetTicketsForEventArgs = {
 export type QuerySearchArgs = {
   query: Scalars['String']['input'];
   type: SearchType;
+};
+
+export type RemoveEventResult = {
+  __typename?: 'RemoveEventResult';
+  event: Event;
 };
 
 /** Search result - contains the type of the result and the result itself */
@@ -287,15 +312,20 @@ export type UpdateEstablishmentResult = {
   establishment: Establishment;
 };
 
+export type UpdateEventResult = {
+  __typename?: 'UpdateEventResult';
+  event: Event;
+};
+
 /** User ticket type */
 export type UserTicket = {
   __typename?: 'UserTicket';
   bought_quantity: Scalars['Int']['output'];
   event_id: Scalars['String']['output'];
   price: Scalars['Float']['output'];
-  ticket_id: Scalars['Int']['output'];
+  ticket_id: Scalars['String']['output'];
   ticket_name: Scalars['String']['output'];
-  user_id: Scalars['Int']['output'];
+  user_id: Scalars['String']['output'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -390,6 +420,7 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   PurchaseTicketResult: ResolverTypeWrapper<PurchaseTicketResult>;
   Query: ResolverTypeWrapper<{}>;
+  RemoveEventResult: ResolverTypeWrapper<RemoveEventResult>;
   SearchResult: ResolverTypeWrapper<Omit<SearchResult, 'result'> & { result?: Maybe<ResolversTypes['SearchResultUnion']> }>;
   SearchResultResponse: ResolverTypeWrapper<SearchResultResponse>;
   SearchResultType: SearchResultType;
@@ -397,6 +428,7 @@ export type ResolversTypes = ResolversObject<{
   SearchType: SearchType;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateEstablishmentResult: ResolverTypeWrapper<UpdateEstablishmentResult>;
+  UpdateEventResult: ResolverTypeWrapper<UpdateEventResult>;
   UserTicket: ResolverTypeWrapper<UserTicket>;
 }>;
 
@@ -418,11 +450,13 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   PurchaseTicketResult: PurchaseTicketResult;
   Query: {};
+  RemoveEventResult: RemoveEventResult;
   SearchResult: Omit<SearchResult, 'result'> & { result?: Maybe<ResolversParentTypes['SearchResultUnion']> };
   SearchResultResponse: SearchResultResponse;
   SearchResultUnion: ResolversUnionTypes<ResolversParentTypes>['SearchResultUnion'];
   String: Scalars['String']['output'];
   UpdateEstablishmentResult: UpdateEstablishmentResult;
+  UpdateEventResult: UpdateEventResult;
   UserTicket: UserTicket;
 }>;
 
@@ -458,7 +492,7 @@ export type EstablishmentResolvers<ContextType = any, ParentType extends Resolve
   coverImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   events?: Resolver<Maybe<Array<Maybe<ResolversTypes['Event']>>>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   profileImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   street?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -468,7 +502,7 @@ export type EstablishmentResolvers<ContextType = any, ParentType extends Resolve
 export type EventResolvers<ContextType = any, ParentType extends ResolversParentTypes['Event'] = ResolversParentTypes['Event']> = ResolversObject<{
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   end_date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  establishment_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  establishment_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   maximumCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -483,7 +517,7 @@ export type EventAvailableTicketsResolvers<ContextType = any, ParentType extends
   available_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ticket_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -501,19 +535,21 @@ export type GetEventsResponseResolvers<ContextType = any, ParentType extends Res
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createEstablishment?: Resolver<Maybe<ResolversTypes['CreateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationCreateEstablishmentArgs, 'city' | 'country' | 'description' | 'name' | 'street'>>;
   createEvent?: Resolver<Maybe<ResolversTypes['CreateEventResult']>, ParentType, ContextType, RequireFields<MutationCreateEventArgs, 'description' | 'end_date' | 'establishment_id' | 'maximumCapacity' | 'name' | 'price' | 'start_date'>>;
+  deleteEvent?: Resolver<Maybe<ResolversTypes['RemoveEventResult']>, ParentType, ContextType, RequireFields<MutationDeleteEventArgs, 'event_id'>>;
   googleOAuth?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationGoogleOAuthArgs, 'idToken'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
-  purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id' | 'user_id'>>;
+  purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id'>>;
   register?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
   topupCredits?: Resolver<Maybe<ResolversTypes['CreditsTopUp']>, ParentType, ContextType, RequireFields<MutationTopupCreditsArgs, 'amount'>>;
   updateEstablishment?: Resolver<Maybe<ResolversTypes['UpdateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationUpdateEstablishmentArgs, 'establishment_id'>>;
+  updateEvent?: Resolver<Maybe<ResolversTypes['UpdateEventResult']>, ParentType, ContextType, RequireFields<MutationUpdateEventArgs, 'event_id'>>;
 }>;
 
 export type PurchaseTicketResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['PurchaseTicketResult'] = ResolversParentTypes['PurchaseTicketResult']> = ResolversObject<{
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   new_balance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -528,6 +564,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getTicketsForEvent?: Resolver<Maybe<Array<Maybe<ResolversTypes['EventAvailableTickets']>>>, ParentType, ContextType, RequireFields<QueryGetTicketsForEventArgs, 'event_id'>>;
   getTicketsForUser?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserTicket']>>>, ParentType, ContextType>;
   search?: Resolver<Maybe<ResolversTypes['SearchResultResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
+}>;
+
+export type RemoveEventResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['RemoveEventResult'] = ResolversParentTypes['RemoveEventResult']> = ResolversObject<{
+  event?: Resolver<ResolversTypes['Event'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = ResolversObject<{
@@ -550,13 +591,18 @@ export type UpdateEstablishmentResultResolvers<ContextType = any, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type UpdateEventResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateEventResult'] = ResolversParentTypes['UpdateEventResult']> = ResolversObject<{
+  event?: Resolver<ResolversTypes['Event'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UserTicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserTicket'] = ResolversParentTypes['UserTicket']> = ResolversObject<{
   bought_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  ticket_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ticket_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ticket_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -574,10 +620,12 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   PurchaseTicketResult?: PurchaseTicketResultResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RemoveEventResult?: RemoveEventResultResolvers<ContextType>;
   SearchResult?: SearchResultResolvers<ContextType>;
   SearchResultResponse?: SearchResultResponseResolvers<ContextType>;
   SearchResultUnion?: SearchResultUnionResolvers<ContextType>;
   UpdateEstablishmentResult?: UpdateEstablishmentResultResolvers<ContextType>;
+  UpdateEventResult?: UpdateEventResultResolvers<ContextType>;
   UserTicket?: UserTicketResolvers<ContextType>;
 }>;
 

@@ -131,9 +131,66 @@ const establishmentResolver: Resolvers = {
         },
       };
     },
+    updateEvent: async (_, args, context) => {
+      if (!context || !context.user) throw new GraphQLError("Unauthorized");
+
+      const request = new com.qapp.zeus.UpdateEventRequest({
+        uuid: args.event_id,
+        name: args.name ?? undefined,
+        description: args.description ?? undefined,
+        start_date: args.start_date ?? undefined,
+        end_date: args.end_date ?? undefined,
+        price: args.price ?? undefined,
+        image: args.image ?? undefined,
+        maximumCapacity: args.maximumCapacity ?? undefined,
+      });
+
+      const response = await grpcToPromise<com.qapp.zeus.Event>((callback) =>
+        client.UpdateEvent(request, callback)
+      );
+
+      return {
+        event: {
+          id: response.id,
+          name: response.name,
+          description: response.description,
+          start_date: response.start_date,
+          end_date: response.end_date,
+          price: response.price,
+          image: response.image,
+          establishment_id: response.establishment_id,
+          maximumCapacity: response.maximumCapacity,
+        },
+      };
+    },
+    deleteEvent: async (_, args, context) => {
+      if (!context || !context.user) throw new GraphQLError("Unauthorized");
+
+      const request = new com.qapp.zeus.RemoveEventRequest({
+        eventId: args.event_id,
+        updaterId: context.user.id,
+      });
+
+      const response = await grpcToPromise<com.qapp.zeus.Event>((callback) =>
+        client.DeleteEvent(request, callback)
+      );
+
+      return {
+        event: {
+          id: response.id,
+          name: response.name,
+          description: response.description,
+          start_date: response.start_date,
+          end_date: response.end_date,
+          price: response.price,
+          image: response.image,
+          establishment_id: response.establishment_id,
+          maximumCapacity: response.maximumCapacity,
+        },
+      };
+    },
     purchaseTicket: async (_, args, context) => {
-      if (context === undefined || context.user.id !== args.user_id)
-        throw new GraphQLError("Unauthorized");
+      if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.PurchaseTicketRequest({
         eventId: args.event_id,
@@ -318,7 +375,7 @@ const establishmentResolver: Resolvers = {
   Establishment: {
     events: async ({ id }) => {
       const request = new com.qapp.zeus.GetEventsForEstablishmentRequest({
-        establishmentId: id as number,
+        establishmentId: id,
       });
 
       const response = await grpcToPromise<com.qapp.zeus.GetEventsResponse>(

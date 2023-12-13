@@ -34,7 +34,7 @@ type Event {
     "This is the price of the event"
     price: Float!
     "ID of establishment that event belongs to"
-    establishment_id: Int!
+    establishment_id: String!
     "Maximum capacity of the event"
     maximumCapacity: Int!
     "Image of the event"
@@ -47,7 +47,7 @@ type Event {
 "Establishment type"
 type Establishment {
     "This is the id of the establishment"
-    id: Int!
+    id: String!
     "This is the name of the establishment"
     name: String!
     "This is the description of the establishment"
@@ -68,8 +68,8 @@ type Establishment {
 
 "User ticket type"
 type UserTicket {
-    user_id: Int!
-    ticket_id: Int!
+    user_id: String!
+    ticket_id: String!
     event_id: String!
     ticket_name: String!
     price: Float!
@@ -78,7 +78,7 @@ type UserTicket {
 
 "Event available tickets"
 type EventAvailableTickets {
-    ticket_id: Int!
+    ticket_id: String!
     event_id: String!
     ticket_name: String!
     price: Float!
@@ -87,8 +87,8 @@ type EventAvailableTickets {
 
 "This is the result of a ticket purchase"
 type PurchaseTicketResult {
-    ticket_id: Int!
-    user_id: Int!
+    ticket_id: String!
+    user_id: String!
     event_id: String!
     new_balance: Int!
 }
@@ -113,6 +113,14 @@ type GetEventsResponse {
     events: [Event]
 }
 
+type UpdateEventResult {
+    event: Event!
+}
+
+type RemoveEventResult {
+    event: Event!
+}
+
 type Query {
     #Credits
     "Get the credits of the user that is logged in (requires authentication)"
@@ -124,7 +132,7 @@ type Query {
     "Get all establishments for a specific user (requires authentication)"
     getEstablishmentsForUser: GetEstablishmentsResponse
     "Get a specific establishment by id"
-    getEstablishmentById(id: Int!): GetEstablishmentsResponse
+    getEstablishmentById(id: String!): GetEstablishmentsResponse
     "Get all tickets for a user (requires authentication)"
     getTicketsForUser: [UserTicket]
     "Get all available tickets"
@@ -158,11 +166,17 @@ type Mutation {
     "Create a new establishment (requires authentication)"
     createEstablishment(name: String!, description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
     "Update an existing establishment (requires authentication)"
-    updateEstablishment(establishment_id: Int!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
-    "Create new event (requires authentication)"
-    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: Int!, maximumCapacity: Int!, image: String): CreateEventResult
+    updateEstablishment(establishment_id: String!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
-    purchaseTicket(event_id: String!, user_id: Int!): PurchaseTicketResult
+    purchaseTicket(event_id: String!): PurchaseTicketResult
+
+    #Event
+    "Create new event (requires authentication)"
+    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: String!, maximumCapacity: Int!, image: String): CreateEventResult
+    "Update event (requires authentication)"
+    updateEvent(event_id: String!, name: String, description: String, start_date: String, end_date: String, price: Float, maximumCapacity: Int, image: String): UpdateEventResult
+    "Delete event (requires authentication)"
+    deleteEvent(event_id: String!): RemoveEventResult
 }
 
 "Search result response - contains an array of search results"

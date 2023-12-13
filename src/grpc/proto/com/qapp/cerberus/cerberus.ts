@@ -413,7 +413,7 @@ export namespace com.qapp.cerberus {
     export class GetUserDataRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            userId?: number;
+            userId?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -424,13 +424,13 @@ export namespace com.qapp.cerberus {
             }
         }
         get userId() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set userId(value: number) {
+        set userId(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         static fromObject(data: {
-            userId?: number;
+            userId?: string;
         }): GetUserDataRequest {
             const message = new GetUserDataRequest({});
             if (data.userId != null) {
@@ -440,7 +440,7 @@ export namespace com.qapp.cerberus {
         }
         toObject() {
             const data: {
-                userId?: number;
+                userId?: string;
             } = {};
             if (this.userId != null) {
                 data.userId = this.userId;
@@ -451,8 +451,8 @@ export namespace com.qapp.cerberus {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.userId != 0)
-                writer.writeInt32(1, this.userId);
+            if (this.userId.length)
+                writer.writeString(1, this.userId);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -463,7 +463,7 @@ export namespace com.qapp.cerberus {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.userId = reader.readInt32();
+                        message.userId = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -485,7 +485,6 @@ export namespace com.qapp.cerberus {
             userImage?: string;
             firstName?: string;
             lastName?: string;
-            role?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -504,9 +503,6 @@ export namespace com.qapp.cerberus {
                 }
                 if ("lastName" in data && data.lastName != undefined) {
                     this.lastName = data.lastName;
-                }
-                if ("role" in data && data.role != undefined) {
-                    this.role = data.role;
                 }
             }
         }
@@ -540,19 +536,12 @@ export namespace com.qapp.cerberus {
         set lastName(value: string) {
             pb_1.Message.setField(this, 5, value);
         }
-        get role() {
-            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
-        }
-        set role(value: string) {
-            pb_1.Message.setField(this, 6, value);
-        }
         static fromObject(data: {
             username?: string;
             email?: string;
             userImage?: string;
             firstName?: string;
             lastName?: string;
-            role?: string;
         }): GetUserDataResponse {
             const message = new GetUserDataResponse({});
             if (data.username != null) {
@@ -570,9 +559,6 @@ export namespace com.qapp.cerberus {
             if (data.lastName != null) {
                 message.lastName = data.lastName;
             }
-            if (data.role != null) {
-                message.role = data.role;
-            }
             return message;
         }
         toObject() {
@@ -582,7 +568,6 @@ export namespace com.qapp.cerberus {
                 userImage?: string;
                 firstName?: string;
                 lastName?: string;
-                role?: string;
             } = {};
             if (this.username != null) {
                 data.username = this.username;
@@ -598,9 +583,6 @@ export namespace com.qapp.cerberus {
             }
             if (this.lastName != null) {
                 data.lastName = this.lastName;
-            }
-            if (this.role != null) {
-                data.role = this.role;
             }
             return data;
         }
@@ -618,8 +600,6 @@ export namespace com.qapp.cerberus {
                 writer.writeString(4, this.firstName);
             if (this.lastName.length)
                 writer.writeString(5, this.lastName);
-            if (this.role.length)
-                writer.writeString(6, this.role);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -644,9 +624,6 @@ export namespace com.qapp.cerberus {
                     case 5:
                         message.lastName = reader.readString();
                         break;
-                    case 6:
-                        message.role = reader.readString();
-                        break;
                     default: reader.skipField();
                 }
             }
@@ -660,9 +637,9 @@ export namespace com.qapp.cerberus {
         }
     }
     export class UpdateUserDataRequest extends pb_1.Message {
-        #one_of_decls: number[][] = [[2], [3], [4], [5], [6], [7], [8]];
+        #one_of_decls: number[][] = [[2], [3], [4], [5], [6], [7]];
         constructor(data?: any[] | ({
-            userId?: number;
+            userId?: string;
         } & (({
             username?: string;
         }) | ({
@@ -675,8 +652,6 @@ export namespace com.qapp.cerberus {
             firstName?: string;
         }) | ({
             lastName?: string;
-        }) | ({
-            role?: string;
         })))) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -702,15 +677,12 @@ export namespace com.qapp.cerberus {
                 if ("lastName" in data && data.lastName != undefined) {
                     this.lastName = data.lastName;
                 }
-                if ("role" in data && data.role != undefined) {
-                    this.role = data.role;
-                }
             }
         }
         get userId() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set userId(value: number) {
+        set userId(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get username() {
@@ -767,15 +739,6 @@ export namespace com.qapp.cerberus {
         get has_lastName() {
             return pb_1.Message.getField(this, 7) != null;
         }
-        get role() {
-            return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
-        }
-        set role(value: string) {
-            pb_1.Message.setOneofField(this, 8, this.#one_of_decls[6], value);
-        }
-        get has_role() {
-            return pb_1.Message.getField(this, 8) != null;
-        }
         get _username() {
             const cases: {
                 [index: number]: "none" | "username";
@@ -830,24 +793,14 @@ export namespace com.qapp.cerberus {
             };
             return cases[pb_1.Message.computeOneofCase(this, [7])];
         }
-        get _role() {
-            const cases: {
-                [index: number]: "none" | "role";
-            } = {
-                0: "none",
-                8: "role"
-            };
-            return cases[pb_1.Message.computeOneofCase(this, [8])];
-        }
         static fromObject(data: {
-            userId?: number;
+            userId?: string;
             username?: string;
             email?: string;
             password?: string;
             userImage?: string;
             firstName?: string;
             lastName?: string;
-            role?: string;
         }): UpdateUserDataRequest {
             const message = new UpdateUserDataRequest({});
             if (data.userId != null) {
@@ -871,21 +824,17 @@ export namespace com.qapp.cerberus {
             if (data.lastName != null) {
                 message.lastName = data.lastName;
             }
-            if (data.role != null) {
-                message.role = data.role;
-            }
             return message;
         }
         toObject() {
             const data: {
-                userId?: number;
+                userId?: string;
                 username?: string;
                 email?: string;
                 password?: string;
                 userImage?: string;
                 firstName?: string;
                 lastName?: string;
-                role?: string;
             } = {};
             if (this.userId != null) {
                 data.userId = this.userId;
@@ -908,17 +857,14 @@ export namespace com.qapp.cerberus {
             if (this.lastName != null) {
                 data.lastName = this.lastName;
             }
-            if (this.role != null) {
-                data.role = this.role;
-            }
             return data;
         }
         serialize(): Uint8Array;
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.userId != 0)
-                writer.writeInt32(1, this.userId);
+            if (this.userId.length)
+                writer.writeString(1, this.userId);
             if (this.has_username)
                 writer.writeString(2, this.username);
             if (this.has_email)
@@ -931,8 +877,6 @@ export namespace com.qapp.cerberus {
                 writer.writeString(6, this.firstName);
             if (this.has_lastName)
                 writer.writeString(7, this.lastName);
-            if (this.has_role)
-                writer.writeString(8, this.role);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -943,7 +887,7 @@ export namespace com.qapp.cerberus {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.userId = reader.readInt32();
+                        message.userId = reader.readString();
                         break;
                     case 2:
                         message.username = reader.readString();
@@ -963,9 +907,6 @@ export namespace com.qapp.cerberus {
                     case 7:
                         message.lastName = reader.readString();
                         break;
-                    case 8:
-                        message.role = reader.readString();
-                        break;
                     default: reader.skipField();
                 }
             }
@@ -981,16 +922,19 @@ export namespace com.qapp.cerberus {
     export class UpdateUserDataResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
+            userId?: string;
             username?: string;
             email?: string;
             userImage?: string;
             firstName?: string;
             lastName?: string;
-            role?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
             if (!Array.isArray(data) && typeof data == "object") {
+                if ("userId" in data && data.userId != undefined) {
+                    this.userId = data.userId;
+                }
                 if ("username" in data && data.username != undefined) {
                     this.username = data.username;
                 }
@@ -1006,56 +950,56 @@ export namespace com.qapp.cerberus {
                 if ("lastName" in data && data.lastName != undefined) {
                     this.lastName = data.lastName;
                 }
-                if ("role" in data && data.role != undefined) {
-                    this.role = data.role;
-                }
             }
         }
-        get username() {
+        get userId() {
             return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set username(value: string) {
+        set userId(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
-        get email() {
+        get username() {
             return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set email(value: string) {
+        set username(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
-        get userImage() {
+        get email() {
             return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
-        set userImage(value: string) {
+        set email(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
-        get firstName() {
+        get userImage() {
             return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
         }
-        set firstName(value: string) {
+        set userImage(value: string) {
             pb_1.Message.setField(this, 4, value);
         }
-        get lastName() {
+        get firstName() {
             return pb_1.Message.getFieldWithDefault(this, 5, "") as string;
         }
-        set lastName(value: string) {
+        set firstName(value: string) {
             pb_1.Message.setField(this, 5, value);
         }
-        get role() {
+        get lastName() {
             return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
         }
-        set role(value: string) {
+        set lastName(value: string) {
             pb_1.Message.setField(this, 6, value);
         }
         static fromObject(data: {
+            userId?: string;
             username?: string;
             email?: string;
             userImage?: string;
             firstName?: string;
             lastName?: string;
-            role?: string;
         }): UpdateUserDataResponse {
             const message = new UpdateUserDataResponse({});
+            if (data.userId != null) {
+                message.userId = data.userId;
+            }
             if (data.username != null) {
                 message.username = data.username;
             }
@@ -1071,20 +1015,20 @@ export namespace com.qapp.cerberus {
             if (data.lastName != null) {
                 message.lastName = data.lastName;
             }
-            if (data.role != null) {
-                message.role = data.role;
-            }
             return message;
         }
         toObject() {
             const data: {
+                userId?: string;
                 username?: string;
                 email?: string;
                 userImage?: string;
                 firstName?: string;
                 lastName?: string;
-                role?: string;
             } = {};
+            if (this.userId != null) {
+                data.userId = this.userId;
+            }
             if (this.username != null) {
                 data.username = this.username;
             }
@@ -1100,27 +1044,24 @@ export namespace com.qapp.cerberus {
             if (this.lastName != null) {
                 data.lastName = this.lastName;
             }
-            if (this.role != null) {
-                data.role = this.role;
-            }
             return data;
         }
         serialize(): Uint8Array;
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
+            if (this.userId.length)
+                writer.writeString(1, this.userId);
             if (this.username.length)
-                writer.writeString(1, this.username);
+                writer.writeString(2, this.username);
             if (this.email.length)
-                writer.writeString(2, this.email);
+                writer.writeString(3, this.email);
             if (this.userImage.length)
-                writer.writeString(3, this.userImage);
+                writer.writeString(4, this.userImage);
             if (this.firstName.length)
-                writer.writeString(4, this.firstName);
+                writer.writeString(5, this.firstName);
             if (this.lastName.length)
-                writer.writeString(5, this.lastName);
-            if (this.role.length)
-                writer.writeString(6, this.role);
+                writer.writeString(6, this.lastName);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1131,22 +1072,22 @@ export namespace com.qapp.cerberus {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.username = reader.readString();
+                        message.userId = reader.readString();
                         break;
                     case 2:
-                        message.email = reader.readString();
+                        message.username = reader.readString();
                         break;
                     case 3:
-                        message.userImage = reader.readString();
+                        message.email = reader.readString();
                         break;
                     case 4:
-                        message.firstName = reader.readString();
+                        message.userImage = reader.readString();
                         break;
                     case 5:
-                        message.lastName = reader.readString();
+                        message.firstName = reader.readString();
                         break;
                     case 6:
-                        message.role = reader.readString();
+                        message.lastName = reader.readString();
                         break;
                     default: reader.skipField();
                 }

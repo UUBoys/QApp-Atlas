@@ -6,6 +6,140 @@
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
 export namespace com.qapp.hermes {
+    export class RemoveEventTicketsRequest extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            event_id?: string;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("event_id" in data && data.event_id != undefined) {
+                    this.event_id = data.event_id;
+                }
+            }
+        }
+        get event_id() {
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+        }
+        set event_id(value: string) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            event_id?: string;
+        }): RemoveEventTicketsRequest {
+            const message = new RemoveEventTicketsRequest({});
+            if (data.event_id != null) {
+                message.event_id = data.event_id;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                event_id?: string;
+            } = {};
+            if (this.event_id != null) {
+                data.event_id = this.event_id;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.event_id.length)
+                writer.writeString(1, this.event_id);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RemoveEventTicketsRequest {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RemoveEventTicketsRequest();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.event_id = reader.readString();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RemoveEventTicketsRequest {
+            return RemoveEventTicketsRequest.deserialize(bytes);
+        }
+    }
+    export class RemoveEventTicketsResponse extends pb_1.Message {
+        #one_of_decls: number[][] = [];
+        constructor(data?: any[] | {
+            success?: boolean;
+        }) {
+            super();
+            pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+            if (!Array.isArray(data) && typeof data == "object") {
+                if ("success" in data && data.success != undefined) {
+                    this.success = data.success;
+                }
+            }
+        }
+        get success() {
+            return pb_1.Message.getFieldWithDefault(this, 1, false) as boolean;
+        }
+        set success(value: boolean) {
+            pb_1.Message.setField(this, 1, value);
+        }
+        static fromObject(data: {
+            success?: boolean;
+        }): RemoveEventTicketsResponse {
+            const message = new RemoveEventTicketsResponse({});
+            if (data.success != null) {
+                message.success = data.success;
+            }
+            return message;
+        }
+        toObject() {
+            const data: {
+                success?: boolean;
+            } = {};
+            if (this.success != null) {
+                data.success = this.success;
+            }
+            return data;
+        }
+        serialize(): Uint8Array;
+        serialize(w: pb_1.BinaryWriter): void;
+        serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+            const writer = w || new pb_1.BinaryWriter();
+            if (this.success != false)
+                writer.writeBool(1, this.success);
+            if (!w)
+                return writer.getResultBuffer();
+        }
+        static deserialize(bytes: Uint8Array | pb_1.BinaryReader): RemoveEventTicketsResponse {
+            const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new RemoveEventTicketsResponse();
+            while (reader.nextField()) {
+                if (reader.isEndGroup())
+                    break;
+                switch (reader.getFieldNumber()) {
+                    case 1:
+                        message.success = reader.readBool();
+                        break;
+                    default: reader.skipField();
+                }
+            }
+            return message;
+        }
+        serializeBinary(): Uint8Array {
+            return this.serialize();
+        }
+        static deserializeBinary(bytes: Uint8Array): RemoveEventTicketsResponse {
+            return RemoveEventTicketsResponse.deserialize(bytes);
+        }
+    }
     export class GetEventAvailableTicketsResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
@@ -183,7 +317,7 @@ export namespace com.qapp.hermes {
     export class GetUserTicketsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
+            user_id?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -194,13 +328,13 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         static fromObject(data: {
-            user_id?: number;
+            user_id?: string;
         }): GetUserTicketsRequest {
             const message = new GetUserTicketsRequest({});
             if (data.user_id != null) {
@@ -210,7 +344,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
+                user_id?: string;
             } = {};
             if (this.user_id != null) {
                 data.user_id = this.user_id;
@@ -221,8 +355,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -233,7 +367,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -384,7 +518,7 @@ export namespace com.qapp.hermes {
     export class EventAvailableTickets extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            id?: number;
+            id?: string;
             event_id?: string;
             ticket_name?: string;
             price?: number;
@@ -411,9 +545,9 @@ export namespace com.qapp.hermes {
             }
         }
         get id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set id(value: number) {
+        set id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get event_id() {
@@ -441,7 +575,7 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 5, value);
         }
         static fromObject(data: {
-            id?: number;
+            id?: string;
             event_id?: string;
             ticket_name?: string;
             price?: number;
@@ -467,7 +601,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                id?: number;
+                id?: string;
                 event_id?: string;
                 ticket_name?: string;
                 price?: number;
@@ -494,8 +628,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.id != 0)
-                writer.writeInt32(1, this.id);
+            if (this.id.length)
+                writer.writeString(1, this.id);
             if (this.event_id.length)
                 writer.writeString(2, this.event_id);
             if (this.ticket_name.length)
@@ -514,7 +648,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.id = reader.readInt32();
+                        message.id = reader.readString();
                         break;
                     case 2:
                         message.event_id = reader.readString();
@@ -543,8 +677,8 @@ export namespace com.qapp.hermes {
     export class UserTicket extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
-            ticket_id?: number;
+            user_id?: string;
+            ticket_id?: string;
             event_id?: string;
             ticket_name?: string;
             price?: number;
@@ -574,15 +708,15 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get ticket_id() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set ticket_id(value: number) {
+        set ticket_id(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
         get event_id() {
@@ -610,8 +744,8 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 6, value);
         }
         static fromObject(data: {
-            user_id?: number;
-            ticket_id?: number;
+            user_id?: string;
+            ticket_id?: string;
             event_id?: string;
             ticket_name?: string;
             price?: number;
@@ -640,8 +774,8 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
-                ticket_id?: number;
+                user_id?: string;
+                ticket_id?: string;
                 event_id?: string;
                 ticket_name?: string;
                 price?: number;
@@ -671,10 +805,10 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
-            if (this.ticket_id != 0)
-                writer.writeInt32(2, this.ticket_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
+            if (this.ticket_id.length)
+                writer.writeString(2, this.ticket_id);
             if (this.event_id.length)
                 writer.writeString(3, this.event_id);
             if (this.ticket_name.length)
@@ -693,10 +827,10 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     case 2:
-                        message.ticket_id = reader.readInt32();
+                        message.ticket_id = reader.readString();
                         break;
                     case 3:
                         message.event_id = reader.readString();
@@ -725,7 +859,7 @@ export namespace com.qapp.hermes {
     export class TopupCreditsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
+            user_id?: string;
             amount?: number;
         }) {
             super();
@@ -740,9 +874,9 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get amount() {
@@ -752,7 +886,7 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
-            user_id?: number;
+            user_id?: string;
             amount?: number;
         }): TopupCreditsRequest {
             const message = new TopupCreditsRequest({});
@@ -766,7 +900,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
+                user_id?: string;
                 amount?: number;
             } = {};
             if (this.user_id != null) {
@@ -781,8 +915,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
             if (this.amount != 0)
                 writer.writeInt32(2, this.amount);
             if (!w)
@@ -795,7 +929,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     case 2:
                         message.amount = reader.readInt32();
@@ -815,7 +949,7 @@ export namespace com.qapp.hermes {
     export class CreditsOperationResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
+            user_id?: string;
             old_balance?: number;
             new_balance?: number;
         }) {
@@ -834,9 +968,9 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get old_balance() {
@@ -852,7 +986,7 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 3, value);
         }
         static fromObject(data: {
-            user_id?: number;
+            user_id?: string;
             old_balance?: number;
             new_balance?: number;
         }): CreditsOperationResponse {
@@ -870,7 +1004,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
+                user_id?: string;
                 old_balance?: number;
                 new_balance?: number;
             } = {};
@@ -889,8 +1023,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
             if (this.old_balance != 0)
                 writer.writeInt32(2, this.old_balance);
             if (this.new_balance != 0)
@@ -905,7 +1039,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     case 2:
                         message.old_balance = reader.readInt32();
@@ -1024,7 +1158,7 @@ export namespace com.qapp.hermes {
     export class GetCreditsRequest extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
+            user_id?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1035,13 +1169,13 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         static fromObject(data: {
-            user_id?: number;
+            user_id?: string;
         }): GetCreditsRequest {
             const message = new GetCreditsRequest({});
             if (data.user_id != null) {
@@ -1051,7 +1185,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
+                user_id?: string;
             } = {};
             if (this.user_id != null) {
                 data.user_id = this.user_id;
@@ -1062,8 +1196,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1074,7 +1208,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -1091,7 +1225,7 @@ export namespace com.qapp.hermes {
     export class CreditStatusResponse extends pb_1.Message {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
-            user_id?: number;
+            user_id?: string;
             balance?: number;
         }) {
             super();
@@ -1106,9 +1240,9 @@ export namespace com.qapp.hermes {
             }
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
         get balance() {
@@ -1118,7 +1252,7 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
-            user_id?: number;
+            user_id?: string;
             balance?: number;
         }): CreditStatusResponse {
             const message = new CreditStatusResponse({});
@@ -1132,7 +1266,7 @@ export namespace com.qapp.hermes {
         }
         toObject() {
             const data: {
-                user_id?: number;
+                user_id?: string;
                 balance?: number;
             } = {};
             if (this.user_id != null) {
@@ -1147,8 +1281,8 @@ export namespace com.qapp.hermes {
         serialize(w: pb_1.BinaryWriter): void;
         serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
             const writer = w || new pb_1.BinaryWriter();
-            if (this.user_id != 0)
-                writer.writeInt32(1, this.user_id);
+            if (this.user_id.length)
+                writer.writeString(1, this.user_id);
             if (this.balance != 0)
                 writer.writeInt32(2, this.balance);
             if (!w)
@@ -1161,7 +1295,7 @@ export namespace com.qapp.hermes {
                     break;
                 switch (reader.getFieldNumber()) {
                     case 1:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     case 2:
                         message.balance = reader.readInt32();
@@ -1182,8 +1316,8 @@ export namespace com.qapp.hermes {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             event_id?: string;
-            user_id?: number;
-            ticket_id?: number;
+            user_id?: string;
+            ticket_id?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1206,21 +1340,21 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 1, value);
         }
         get user_id() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set user_id(value: number) {
+        set user_id(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
         get ticket_id() {
-            return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
         }
-        set ticket_id(value: number) {
+        set ticket_id(value: string) {
             pb_1.Message.setField(this, 3, value);
         }
         static fromObject(data: {
             event_id?: string;
-            user_id?: number;
-            ticket_id?: number;
+            user_id?: string;
+            ticket_id?: string;
         }): PurchaseRequest {
             const message = new PurchaseRequest({});
             if (data.event_id != null) {
@@ -1237,8 +1371,8 @@ export namespace com.qapp.hermes {
         toObject() {
             const data: {
                 event_id?: string;
-                user_id?: number;
-                ticket_id?: number;
+                user_id?: string;
+                ticket_id?: string;
             } = {};
             if (this.event_id != null) {
                 data.event_id = this.event_id;
@@ -1257,10 +1391,10 @@ export namespace com.qapp.hermes {
             const writer = w || new pb_1.BinaryWriter();
             if (this.event_id.length)
                 writer.writeString(1, this.event_id);
-            if (this.user_id != 0)
-                writer.writeInt32(2, this.user_id);
-            if (this.ticket_id != 0)
-                writer.writeInt32(3, this.ticket_id);
+            if (this.user_id.length)
+                writer.writeString(2, this.user_id);
+            if (this.ticket_id.length)
+                writer.writeString(3, this.ticket_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1274,10 +1408,10 @@ export namespace com.qapp.hermes {
                         message.event_id = reader.readString();
                         break;
                     case 2:
-                        message.user_id = reader.readInt32();
+                        message.user_id = reader.readString();
                         break;
                     case 3:
-                        message.ticket_id = reader.readInt32();
+                        message.ticket_id = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -1431,7 +1565,7 @@ export namespace com.qapp.hermes {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             event_id?: string;
-            ticket_id?: number;
+            ticket_id?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -1451,14 +1585,14 @@ export namespace com.qapp.hermes {
             pb_1.Message.setField(this, 1, value);
         }
         get ticket_id() {
-            return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+            return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set ticket_id(value: number) {
+        set ticket_id(value: string) {
             pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             event_id?: string;
-            ticket_id?: number;
+            ticket_id?: string;
         }): CreateEventTicketsResponse {
             const message = new CreateEventTicketsResponse({});
             if (data.event_id != null) {
@@ -1472,7 +1606,7 @@ export namespace com.qapp.hermes {
         toObject() {
             const data: {
                 event_id?: string;
-                ticket_id?: number;
+                ticket_id?: string;
             } = {};
             if (this.event_id != null) {
                 data.event_id = this.event_id;
@@ -1488,8 +1622,8 @@ export namespace com.qapp.hermes {
             const writer = w || new pb_1.BinaryWriter();
             if (this.event_id.length)
                 writer.writeString(1, this.event_id);
-            if (this.ticket_id != 0)
-                writer.writeInt32(2, this.ticket_id);
+            if (this.ticket_id.length)
+                writer.writeString(2, this.ticket_id);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -1503,7 +1637,7 @@ export namespace com.qapp.hermes {
                         message.event_id = reader.readString();
                         break;
                     case 2:
-                        message.ticket_id = reader.readInt32();
+                        message.ticket_id = reader.readString();
                         break;
                     default: reader.skipField();
                 }
@@ -1605,6 +1739,15 @@ export namespace com.qapp.hermes {
                 requestDeserialize: (bytes: Buffer) => GetUserTicketsRequest.deserialize(new Uint8Array(bytes)),
                 responseSerialize: (message: GetUserTicketsResponse) => Buffer.from(message.serialize()),
                 responseDeserialize: (bytes: Buffer) => GetUserTicketsResponse.deserialize(new Uint8Array(bytes))
+            },
+            RemoveEventTickets: {
+                path: "/com.qapp.hermes.CreditService/RemoveEventTickets",
+                requestStream: false,
+                responseStream: false,
+                requestSerialize: (message: RemoveEventTicketsRequest) => Buffer.from(message.serialize()),
+                requestDeserialize: (bytes: Buffer) => RemoveEventTicketsRequest.deserialize(new Uint8Array(bytes)),
+                responseSerialize: (message: RemoveEventTicketsResponse) => Buffer.from(message.serialize()),
+                responseDeserialize: (bytes: Buffer) => RemoveEventTicketsResponse.deserialize(new Uint8Array(bytes))
             }
         };
         [method: string]: grpc_1.UntypedHandleCall;
@@ -1615,6 +1758,7 @@ export namespace com.qapp.hermes {
         abstract GetEventAvailableTickets(call: grpc_1.ServerUnaryCall<GetEventAvailableTicketsRequest, GetEventAvailableTicketsResponse>, callback: grpc_1.sendUnaryData<GetEventAvailableTicketsResponse>): void;
         abstract GetAllTickets(call: grpc_1.ServerUnaryCall<GetAllTIcketsRequest, GetAllTicketsResponse>, callback: grpc_1.sendUnaryData<GetAllTicketsResponse>): void;
         abstract GetUserTickets(call: grpc_1.ServerUnaryCall<GetUserTicketsRequest, GetUserTicketsResponse>, callback: grpc_1.sendUnaryData<GetUserTicketsResponse>): void;
+        abstract RemoveEventTickets(call: grpc_1.ServerUnaryCall<RemoveEventTicketsRequest, RemoveEventTicketsResponse>, callback: grpc_1.sendUnaryData<RemoveEventTicketsResponse>): void;
     }
     export class CreditServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedCreditServiceService.definition, "CreditService", {}) {
         constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -1640,6 +1784,9 @@ export namespace com.qapp.hermes {
         };
         GetUserTickets: GrpcUnaryServiceInterface<GetUserTicketsRequest, GetUserTicketsResponse> = (message: GetUserTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<GetUserTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<GetUserTicketsResponse>, callback?: grpc_1.requestCallback<GetUserTicketsResponse>): grpc_1.ClientUnaryCall => {
             return super.GetUserTickets(message, metadata, options, callback);
+        };
+        RemoveEventTickets: GrpcUnaryServiceInterface<RemoveEventTicketsRequest, RemoveEventTicketsResponse> = (message: RemoveEventTicketsRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<RemoveEventTicketsResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<RemoveEventTicketsResponse>, callback?: grpc_1.requestCallback<RemoveEventTicketsResponse>): grpc_1.ClientUnaryCall => {
+            return super.RemoveEventTickets(message, metadata, options, callback);
         };
     }
 }
