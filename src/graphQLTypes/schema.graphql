@@ -168,7 +168,7 @@ type Mutation {
     "Update an existing establishment (requires authentication)"
     updateEstablishment(establishment_id: String!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
-    purchaseTicket(event_id: String!): PurchaseTicketResult
+    purchaseTicket(event_id: String!, ticket_id: String!): PurchaseTicketResult
 
     #Event
     "Create new event (requires authentication)"

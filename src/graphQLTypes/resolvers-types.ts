@@ -182,6 +182,7 @@ export type MutationLoginArgs = {
 
 export type MutationPurchaseTicketArgs = {
   event_id: Scalars['String']['input'];
+  ticket_id: Scalars['String']['input'];
 };
 
 
@@ -538,7 +539,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteEvent?: Resolver<Maybe<ResolversTypes['RemoveEventResult']>, ParentType, ContextType, RequireFields<MutationDeleteEventArgs, 'event_id'>>;
   googleOAuth?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationGoogleOAuthArgs, 'idToken'>>;
   login?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
-  purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id'>>;
+  purchaseTicket?: Resolver<Maybe<ResolversTypes['PurchaseTicketResult']>, ParentType, ContextType, RequireFields<MutationPurchaseTicketArgs, 'event_id' | 'ticket_id'>>;
   register?: Resolver<Maybe<ResolversTypes['AuthResult']>, ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password' | 'username'>>;
   topupCredits?: Resolver<Maybe<ResolversTypes['CreditsTopUp']>, ParentType, ContextType, RequireFields<MutationTopupCreditsArgs, 'amount'>>;
   updateEstablishment?: Resolver<Maybe<ResolversTypes['UpdateEstablishmentResult']>, ParentType, ContextType, RequireFields<MutationUpdateEstablishmentArgs, 'establishment_id'>>;

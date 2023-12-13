@@ -195,6 +195,7 @@ const establishmentResolver: Resolvers = {
       const request = new com.qapp.zeus.PurchaseTicketRequest({
         eventId: args.event_id,
         userId: context.user.id,
+        ticketId: args.ticket_id,
       });
 
       const response = await grpcToPromise<com.qapp.zeus.TicketPurchaseResult>((callback) =>
