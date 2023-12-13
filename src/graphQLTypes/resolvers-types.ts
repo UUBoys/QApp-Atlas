@@ -153,6 +153,7 @@ export type MutationCreateEstablishmentArgs = {
 
 
 export type MutationCreateEventArgs = {
+  default_ticket_name?: InputMaybe<Scalars['String']['input']>;
   description: Scalars['String']['input'];
   end_date: Scalars['String']['input'];
   establishment_id: Scalars['String']['input'];

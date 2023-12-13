@@ -172,7 +172,7 @@ type Mutation {
 
     #Event
     "Create new event (requires authentication)"
-    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: String!, maximumCapacity: Int!, image: String): CreateEventResult
+    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: String!, maximumCapacity: Int!, default_ticket_name: String, image: String): CreateEventResult
     "Update event (requires authentication)"
     updateEvent(event_id: String!, name: String, description: String, start_date: String, end_date: String, price: Float, maximumCapacity: Int, image: String): UpdateEventResult
     "Delete event (requires authentication)"

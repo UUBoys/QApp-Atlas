@@ -111,6 +111,7 @@ const establishmentResolver: Resolvers = {
         image: args.image ?? undefined,
         establishmentId: args.establishment_id,
         maximumCapacity: args.maximumCapacity,
+        ticketName: args.default_ticket_name ?? args.name
       });
 
       const response = await grpcToPromise<com.qapp.zeus.Event>((callback) =>
