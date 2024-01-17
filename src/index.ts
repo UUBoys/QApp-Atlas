@@ -9,8 +9,10 @@ import establishmentResolver from "./resolvers/establishmentResolver";
 import { decryptToken } from "./utils/auth";
 import logger from "./logger/log";
 import { Resolvers } from "./graphQLTypes/resolvers-types";
+import { createApollo4QueryValidationPlugin, constraintDirectiveTypeDefs } from 'graphql-constraint-directive/apollo4';
 
 import { readFileSync } from "fs";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 const typeDefs = readFileSync("./src/graphQLTypes/schema.graphql", "utf8");
 
@@ -32,9 +34,18 @@ const resolvers: Resolvers = {
   },
 };
 
-const server = new ApolloServer({
-  typeDefs,
+const schema = makeExecutableSchema({
+  typeDefs: [constraintDirectiveTypeDefs, typeDefs],
   resolvers,
+});
+
+const plugins = [
+  createApollo4QueryValidationPlugin({schema})
+]
+
+const server = new ApolloServer({
+  schema,
+  plugins,
   includeStacktraceInErrorResponses: false,
 });
 

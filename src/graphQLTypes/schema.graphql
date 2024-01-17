@@ -132,19 +132,19 @@ type Query {
     "Get all establishments for a specific user (requires authentication)"
     getEstablishmentsForUser: GetEstablishmentsResponse
     "Get a specific establishment by id"
-    getEstablishmentById(id: String!): GetEstablishmentsResponse
+    getEstablishmentById(id: String! @constraint(format: "uuid")): GetEstablishmentsResponse
     "Get all tickets for a user (requires authentication)"
     getTicketsForUser: [UserTicket]
     "Get all available tickets"
     getTickets: [EventAvailableTickets]
     "Get all tickets for an event"
-    getTicketsForEvent(event_id: String!): [EventAvailableTickets]
+    getTicketsForEvent(event_id: String! @constraint(format: "uuid")): [EventAvailableTickets]
 
     #Event
     "Get all events"
     getEvents: GetEventsResponse
     "Get event by id"
-    getEventById(id: String!): GetEventsResponse
+    getEventById(id: String! @constraint(format: "uuid")): GetEventsResponse
 
     #Search
     "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
@@ -153,30 +153,30 @@ type Query {
 
 type Mutation {
     #Auth   
-    login(email: String!, password: String!): AuthResult
-    register(email: String!, password: String!, username: String!): AuthResult
+    login(email: String! @constraint(format: "email"), password: String! @constraint(minLength: 1)): AuthResult
+    register(email: String! @constraint(format: "email"), password: String! @constraint(minLength: 1), username: String! @constraint(minLength: 3)): AuthResult
     "Login with Google OAuth (requires Google ID Token)"
     googleOAuth(idToken: String!): AuthResult
 
     #Credits
     "Top up the credits of the user that is logged in (requires authentication)"
-    topupCredits(amount: Int!): CreditsTopUp
+    topupCredits(amount: Int! @constraint(min: 1)): CreditsTopUp
 
     #Establishment
     "Create a new establishment (requires authentication)"
-    createEstablishment(name: String!, description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
+    createEstablishment(name: String! @constraint(minLength: 3), description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
     "Update an existing establishment (requires authentication)"
-    updateEstablishment(establishment_id: String!, name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
+    updateEstablishment(establishment_id: String! @constraint(format: "uuid"), name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
     "Purchase a ticket for an event (requires authentication and sufficient credits)"
-    purchaseTicket(event_id: String!, ticket_id: String!): PurchaseTicketResult
+    purchaseTicket(event_id: String! @constraint(format: "uuid"), ticket_id: String! @constraint(format: "uuid")): PurchaseTicketResult
 
     #Event
     "Create new event (requires authentication)"
-    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float!, establishment_id: String!, maximumCapacity: Int!, default_ticket_name: String, image: String): CreateEventResult
+    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float! @constraint(min: 1), establishment_id: String! @constraint(format: "uuid"), maximumCapacity: Int! @constraint(min: 1), default_ticket_name: String, image: String): CreateEventResult
     "Update event (requires authentication)"
-    updateEvent(event_id: String!, name: String, description: String, start_date: String, end_date: String, price: Float, maximumCapacity: Int, image: String): UpdateEventResult
+    updateEvent(event_id: String! @constraint(format: "uuid"), name: String, description: String, start_date: String, end_date: String, price: Float, maximumCapacity: Int, image: String): UpdateEventResult
     "Delete event (requires authentication)"
-    deleteEvent(event_id: String!): RemoveEventResult
+    deleteEvent(event_id: String! @constraint(format: "uuid")): RemoveEventResult
 }
 
 "Search result response - contains an array of search results"
