@@ -74,6 +74,7 @@ type UserTicket {
   ticket_name: String!
   price: Float!
   bought_quantity: Int!
+  created_at: String!
 }
 
 "Event available tickets"

@@ -324,6 +324,7 @@ export type UpdateEventResult = {
 export type UserTicket = {
   __typename?: 'UserTicket';
   bought_quantity: Scalars['Int']['output'];
+  created_at: Scalars['String']['output'];
   event_id: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   ticket_id: Scalars['String']['output'];
@@ -602,6 +603,7 @@ export type UpdateEventResultResolvers<ContextType = any, ParentType extends Res
 
 export type UserTicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserTicket'] = ResolversParentTypes['UserTicket']> = ResolversObject<{
   bought_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  created_at?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   ticket_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

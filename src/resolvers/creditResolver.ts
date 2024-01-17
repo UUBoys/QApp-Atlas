@@ -71,6 +71,7 @@ const creditResolver: Resolvers = {
           ticket_name: ticket.ticket_name,
           price: ticket.price,
           bought_quantity: ticket.bought_quantity,
+          created_at: ticket.createdAt,
         };
       });
     },
