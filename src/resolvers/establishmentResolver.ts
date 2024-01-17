@@ -205,7 +205,13 @@ const establishmentResolver: Resolvers = {
 
       const response = await grpcToPromise<com.qapp.zeus.TicketPurchaseResult>(
         (callback) => client.PurchaseTicket(request, callback)
-      );
+      ).catch((err) => {
+        logger.error(err);
+
+        throw new GraphQLError("Error purchasing ticket", {
+          extensions: { code: "FORBIDDEN" },
+        });
+      });
 
       return {
         event_id: response.event_id,
