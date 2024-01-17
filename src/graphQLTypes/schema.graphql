@@ -1,206 +1,257 @@
 "This is the result of a Login/OAuth"
 type AuthResult {
-    "This is the token used for authentication (JWT Bearer)"
-    token: String!
+  "This is the token used for authentication (JWT Bearer)"
+  token: String!
 }
 
 "This is the response of a Credits TopUp"
 type CreditsTopUp {
-    "This is the new balance of the user"
-    newBalance: Int!
+  "This is the new balance of the user"
+  newBalance: Int!
 
-    "This is the old balance of the user"
-    oldBalance: Int!
+  "This is the old balance of the user"
+  oldBalance: Int!
 }
 
 "This is the response of a Credits Balance"
 type CreditsBalance {
-    "This is the balance of the user"
-    balance: Int!
+  "This is the balance of the user"
+  balance: Int!
 }
 
 "Event type"
 type Event {
-    "This is the id of the event"
-    id: String!
-    "This is the name of the event"
-    name: String!
-    "This is the description of the event"
-    description: String
-    "This is the start date of the event"
-    start_date: String!
-    "This is the end date of the event"
-    end_date: String!
-    "This is the price of the event"
-    price: Float!
-    "ID of establishment that event belongs to"
-    establishment_id: String!
-    "Maximum capacity of the event"
-    maximumCapacity: Int!
-    "Image of the event"
-    image: String
+  "This is the id of the event"
+  id: String!
+  "This is the name of the event"
+  name: String!
+  "This is the description of the event"
+  description: String
+  "This is the start date of the event"
+  start_date: String!
+  "This is the end date of the event"
+  end_date: String!
+  "This is the price of the event"
+  price: Float!
+  "ID of establishment that event belongs to"
+  establishment_id: String!
+  "Maximum capacity of the event"
+  maximumCapacity: Int!
+  "Image of the event"
+  image: String
 
-    "Tickets assigned to this event"
-    tickets: [EventAvailableTickets]
+  "Tickets assigned to this event"
+  tickets: [EventAvailableTickets]
 }
 
 "Establishment type"
 type Establishment {
-    "This is the id of the establishment"
-    id: String!
-    "This is the name of the establishment"
-    name: String!
-    "This is the description of the establishment"
-    description: String!
-    "This is the street of the establishment"
-    street: String!
-    "This is the city of the establishment"
-    city: String!
-    "This is the country of the establishment"
-    country: String!
-    "This is the cover image of the establishment"
-    coverImage: String
-    "This is the profile image of the establishment"
-    profileImage: String
-    "These are events, that belong to the establishment"
-    events: [Event]
+  "This is the id of the establishment"
+  id: String!
+  "This is the name of the establishment"
+  name: String!
+  "This is the description of the establishment"
+  description: String!
+  "This is the street of the establishment"
+  street: String!
+  "This is the city of the establishment"
+  city: String!
+  "This is the country of the establishment"
+  country: String!
+  "This is the cover image of the establishment"
+  coverImage: String
+  "This is the profile image of the establishment"
+  profileImage: String
+  "These are events, that belong to the establishment"
+  events: [Event]
 }
 
 "User ticket type"
 type UserTicket {
-    user_id: String!
-    ticket_id: String!
-    event_id: String!
-    ticket_name: String!
-    price: Float!
-    bought_quantity: Int!
+  user_id: String!
+  ticket_id: String!
+  event_id: String!
+  ticket_name: String!
+  price: Float!
+  bought_quantity: Int!
 }
 
 "Event available tickets"
 type EventAvailableTickets {
-    ticket_id: String!
-    event_id: String!
-    ticket_name: String!
-    price: Float!
-    available_quantity: Int!
+  ticket_id: String!
+  event_id: String!
+  ticket_name: String!
+  price: Float!
+  available_quantity: Int!
+  createdAt: String!
 }
 
 "This is the result of a ticket purchase"
 type PurchaseTicketResult {
-    ticket_id: String!
-    user_id: String!
-    event_id: String!
-    new_balance: Int!
+  ticket_id: String!
+  user_id: String!
+  event_id: String!
+  new_balance: Int!
 }
 
 type CreateEstablishmentResult {
-    establishment: Establishment!
+  establishment: Establishment!
 }
 
 type UpdateEstablishmentResult {
-    establishment: Establishment!
+  establishment: Establishment!
 }
 
 type CreateEventResult {
-    event: Event!
+  event: Event!
 }
 
 type GetEstablishmentsResponse {
-    establishments: [Establishment]
+  establishments: [Establishment]
 }
 
 type GetEventsResponse {
-    events: [Event]
+  events: [Event]
 }
 
 type UpdateEventResult {
-    event: Event!
+  event: Event!
 }
 
 type RemoveEventResult {
-    event: Event!
+  event: Event!
 }
 
 type Query {
-    #Credits
-    "Get the credits of the user that is logged in (requires authentication)"
-    getCredit: CreditsBalance
+  #Credits
+  "Get the credits of the user that is logged in (requires authentication)"
+  getCredit: CreditsBalance
 
-    #Establishment
-    "Get all establishments"
-    getEstablishments: GetEstablishmentsResponse
-    "Get all establishments for a specific user (requires authentication)"
-    getEstablishmentsForUser: GetEstablishmentsResponse
-    "Get a specific establishment by id"
-    getEstablishmentById(id: String! @constraint(format: "uuid")): GetEstablishmentsResponse
-    "Get all tickets for a user (requires authentication)"
-    getTicketsForUser: [UserTicket]
-    "Get all available tickets"
-    getTickets: [EventAvailableTickets]
-    "Get all tickets for an event"
-    getTicketsForEvent(event_id: String! @constraint(format: "uuid")): [EventAvailableTickets]
+  #Establishment
+  "Get all establishments"
+  getEstablishments: GetEstablishmentsResponse
+  "Get all establishments for a specific user (requires authentication)"
+  getEstablishmentsForUser: GetEstablishmentsResponse
+  "Get a specific establishment by id"
+  getEstablishmentById(
+    id: String! @constraint(format: "uuid")
+  ): GetEstablishmentsResponse
+  "Get all tickets for a user (requires authentication)"
+  getTicketsForUser: [UserTicket]
+  "Get all available tickets"
+  getTickets: [EventAvailableTickets]
+  "Get all tickets for an event"
+  getTicketsForEvent(
+    event_id: String! @constraint(format: "uuid")
+  ): [EventAvailableTickets]
 
-    #Event
-    "Get all events"
-    getEvents: GetEventsResponse
-    "Get event by id"
-    getEventById(id: String! @constraint(format: "uuid")): GetEventsResponse
+  #Event
+  "Get all events"
+  getEvents: GetEventsResponse
+  "Get event by id"
+  getEventById(id: String! @constraint(format: "uuid")): GetEventsResponse
 
-    #Search
-    "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
-    search(query: String!, type: SearchType!): SearchResultResponse
+  #Search
+  "Search for establishments and events - performs a full text search on the name of establishments/events depending on the type"
+  search(query: String!, type: SearchType!): SearchResultResponse
 }
 
 type Mutation {
-    #Auth   
-    login(email: String! @constraint(format: "email"), password: String! @constraint(minLength: 1)): AuthResult
-    register(email: String! @constraint(format: "email"), password: String! @constraint(minLength: 1), username: String! @constraint(minLength: 3)): AuthResult
-    "Login with Google OAuth (requires Google ID Token)"
-    googleOAuth(idToken: String!): AuthResult
+  #Auth
+  login(
+    email: String! @constraint(format: "email")
+    password: String! @constraint(minLength: 1)
+  ): AuthResult
+  register(
+    email: String! @constraint(format: "email")
+    password: String! @constraint(minLength: 1)
+    username: String! @constraint(minLength: 3)
+  ): AuthResult
+  "Login with Google OAuth (requires Google ID Token)"
+  googleOAuth(idToken: String!): AuthResult
 
-    #Credits
-    "Top up the credits of the user that is logged in (requires authentication)"
-    topupCredits(amount: Int! @constraint(min: 1)): CreditsTopUp
+  #Credits
+  "Top up the credits of the user that is logged in (requires authentication)"
+  topupCredits(amount: Int! @constraint(min: 1)): CreditsTopUp
 
-    #Establishment
-    "Create a new establishment (requires authentication)"
-    createEstablishment(name: String! @constraint(minLength: 3), description: String!, street: String!, city: String!, country: String!, coverImage: String, profileImage: String): CreateEstablishmentResult
-    "Update an existing establishment (requires authentication)"
-    updateEstablishment(establishment_id: String! @constraint(format: "uuid"), name: String, description: String, street: String, city: String, country: String, coverImage: String, profileImage: String): UpdateEstablishmentResult
-    "Purchase a ticket for an event (requires authentication and sufficient credits)"
-    purchaseTicket(event_id: String! @constraint(format: "uuid"), ticket_id: String! @constraint(format: "uuid")): PurchaseTicketResult
+  #Establishment
+  "Create a new establishment (requires authentication)"
+  createEstablishment(
+    name: String! @constraint(minLength: 3)
+    description: String!
+    street: String!
+    city: String!
+    country: String!
+    coverImage: String
+    profileImage: String
+  ): CreateEstablishmentResult
+  "Update an existing establishment (requires authentication)"
+  updateEstablishment(
+    establishment_id: String! @constraint(format: "uuid")
+    name: String
+    description: String
+    street: String
+    city: String
+    country: String
+    coverImage: String
+    profileImage: String
+  ): UpdateEstablishmentResult
+  "Purchase a ticket for an event (requires authentication and sufficient credits)"
+  purchaseTicket(
+    event_id: String! @constraint(format: "uuid")
+    ticket_id: String! @constraint(format: "uuid")
+  ): PurchaseTicketResult
 
-    #Event
-    "Create new event (requires authentication)"
-    createEvent(name: String!, description: String!, start_date: String!, end_date: String!, price: Float! @constraint(min: 1), establishment_id: String! @constraint(format: "uuid"), maximumCapacity: Int! @constraint(min: 1), default_ticket_name: String, image: String): CreateEventResult
-    "Update event (requires authentication)"
-    updateEvent(event_id: String! @constraint(format: "uuid"), name: String, description: String, start_date: String, end_date: String, price: Float, maximumCapacity: Int, image: String): UpdateEventResult
-    "Delete event (requires authentication)"
-    deleteEvent(event_id: String! @constraint(format: "uuid")): RemoveEventResult
+  #Event
+  "Create new event (requires authentication)"
+  createEvent(
+    name: String!
+    description: String!
+    start_date: String!
+    end_date: String!
+    price: Float! @constraint(min: 1)
+    establishment_id: String! @constraint(format: "uuid")
+    maximumCapacity: Int! @constraint(min: 1)
+    default_ticket_name: String
+    image: String
+  ): CreateEventResult
+  "Update event (requires authentication)"
+  updateEvent(
+    event_id: String! @constraint(format: "uuid")
+    name: String
+    description: String
+    start_date: String
+    end_date: String
+    price: Float
+    maximumCapacity: Int
+    image: String
+  ): UpdateEventResult
+  "Delete event (requires authentication)"
+  deleteEvent(event_id: String! @constraint(format: "uuid")): RemoveEventResult
 }
 
 "Search result response - contains an array of search results"
 type SearchResultResponse {
-    results: [SearchResult]
+  results: [SearchResult]
 }
 
 "Search result - contains the type of the result and the result itself"
 type SearchResult {
-    searchType: SearchResultType
-    result: SearchResultUnion
+  searchType: SearchResultType
+  result: SearchResultUnion
 }
 
 union SearchResultUnion = Event | Establishment
 
 "Search result type - either event or establishment"
 enum SearchResultType {
-    EVENT
-    ESTABLISHMENT
+  EVENT
+  ESTABLISHMENT
 }
 
 "Search type - what to search for"
 enum SearchType {
-    ALL
-    ESTABLISHMENT
-    EVENT
+  ALL
+  ESTABLISHMENT
+  EVENT
 }

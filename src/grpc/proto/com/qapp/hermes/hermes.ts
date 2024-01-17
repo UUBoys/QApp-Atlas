@@ -523,6 +523,7 @@ export namespace com.qapp.hermes {
             ticket_name?: string;
             price?: number;
             quantity?: number;
+            createdAt?: string;
         }) {
             super();
             pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -541,6 +542,9 @@ export namespace com.qapp.hermes {
                 }
                 if ("quantity" in data && data.quantity != undefined) {
                     this.quantity = data.quantity;
+                }
+                if ("createdAt" in data && data.createdAt != undefined) {
+                    this.createdAt = data.createdAt;
                 }
             }
         }
@@ -574,12 +578,19 @@ export namespace com.qapp.hermes {
         set quantity(value: number) {
             pb_1.Message.setField(this, 5, value);
         }
+        get createdAt() {
+            return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+        }
+        set createdAt(value: string) {
+            pb_1.Message.setField(this, 6, value);
+        }
         static fromObject(data: {
             id?: string;
             event_id?: string;
             ticket_name?: string;
             price?: number;
             quantity?: number;
+            createdAt?: string;
         }): EventAvailableTickets {
             const message = new EventAvailableTickets({});
             if (data.id != null) {
@@ -597,6 +608,9 @@ export namespace com.qapp.hermes {
             if (data.quantity != null) {
                 message.quantity = data.quantity;
             }
+            if (data.createdAt != null) {
+                message.createdAt = data.createdAt;
+            }
             return message;
         }
         toObject() {
@@ -606,6 +620,7 @@ export namespace com.qapp.hermes {
                 ticket_name?: string;
                 price?: number;
                 quantity?: number;
+                createdAt?: string;
             } = {};
             if (this.id != null) {
                 data.id = this.id;
@@ -621,6 +636,9 @@ export namespace com.qapp.hermes {
             }
             if (this.quantity != null) {
                 data.quantity = this.quantity;
+            }
+            if (this.createdAt != null) {
+                data.createdAt = this.createdAt;
             }
             return data;
         }
@@ -638,6 +656,8 @@ export namespace com.qapp.hermes {
                 writer.writeFloat(4, this.price);
             if (this.quantity != 0)
                 writer.writeInt32(5, this.quantity);
+            if (this.createdAt.length)
+                writer.writeString(6, this.createdAt);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -661,6 +681,9 @@ export namespace com.qapp.hermes {
                         break;
                     case 5:
                         message.quantity = reader.readInt32();
+                        break;
+                    case 6:
+                        message.createdAt = reader.readString();
                         break;
                     default: reader.skipField();
                 }

@@ -690,7 +690,6 @@ export namespace com.qapp.zeus {
         #one_of_decls: number[][] = [];
         constructor(data?: any[] | {
             updaterId?: string;
-            establishmentId?: string;
             eventId?: string;
         }) {
             super();
@@ -698,9 +697,6 @@ export namespace com.qapp.zeus {
             if (!Array.isArray(data) && typeof data == "object") {
                 if ("updaterId" in data && data.updaterId != undefined) {
                     this.updaterId = data.updaterId;
-                }
-                if ("establishmentId" in data && data.establishmentId != undefined) {
-                    this.establishmentId = data.establishmentId;
                 }
                 if ("eventId" in data && data.eventId != undefined) {
                     this.eventId = data.eventId;
@@ -713,29 +709,19 @@ export namespace com.qapp.zeus {
         set updaterId(value: string) {
             pb_1.Message.setField(this, 1, value);
         }
-        get establishmentId() {
+        get eventId() {
             return pb_1.Message.getFieldWithDefault(this, 2, "") as string;
         }
-        set establishmentId(value: string) {
-            pb_1.Message.setField(this, 2, value);
-        }
-        get eventId() {
-            return pb_1.Message.getFieldWithDefault(this, 3, "") as string;
-        }
         set eventId(value: string) {
-            pb_1.Message.setField(this, 3, value);
+            pb_1.Message.setField(this, 2, value);
         }
         static fromObject(data: {
             updaterId?: string;
-            establishmentId?: string;
             eventId?: string;
         }): RemoveEventRequest {
             const message = new RemoveEventRequest({});
             if (data.updaterId != null) {
                 message.updaterId = data.updaterId;
-            }
-            if (data.establishmentId != null) {
-                message.establishmentId = data.establishmentId;
             }
             if (data.eventId != null) {
                 message.eventId = data.eventId;
@@ -745,14 +731,10 @@ export namespace com.qapp.zeus {
         toObject() {
             const data: {
                 updaterId?: string;
-                establishmentId?: string;
                 eventId?: string;
             } = {};
             if (this.updaterId != null) {
                 data.updaterId = this.updaterId;
-            }
-            if (this.establishmentId != null) {
-                data.establishmentId = this.establishmentId;
             }
             if (this.eventId != null) {
                 data.eventId = this.eventId;
@@ -765,10 +747,8 @@ export namespace com.qapp.zeus {
             const writer = w || new pb_1.BinaryWriter();
             if (this.updaterId.length)
                 writer.writeString(1, this.updaterId);
-            if (this.establishmentId.length)
-                writer.writeString(2, this.establishmentId);
             if (this.eventId.length)
-                writer.writeString(3, this.eventId);
+                writer.writeString(2, this.eventId);
             if (!w)
                 return writer.getResultBuffer();
         }
@@ -782,9 +762,6 @@ export namespace com.qapp.zeus {
                         message.updaterId = reader.readString();
                         break;
                     case 2:
-                        message.establishmentId = reader.readString();
-                        break;
-                    case 3:
                         message.eventId = reader.readString();
                         break;
                     default: reader.skipField();

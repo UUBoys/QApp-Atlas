@@ -91,16 +91,20 @@ const establishmentResolver: Resolvers = {
     createEvent: async (_, args, context) => {
       if (!context || !context.user) throw new GraphQLError("Unauthorized");
 
-      const isModeratorRequest = new com.qapp.zeus.IsManagerOfEstablishmentRequest({
-        establishmentId: args.establishment_id,
-        userId: context.user.id,
-      });
+      const isModeratorRequest =
+        new com.qapp.zeus.IsManagerOfEstablishmentRequest({
+          establishmentId: args.establishment_id,
+          userId: context.user.id,
+        });
 
-      const isModeratorResponse = await grpcToPromise<com.qapp.zeus.IsManagerOfEstablishmentResponse>((callback) =>
-        client.IsManagerOfEstablishment(isModeratorRequest, callback)
-      );
+      const isModeratorResponse =
+        await grpcToPromise<com.qapp.zeus.IsManagerOfEstablishmentResponse>(
+          (callback) =>
+            client.IsManagerOfEstablishment(isModeratorRequest, callback)
+        );
 
-      if(!isModeratorResponse.isManager) throw new GraphQLError("Unauthorized");
+      if (!isModeratorResponse.isManager)
+        throw new GraphQLError("Unauthorized");
 
       const request = new com.qapp.zeus.CreateEventRequest({
         name: args.name,
@@ -111,7 +115,7 @@ const establishmentResolver: Resolvers = {
         image: args.image ?? undefined,
         establishmentId: args.establishment_id,
         maximumCapacity: args.maximumCapacity,
-        ticketName: args.default_ticket_name ?? args.name
+        ticketName: args.default_ticket_name ?? args.name,
       });
 
       const response = await grpcToPromise<com.qapp.zeus.Event>((callback) =>
@@ -199,15 +203,15 @@ const establishmentResolver: Resolvers = {
         ticketId: args.ticket_id,
       });
 
-      const response = await grpcToPromise<com.qapp.zeus.TicketPurchaseResult>((callback) =>
-        client.PurchaseTicket(request, callback)
+      const response = await grpcToPromise<com.qapp.zeus.TicketPurchaseResult>(
+        (callback) => client.PurchaseTicket(request, callback)
       );
 
       return {
-          event_id: response.event_id,
-          ticket_id: response.id,
-          new_balance: response.new_balance,
-          user_id: response.user_id,
+        event_id: response.event_id,
+        ticket_id: response.id,
+        new_balance: response.new_balance,
+        user_id: response.user_id,
       };
     },
   },
@@ -285,37 +289,42 @@ const establishmentResolver: Resolvers = {
         const events = EventsResponse.events.filter((event) =>
           event.name.includes(args.query)
         );
-        return { results: [...establishments.map((establishment) => {
-          return {
-            result: {
-              __typename: "Establishment" as const,
-              id: establishment.id,
-              name: establishment.name,
-              description: establishment.description,
-              street: establishment.street,
-              city: establishment.city,
-              country: establishment.country,
-              coverImage: establishment.coverImage,
-              profileImage: establishment.profileImage,
-            },
-            searchType: SearchResultType.Establishment,
-          };
-        }), ...events.map((event) => {
-          return {
-            result: {
-              __typename: "Event" as const,
-              id: event.id,
-              name: event.name,
-              description: event.description,
-              start_date: event.start_date,
-              end_date: event.end_date,
-              price: event.price,
-              establishment_id: event.establishment_id,
-              maximumCapacity: event.maximumCapacity,
-            },
-            searchType: SearchResultType.Event,
-          };
-        })] };
+        return {
+          results: [
+            ...establishments.map((establishment) => {
+              return {
+                result: {
+                  __typename: "Establishment" as const,
+                  id: establishment.id,
+                  name: establishment.name,
+                  description: establishment.description,
+                  street: establishment.street,
+                  city: establishment.city,
+                  country: establishment.country,
+                  coverImage: establishment.coverImage,
+                  profileImage: establishment.profileImage,
+                },
+                searchType: SearchResultType.Establishment,
+              };
+            }),
+            ...events.map((event) => {
+              return {
+                result: {
+                  __typename: "Event" as const,
+                  id: event.id,
+                  name: event.name,
+                  description: event.description,
+                  start_date: event.start_date,
+                  end_date: event.end_date,
+                  price: event.price,
+                  establishment_id: event.establishment_id,
+                  maximumCapacity: event.maximumCapacity,
+                },
+                searchType: SearchResultType.Event,
+              };
+            }),
+          ],
+        };
       }
     },
     getEstablishmentById: async (_, args, context) => {
@@ -415,8 +424,8 @@ const establishmentResolver: Resolvers = {
         available_quantity: ticket.quantity,
         price: ticket.price,
       }));
-    }
-  }
+    },
+  },
 };
 
 export default establishmentResolver;

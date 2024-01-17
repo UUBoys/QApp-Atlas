@@ -89,6 +89,7 @@ const creditResolver: Resolvers = {
           ticket_name: ticket.ticket_name,
           available_quantity: ticket.quantity,
           price: ticket.price,
+          createdAt: ticket.createdAt,
         };
       });
     },
@@ -109,9 +110,10 @@ const creditResolver: Resolvers = {
           ticket_name: ticket.ticket_name,
           available_quantity: ticket.quantity,
           price: ticket.price,
+          createdAt: ticket.createdAt,
         };
       });
-    }
+    },
   },
 };
 

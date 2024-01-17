@@ -102,6 +102,7 @@ export type Event = {
 export type EventAvailableTickets = {
   __typename?: 'EventAvailableTickets';
   available_quantity: Scalars['Int']['output'];
+  createdAt: Scalars['String']['output'];
   event_id: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   ticket_id: Scalars['String']['output'];
@@ -517,6 +518,7 @@ export type EventResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type EventAvailableTicketsResolvers<ContextType = any, ParentType extends ResolversParentTypes['EventAvailableTickets'] = ResolversParentTypes['EventAvailableTickets']> = ResolversObject<{
   available_quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   event_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   ticket_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
